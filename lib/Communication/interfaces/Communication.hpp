@@ -10,9 +10,9 @@
 class Communication {
     public:
         //virtual functions
-		virtual char* read()  = 0;
-		virtual void write(char *msg) = 0;
-		virtual void ioctl() = 0;
+		virtual char* comm_read()  = 0;
+		virtual void comm_write(char *msg) = 0;
+		virtual void comm_ioctl() = 0;
 };
 
 

@@ -1,20 +1,62 @@
-CC=gcc
-CCFLAGS=-Wall
-LDFLAGS=
-SOURCES=$(wildcard *.cpp)
-OBJECTS=$(SOURCES:.cpp=.o)
-TARGET=main
+export BASE_DIRECTORY?=$(abspath ../)
 
-all: $(TARGET)
+CXX      := g++
+CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
+LDFLAGS  := -L/usr/lib -lstdc++ -lm
 
-$(TARGET): $(OBJECTS)
-		$(CC) -o $@ $^ $(LDFLAGS) 
+BUILD    := ../build
+OBJ_DIR  := $(BUILD)/objects
+APP_DIR  := $(BUILD)/apps
+TARGET   := main
 
-%.o: %.c %.h
-		$(CC) $(CCFLAGS) -c $<
+SERVER = socket_server.o
 
-%.o: %.c
-		$(CC) $(CCFLAGS) -c $<
+INCLUDE := \
+	-I${BASE_DIRECTORY}/lib/Communication/interfaces \
+
+SRC      :=                      \
+   $(wildcard ../lib/Communication/src/*.cpp) \
+   $(wildcard ../src/*.cpp)         \
+
+OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+
+DEPENDENCIES := \
+        $(OBJECTS:.o=.d)
+
+all: build $(APP_DIR)/$(TARGET)
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -MMD -o $@
+
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/$(TARGET) $^ $(LDFLAGS)
+
+-include $(DEPENDENCIES)
+
+.PHONY: all build clean debug release info
+
+build:
+	@mkdir -p $(APP_DIR)
+	@mkdir -p $(OBJ_DIR)
+
+server:
+	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/socket_server $(SERVER) $(LDFLAGS)
+
+debug: CXXFLAGS += -DDEBUG -g
+debug: all
+
+release: CXXFLAGS += -O2
+release: all
 
 clean:
-		rm -f *.o $(TARGET)
+	-@rm -rvf $(OBJ_DIR)/*
+	-@rm -rvf $(APP_DIR)/*
+
+info:
+	@echo "[*] Application dir: ${APP_DIR}     "
+	@echo "[*] Object dir:      ${OBJ_DIR}     "
+	@echo "[*] Sources:         ${SRC}         "
+	@echo "[*] Objects:         ${OBJECTS}     "
+	@echo "[*] Dependencies:    ${DEPENDENCIES}"

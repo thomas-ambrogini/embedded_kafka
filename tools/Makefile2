@@ -1,0 +1,144 @@
+export BASE_DIRECTORY?=$(abspath ../)
+
+CC=g++
+TARGET=main
+
+FILES_cpp_common := \
+	Prova.cpp \
+	main.cpp \
+	
+
+FILES_PATH_cpp_common = \
+	${BASE_DIRECTORY}/lib/Communication/src \
+	${BASE_DIRECTORY}/src
+
+
+INCLUDES_common := \
+	-I${BASE_DIRECTORY}/lib/Communication/interfaces \
+
+FILES := $(FILES_common)
+CPPFILES := $(FILES_cpp_common)
+FILES_PATH := $(FILES_PATH_common)
+CFLAGS := $(CFLAGS_common)
+CPPFILES_PATH := $(FILES_PATH_cpp_common)
+CPPFLAGS := $(CFLAGS_common)
+INCLUDES := $(INCLUDES_common)
+
+$(info $$INCLUDES is [${INCLUDES}])
+
+
+OBJDIR := obj/
+OBJS := $(FILES:%.c=%.obj)
+OBJS += $(CPPFILES:%.cpp=%.obj)
+DEPS := $(FILES:%.c=%.d)
+
+vpath %.obj $(OBJDIR)
+vpath %.c $(FILES_PATH)
+vpath %.cpp $(CPPFILES_PATH)
+vpath %.S $(FILES_PATH)
+vpath %.lib $(LIBS_PATH_NAME)
+vpath %.a $(LIBS_PATH_NAME)
+
+$(OBJDIR)/%.obj %.obj: %.cpp
+	$(CC) -c $(CPPFLAGS) $(INCLUDES) -o $(OBJDIR)/$@ $<
+
+$(OBJDIR)/%.obj %.obj: %.c
+	$(CC) -c $(CFLAGS) $(INCLUDES) -o $(OBJDIR)/$@ $<
+
+$(OBJDIR)/%.obj %.obj: %.S
+	$(CC) -c $(CFLAGS) -o $(OBJDIR)/$@ $<
+
+all: $(TARGET)
+
+clean:
+		rm -f *.o $(TARGET)
+
+
+
+-include $(addprefix $(OBJDIR)/, $(DEPS))
+
+
+
+export BASE_DIRECTORY?=$(abspath ../)
+
+CXX ?= g++
+
+# path #
+SRC_PATH = ../src
+SRC_COMMUNICATION = ../lib/Communication/src
+BUILD_PATH = ../build
+BIN_PATH = $(BUILD_PATH)/bin
+
+# executable # 
+BIN_NAME = main
+
+# extensions #
+SRC_EXT = cpp
+
+
+INCLUDES := \
+	-I${BASE_DIRECTORY}/lib/Communication/interfaces \
+
+# code lists #
+# Find all source files in the source directory, sorted by
+# most recently modified
+SOURCES = $(shell find $(SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+COMMUNICATION_SOURCES += $(shell find $(SRC_COMMUNICATION) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
+
+# Set the object file names, with the source directory stripped
+# from the path, and the build path prepended in its place
+OBJECTS = $(COMMUNICATION_SOURCES:$(SRC_COMMUNICATION)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+OBJECTS += $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+
+$(info $$OBJECTS is [${OBJECTS}])
+# Set the dependency files that will be used to add header dependencies
+DEPS = $(OBJECTS:.o=.d)
+
+# flags #
+COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g
+# Space-separated pkg-config libraries used by this project
+LIBS =
+
+.PHONY: default_target
+default_target: release
+
+.PHONY: release
+release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS)
+release: dirs
+	@$(MAKE) all
+
+.PHONY: dirs
+dirs:
+	@echo "Creating directories"
+	@mkdir -p $(dir $(OBJECTS))
+	@mkdir -p $(BIN_PATH)
+
+.PHONY: clean
+clean:
+	@echo "Deleting $(BIN_NAME) symlink"
+	@$(RM) $(BIN_NAME)
+	@echo "Deleting directories"
+	@$(RM) -r $(BUILD_PATH)
+	@$(RM) -r $(BIN_PATH)
+
+# checks the executable and symlinks to the output
+.PHONY: all
+all: $(BIN_PATH)/$(BIN_NAME)
+	@echo "Making symlink: $(BIN_NAME) -> $<"
+	@$(RM) $(BIN_NAME)
+	@ln -s $(BIN_PATH)/$(BIN_NAME) $(BIN_NAME)
+
+# Creation of the executable
+$(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
+	@echo "Linking: $@"
+	$(CXX) $(OBJECTS) -o $@ ${LIBS}
+
+# Add dependency files, if they exist
+-include $(DEPS)
+
+# Source file rules
+# After the first compilation they will be joined with the rules from the
+# dependency files to provide header dependencies
+$(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
+	@echo "Compiling: $< -> $@"
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@

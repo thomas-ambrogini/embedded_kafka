@@ -1,6 +1,6 @@
 #include "UnixSocketCommunication.hpp"
 
-UnixSocketCommunication::UnixSocketCommunication (char * destination) {
+int UnixSocketCommunication::comm_open_client () {
     // Create a socket
     sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sockfd == -1) {
@@ -20,23 +20,25 @@ UnixSocketCommunication::UnixSocketCommunication (char * destination) {
         return 1;
     }
 
+    return -1;
 }
 
-void UnixSocketCommunication::close() {
+
+
+void UnixSocketCommunication::comm_close() {
     // Close the socket
     close(sockfd);
 }
 
-void UnixSocketCommunication::write(char * msg) {
+void UnixSocketCommunication::comm_write(char * msg) {
     // Send data to the server
-    const char* message = "Hello, server!";
-    if (write(sockfd, message, strlen(message)) == -1) {
+    if (write(sockfd, msg, strlen(msg)) == -1) {
         std::cerr << "Failed to send data to the server." << std::endl;
     }
 
 }
 
-char* UnixSocketCommunication::read() {
+char* UnixSocketCommunication::comm_read() {
     // Receive response from the server
     char buffer[256];
     ssize_t bytesRead = read(sockfd, buffer, sizeof(buffer) - 1);
@@ -46,8 +48,11 @@ char* UnixSocketCommunication::read() {
         buffer[bytesRead] = '\0';
         std::cout << "Received response: " << buffer << std::endl;
     }
+    char * result = (char *) malloc(sizeof(char) * bytesRead + 1);
+    result = buffer;
+    return result;
 }
 
-void UnixSocketCommunication::ioctl() {
+void UnixSocketCommunication::comm_ioctl() {
     std::cout << "ioctl" << std::endl;
 }

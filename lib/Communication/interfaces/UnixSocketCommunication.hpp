@@ -9,21 +9,22 @@
 
 #define MAX_MSG_SIZE          (64u)
 
-
-const char* SOCKET_PATH = "/tmp/kafka_unix_socket";
-
 class UnixSocketCommunication : public Communication {
     private:
         int sockfd;
+        const char* SOCKET_PATH = "/tmp/kafka_unix_socket1";
+
 
     public:
-        void close();
+        int comm_open_client();
 
-        void write(char * msg) override;
+        void comm_close();
 
-        char* read() override;
+        void comm_write(char * msg) override;
 
-        void ioctl() override;
+        char* comm_read() override;
+
+        void comm_ioctl() override;
 
 };
 
