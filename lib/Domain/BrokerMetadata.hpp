@@ -5,11 +5,12 @@
 
 class BrokerMetadata {
     private:
-        int id;
+        PlatformDependentMetadata platformMetadata;
+
     public:
-        int get_id() {
-            return id;
-        }
+        BrokerMetadata(Processor p, uint16_t endpoint) : platformMetadata(p, endpoint) {};
+
+        PlatformDependentMetadata getPlatformMetadata();
 };
 
 

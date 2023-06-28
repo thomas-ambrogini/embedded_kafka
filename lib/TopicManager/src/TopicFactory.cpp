@@ -35,6 +35,6 @@ int TopicFactory::topicAlreadyCreated(TopicMetadata topicMetadata) {
 }
 
 
-TopicLocal * createLocalTopic(TopicMetadata topicMetadata) {
+TopicLocal * TopicFactory::createLocalTopic(TopicMetadata topicMetadata) {
     return new TopicLocal(topicMetadata);
 }

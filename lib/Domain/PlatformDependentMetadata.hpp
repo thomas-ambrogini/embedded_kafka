@@ -7,7 +7,7 @@ enum CommunicationType{
     Ethernet
 };
 
-enum Processors {
+enum Processor {
     M4,
     A53_0,
     A53_1,
@@ -20,9 +20,19 @@ enum Processors {
 
 class PlatformDependentMetadata {
     private:
-        Processors processor;
-
+        Processor processor;
+        uint16_t   endpoint;
     public:
+
+        PlatformDependentMetadata(Processor p, u_int16_t e) : processor(p), endpoint(e) {}
+
+        Processor getProcessor() {
+            return processor;
+        }
+
+        uint16_t getEndpoint() {
+            return endpoint;
+        }
     
 };
 

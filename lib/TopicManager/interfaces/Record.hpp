@@ -5,11 +5,14 @@
 
 class Record {
     private:
-        TopicMetadata topicMetadata;
         char*         data;
         char*         key;
     public:
-        Record(TopicMetadata topicMetadata, char* data, char* key);
+        Record(char* d, char* k) : data(d), key(k) {}
+
+        char* getData() {
+            return data;
+        }
 		
 };
 

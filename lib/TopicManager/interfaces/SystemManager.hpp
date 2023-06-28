@@ -6,9 +6,18 @@
 
 class SystemManager {
     private:
-        BrokerMetadata boostrapBroker;
-    public:
+        BrokerMetadata bootrapBroker;
+        ClusterMetadata clusterMetadata;
+
         void init();
+
+
+    public:
+
+        SystemManager() : bootrapBroker(A53_0, 12) {
+            init();
+        }
+
         ClusterMetadata getClusterMetadata();
 		
 };
