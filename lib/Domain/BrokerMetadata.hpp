@@ -8,9 +8,16 @@ class BrokerMetadata {
         PlatformDependentMetadata platformMetadata;
 
     public:
-        BrokerMetadata(Processor p, uint16_t endpoint) : platformMetadata(p, endpoint) {};
+//        BrokerMetadata(Processor p, uint16_t endpoint) : platformMetadata(p, endpoint) {};
 
-        PlatformDependentMetadata getPlatformMetadata();
+        PlatformDependentMetadata getPlatformMetadata() {
+            return platformMetadata;
+        }
+
+        void setPlatformMetadata(PlatformDependentMetadata p) {
+            platformMetadata = p;
+        }
+
 };
 
 

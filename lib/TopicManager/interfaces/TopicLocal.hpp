@@ -34,8 +34,6 @@ class TopicLocal : public Topic {
         void   unsubscribe(ConsumerMetadata consumerMetadata);
         char*  poll(ConsumerMetadata consumerMetadata);
 
-//        char * poll();
-
 };
 
 #endif
