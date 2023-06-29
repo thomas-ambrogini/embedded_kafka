@@ -1,15 +1,15 @@
 #ifndef PRODUCER_H
 #define PRODUCER_H
 
-#include "Record.hpp"
+#include "ProducerRecord.hpp"
 #include "TopicFactory.hpp"
 
 
 class Producer {
     private:
-
+        
     public:
-		char* publish(Record record);
+		char* publish(ProducerRecord producerRecord);
 };
 
 

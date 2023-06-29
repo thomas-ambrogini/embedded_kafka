@@ -24,6 +24,7 @@ class Configurer {
         std::string configFile = "configFile.json";
         
         void start();
+        void retrieveClusterInformation();
     public:
         Configurer(int s = 1234) : serverPort(s) {
             start();

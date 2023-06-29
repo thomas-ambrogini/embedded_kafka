@@ -1,29 +1,8 @@
 #include "Configurer.hpp"
 
 void Configurer::start() {
-    json jsonData = readJsonFile(configFile);
 
-    if (!jsonData.empty()) {
-        std::cout << "The file was NOT empty" <<std::endl;
-        // JSON file read successfully
-        // Perform operations on jsonData
-
-        // Example: Accessing values from JSON
-        std::string name = jsonData["name"];
-        // int age = jsonData["age"];
-        // bool isActive = jsonData["isActive"];
-
-        std::cout << "Name found: " << name << std::endl;
-
-        // // Example: Iterating over JSON objects
-        // for (const auto& entry : jsonData["items"]) {
-        //     std::string itemName = entry["name"];
-        //     int itemQuantity = entry["quantity"];
-        //     std::cout << "Item: " << itemName << ", Quantity: " << itemQuantity << std::endl;
-        // }
-    } else {
-        std::cout << "The file was empty or not found" <<std::endl;
-    }
+    retrieveClusterInformation();
 
     UDPSocketServer * server = new UDPSocketServer(serverPort);
 
@@ -57,4 +36,30 @@ json readJsonFile(const std::string& filename) {
     file.close();
 
     return jsonData;
+}
+
+
+
+void Configurer::retrieveClusterInformation() {
+    json jsonData = readJsonFile(configFile);
+
+    if (!jsonData.empty()) {
+        std::cout << "The file was NOT empty" <<std::endl;
+        // JSON file read successfully
+        // Perform operations on jsonData
+
+        // Example: Accessing values from JSON
+        //std::string name = jsonData["name"];
+        // int age = jsonData["age"];
+        // bool isActive = jsonData["isActive"];
+
+        // Example: Iterating over JSON objects
+        for (const auto& entry : jsonData["brokers"]) {
+            std::string itemName = entry["value"];
+//            int itemQuantity = entry["quantity"];
+            std::cout << "Item: " << itemName << std::endl;
+        }
+    } else {
+        std::cout << "The file was empty or not found" <<std::endl;
+    }
 }

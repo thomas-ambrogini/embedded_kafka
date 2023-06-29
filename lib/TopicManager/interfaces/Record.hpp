@@ -1,8 +1,6 @@
 #ifndef RECORD_H
 #define RECORD_H
 
-#include "TopicMetadata.hpp"
-
 class Record {
     private:
         char*         data;

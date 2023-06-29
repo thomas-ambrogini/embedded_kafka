@@ -7,12 +7,15 @@
 #include "TopicMetadata.hpp"
 #include "ConsumerMetadata.hpp"
 
+#include <vector>
+
 class Topic {
     protected:
         TopicMetadata metadata;
-        ConsumerMetadata * consumers = new ConsumerMetadata[5];
-        int numberOfConsumers = 0;
+        std::vector<ConsumerMetadata> consumers;
+
     public:
+        //Virtual Destructor to destroy derived classes
         virtual ~Topic() {}
 
         //virtual functions
@@ -22,8 +25,6 @@ class Topic {
         virtual char* poll()                    = 0;
 
         TopicMetadata getTopicMetadata();
-        void          printConsumerInfo();
-
 
 };
 
