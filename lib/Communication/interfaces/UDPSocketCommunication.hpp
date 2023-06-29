@@ -6,23 +6,26 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
+#include <cstring>
+#include <string>
+#include <cstring>
+#include <arpa/inet.h>
 
-#define MAX_MSG_SIZE          (64u)
+#define BUFFER_SIZE          1024
 
 class UDPSocketCommunication : public Communication {
     private:
-        int sockfd;
-
+        int socket_fd;
+        struct sockaddr_in server_address;
     public:
-        int comm_open();
+
+        UDPSocketCommunication(int sock, sockaddr_in sa) : socket_fd(sock), server_address(sa) {}
 
         void comm_close();
 
-        void comm_write(char * msg) override;
+        bool comm_write(char * msg) override;
 
         char* comm_read() override;
-
-        void comm_ioctl() override;
 
 };
 

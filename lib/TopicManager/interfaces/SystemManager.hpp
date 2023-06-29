@@ -14,9 +14,9 @@ class SystemManager {
 
     public:
 
-        SystemManager() : bootrapBroker(A53_0, 12) {
-            init();
-        }
+        // SystemManager() : bootrapBroker(A53_0, 12) {
+        //     init();
+        // }
 
         ClusterMetadata getClusterMetadata();
 		

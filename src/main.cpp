@@ -1,13 +1,27 @@
-#include "UnixSocketCommunication.hpp"
+#include "UDPSocketCommunication.hpp"
+#include "UDPSocketClientSupport.hpp"
+#include "UDPSocketServer.hpp"
+#include "Configurer.hpp"
 
 
-int main() {
-    UnixSocketCommunication communication;
+ int main() {
+    int serverPort = 12345;
+
+    Configurer configurer(serverPort);
+    std::cout << configurer.getServerPort() << std::endl;
+
+
+    Communication * communication = UDPSocketClientSupport::connect("127.0.0.1", serverPort);
     char msg[] = "Hello";
 
-    communication.comm_open_client();
+    // UDPSocketServer server(serverPort);
+    // server.startListening();
+
     std::cout << "Sending the following message:" << msg << std::endl;
-    communication.comm_write(msg);
+    communication->comm_write(msg);
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    
     return 0;
 }
 

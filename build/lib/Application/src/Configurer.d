@@ -1,0 +1,9 @@
+../build/objects/../lib/Application/src/Configurer.o: \
+ ../lib/Application/src/Configurer.cpp \
+ /home/thomas/embedded_kafka/lib/Application/interfaces/Configurer.hpp \
+ /home/thomas/embedded_kafka/lib/Domain/ClusterMetadata.hpp \
+ /home/thomas/embedded_kafka/lib/Domain/BrokerMetadata.hpp \
+ /home/thomas/embedded_kafka/lib/Domain/PlatformDependentMetadata.hpp \
+ /home/thomas/embedded_kafka/lib/Domain/BrokerMetadata.hpp \
+ /home/thomas/embedded_kafka/lib/Communication/interfaces/UDPSocketServer.hpp \
+ /home/thomas/embedded_kafka/lib/ExternalLibraries/json.hpp

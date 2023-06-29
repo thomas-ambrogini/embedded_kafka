@@ -11,8 +11,8 @@ class Communication {
     public:
         //virtual functions
 		virtual char* comm_read()  = 0;
-		virtual void comm_write(char *msg) = 0;
-		virtual void comm_ioctl() = 0;
+		virtual bool comm_write(char *msg) = 0;
+
 };
 
 

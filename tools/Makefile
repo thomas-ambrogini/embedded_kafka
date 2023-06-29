@@ -1,7 +1,7 @@
 export BASE_DIRECTORY?=$(abspath ../)
 
 CXX      := g++
-CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
+CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -pthread
 LDFLAGS  := -L/usr/lib -lstdc++ -lm
 
 BUILD    := ../build
@@ -12,11 +12,14 @@ TARGET   := main
 SERVER = socket_server.o
 
 INCLUDE := \
+	-I${BASE_DIRECTORY}/lib/Application/interfaces \
+	-I${BASE_DIRECTORY}/lib/ExternalLibraries \
 	-I${BASE_DIRECTORY}/lib/Communication/interfaces \
 	-I${BASE_DIRECTORY}/lib/TopicManager/interfaces \
 	-I${BASE_DIRECTORY}/lib/Domain \
 
 SRC      :=                      \
+   $(wildcard ../lib/Application/src/*.cpp) \
    $(wildcard ../lib/Communication/src/*.cpp) \
    $(wildcard ../lib/TopicManager/src/*.cpp) \
    $(wildcard ../src/*.cpp)         \

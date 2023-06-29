@@ -1,14 +1,15 @@
 #ifndef CONSUMER_H
 #define CONSUMER_H
 
-class Topic {
+#include "ConsumerMetadata.hpp"
+
+
+class Consumer {
     private:
-        TopicMetadata metadata;
+        ConsumerMetadata consumerMetadata;
     public:
-        //virtual functions
-		virtual char* publish(Record record)  = 0;
-        virtual void  subscribe() = 0;
-        virtual void  unsubscribe() = 0;
+        void  subscribe();
+        void  unsubscribe();
 };
 
 
