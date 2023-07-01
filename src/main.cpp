@@ -12,17 +12,27 @@
 
 
     Communication * communication = UDPSocketClientSupport::connect("127.0.0.1", serverPort);
-    char msg[] = "Hello";
+    //char msg[] = "Hello";
+
+    nlohmann::json request;
+    request["operation"] = "getClusterInformation";
+
+    // Serialize the JSON object to a string
+    std::string requestString = request.dump();
 
     // UDPSocketServer server(serverPort);
     // server.startListening();
 
-    std::cout << "Sending the following message:" << msg << std::endl;
-    communication->comm_write(msg);
+    std::cout << "Sending the following message:" << requestString << std::endl;
+    communication->comm_write(strdup(requestString.c_str()));
+
+    char * response = communication->comm_read();
+    std::cout << "Received Reponse: " << response << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
     
     return 0;
+
 }
 
 

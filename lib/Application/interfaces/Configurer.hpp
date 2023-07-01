@@ -9,6 +9,7 @@
 #include "ClusterMetadata.hpp"
 #include "BrokerMetadata.hpp"
 #include "UDPSocketServer.hpp"
+#include "LinuxMetadata.hpp"
 
 
 #include <fstream>
@@ -31,9 +32,10 @@ class Configurer {
         }
 
         // Getter method
-        int getServerPort() const {
+        int getServerPort() {
             return serverPort;
         }
+
 };
 
 json readJsonFile(const std::string& filename);

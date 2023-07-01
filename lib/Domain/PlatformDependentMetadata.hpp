@@ -7,6 +7,8 @@ class PlatformDependentMetadata {
     
     public:
         virtual ~PlatformDependentMetadata() {}
+
+        virtual char * serialize() = 0;
 };
 
 

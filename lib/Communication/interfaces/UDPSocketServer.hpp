@@ -8,13 +8,16 @@
 #include <unistd.h>
 #include <thread>
 #include <functional>
+#include "UDPSocketCommunication.hpp"
 
 
 class UDPSocketServer {
     private:
         int socket_fd;
         struct sockaddr_in server_address;
-        std::function<void(const char*, const sockaddr_in&)> messageHandler;
+        std::function<void(const char*, Communication*)> messageHandler;
+
+        UDPSocketCommunication * communication;
 
         void closeSocket();
         void receiveMessages();
@@ -24,7 +27,7 @@ class UDPSocketServer {
 
         ~UDPSocketServer();
 
-        void startListening(std::function<void(const char*, const sockaddr_in&)> handler);
+        void startListening(std::function<void(const char*, Communication*)> handler);
 
 };
 

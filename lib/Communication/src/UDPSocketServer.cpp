@@ -36,7 +36,7 @@ UDPSocketServer::UDPSocketServer(int port) : socket_fd(-1) {
 //     listeningThread.detach();
 // }
 
-void UDPSocketServer::startListening(std::function<void(const char*, const sockaddr_in&)> handler) {
+void UDPSocketServer::startListening(std::function<void(const char*, Communication *)> handler) {
     messageHandler = handler;
     std::thread listeningThread(&UDPSocketServer::receiveMessages, this);
     listeningThread.detach();
@@ -71,6 +71,8 @@ void UDPSocketServer::receiveMessages() {
             continue;
         }
 
+        communication = new UDPSocketCommunication(socket_fd, client_address);
+
         // Null-terminate the received message
         buffer[recv_size] = '\0';
 
@@ -80,7 +82,7 @@ void UDPSocketServer::receiveMessages() {
                     << ntohs(client_address.sin_port) << std::endl;
 
         // Call the message handler callback
-        messageHandler(buffer, client_address);
+        messageHandler(buffer, communication);
 
 
     }

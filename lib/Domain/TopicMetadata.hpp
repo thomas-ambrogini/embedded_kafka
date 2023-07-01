@@ -5,15 +5,15 @@
 
 class TopicMetadata {
     private:
-        char* name;
+        const char* name;
     public:
-        char * getName() {
+        TopicMetadata () {}
+        TopicMetadata (const char * n) : name(n) {}
+
+        const char * getName() {
             return name;
         }
 
-        void setName(char * n) {
-            name = n;
-        }
 };
 
 

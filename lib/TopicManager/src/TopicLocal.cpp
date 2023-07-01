@@ -27,7 +27,7 @@ char * TopicLocal::poll() {
 
 
 void TopicLocal::subscribe(ConsumerMetadata consumerMetadata) {
-    consumers[numberOfConsumers++] = consumerMetadata;
+    consumers.push_back(consumerMetadata);
     LocalOffset localOffset(consumerMetadata, 0);
     offsets.push_back(localOffset);
 }
@@ -58,7 +58,8 @@ char* TopicLocal::poll(ConsumerMetadata consumerMetadata) {
 
 
 int TopicLocal::findConsumer(int consumerId) {
-    for(int i = 0; i < numberOfConsumers; i++) {
+    
+    for(size_t i = 0; i < consumers.size(); i++) {
         if(consumers[i].getId() == consumerId) {
             return i;
         }

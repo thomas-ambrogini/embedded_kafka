@@ -21,7 +21,7 @@ enum Processor {
 };
 
 
-class AM64Metadata : PlatformDependentMetadata {
+class AM64Metadata : public PlatformDependentMetadata {
     private:
         Processor processor;
         uint16_t   endpoint;

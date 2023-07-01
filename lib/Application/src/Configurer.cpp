@@ -6,15 +6,55 @@ void Configurer::start() {
 
     UDPSocketServer * server = new UDPSocketServer(serverPort);
 
-    server->startListening([](const char* message, const sockaddr_in& clientAddress) {
+    server->startListening([](const char* message, Communication* communication) {
         // Custom logic to handle the received message
-        std::cout << "Received message: " << message << " from "
-                  << inet_ntoa(clientAddress.sin_addr) << ":"
-                  << ntohs(clientAddress.sin_port) << std::endl;
+        // std::cout << "Received message: " << message << " from "
+        //           << inet_ntoa(clientAddress.sin_addr) << ":"
+        //           << ntohs(clientAddress.sin_port) << std::endl;
 
         // Add your custom processing or actions here
+
+        // Deserialize the request message from the string
+        nlohmann::json deserializedRequest = nlohmann::json::parse(message);
+
+        // Extract the fields from the deserialized request
+        std::string operation = deserializedRequest["operation"];
+
+        std::cout << "Operation: " << operation << std::endl;
+        std::cout << "Serialization: " << clusterMetadata.serialize() << std::endl;
+        char msg[] = clusterMetadata.serialize();
+        communication->comm_write(msg);
     });
 
+}
+
+
+void Configurer::retrieveClusterInformation() {
+    json jsonData = readJsonFile(configFile);
+
+    if (!jsonData.empty()) {
+        // JSON file read successfully
+        // Perform operations on jsonData
+
+        for (const auto& entry : jsonData["brokers"]) {
+            int port = entry["port"];
+            LinuxMetadata * platformMetadata = new LinuxMetadata(port);
+            //LinuxMetadata* linMet = static_cast<LinuxMetadata*>(platformMetadata);
+
+            BrokerMetadata brokerMetadata(platformMetadata);
+            
+            for (const auto& topicEntry : entry["topics"]) {
+                std::string topicNameString = topicEntry["name"];
+                TopicMetadata topicMetadata(topicNameString.c_str());
+                brokerMetadata.addTopicMetadata(topicMetadata);
+            }
+
+            clusterMetadata.addBrokerMetadata(brokerMetadata);
+        }
+
+    } else {
+        std::cout << "The file was empty or not found" <<std::endl;
+    }
 }
 
 
@@ -36,30 +76,4 @@ json readJsonFile(const std::string& filename) {
     file.close();
 
     return jsonData;
-}
-
-
-
-void Configurer::retrieveClusterInformation() {
-    json jsonData = readJsonFile(configFile);
-
-    if (!jsonData.empty()) {
-        std::cout << "The file was NOT empty" <<std::endl;
-        // JSON file read successfully
-        // Perform operations on jsonData
-
-        // Example: Accessing values from JSON
-        //std::string name = jsonData["name"];
-        // int age = jsonData["age"];
-        // bool isActive = jsonData["isActive"];
-
-        // Example: Iterating over JSON objects
-        for (const auto& entry : jsonData["brokers"]) {
-            std::string itemName = entry["value"];
-//            int itemQuantity = entry["quantity"];
-            std::cout << "Item: " << itemName << std::endl;
-        }
-    } else {
-        std::cout << "The file was empty or not found" <<std::endl;
-    }
 }

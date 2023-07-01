@@ -1,9 +1,25 @@
 {
-    "brokers": [
+    "brokers1": [
         {"value": "New", "onclick": "CreateNewDoc()"},
         {"value": "Open", "onclick": "OpenDoc()"},
         {"value": "Close", "onclick": "CloseDoc()"}
       ],
+
+      "topics": [
+        {"name": "Topic1", "onclick": "CreateNewDoc()"}
+      ],
+
+
+      "brokers": [
+        {
+          "port": 1235,
+          "topics": [
+            {"name": "Topic1"}
+          ] 
+        }
+      ],
+
+
 "menu": {
     "id": "file",
     "value": "File",
