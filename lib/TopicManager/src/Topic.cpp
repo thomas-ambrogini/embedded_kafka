@@ -1,14 +1,36 @@
 #include "Topic.hpp"
 
-TopicMetadata Topic::getTopicMetadata() {
-    return metadata;
+void Topic::publish(ProducerMetadata producerMetadata, Record record) {
+    std::cout << "The producer: " << producerMetadata.getId() << " Added the following record: " << record.getData() << std::endl;
+    addRecord(record);
+}
+
+void Topic::addRecord(Record record) {
+    records.push_back(record);
 }
 
 
+void Topic::subscribe(ConsumerMetadata consumerMetadata){
+    consumers.push_back(consumerMetadata);
+}
 
-// void Topic::printConsumerInfo() {
-//     for (int i = 0; i < numberOfConsumers; i++) {
-//         std::cout << consumers[i].getId() << std::endl;
-//     }
-// }
+void  Topic::unsubscribe(ConsumerMetadata consumerMetadata){
+    int consumerIndex = findConsumerIndex(consumerMetadata);
+    
+    if(consumerIndex != -1) {
+        consumers.erase(consumers.begin() + consumerIndex);
+    }
 
+    //It's not subscribed
+}
+
+
+int Topic::findConsumerIndex(ConsumerMetadata consumerMetadata) {
+    for (size_t i = 0; i < consumers.size(); ++i) {
+        if (consumers[i].getId() == consumerMetadata.getId()) {
+            return i;
+        }
+    }
+
+    return -1;
+}

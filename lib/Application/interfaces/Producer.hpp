@@ -3,13 +3,18 @@
 
 #include "ProducerRecord.hpp"
 #include "TopicFactory.hpp"
-
+#include "ProducerMetadata.hpp"
 
 class Producer {
     private:
-        
+        TopicFactory topicFactory;
+        ProducerMetadata producerMetadata;
+
+        void askForID();
     public:
-		char* publish(ProducerRecord producerRecord);
+        Producer();
+
+        void publish(ProducerRecord producerRecord);
 };
 
 

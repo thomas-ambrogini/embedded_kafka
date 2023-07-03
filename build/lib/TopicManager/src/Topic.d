@@ -4,4 +4,6 @@
  /home/thomas/embedded_kafka/lib/TopicManager/interfaces/Record.hpp \
  /home/thomas/embedded_kafka/lib/Domain/TopicMetadata.hpp \
  /home/thomas/embedded_kafka/lib/ExternalLibraries/json.hpp \
- /home/thomas/embedded_kafka/lib/Domain/ConsumerMetadata.hpp
+ /home/thomas/embedded_kafka/lib/Domain/ConsumerMetadata.hpp \
+ /home/thomas/embedded_kafka/lib/Domain/PlatformDependentMetadata.hpp \
+ /home/thomas/embedded_kafka/lib/Domain/ProducerMetadata.hpp

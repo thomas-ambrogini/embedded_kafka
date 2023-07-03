@@ -1,31 +1,47 @@
 #include "TopicFactory.hpp"
 
-void TopicFactory::setLocal(bool local) {
-    this->local = local;
+
+TopicFactory::TopicFactory() {
+    retrieveClusterInformation();
+    createTopics();
+}
+
+
+void TopicFactory::retrieveClusterInformation() {
+    SystemManager systemManager;
+    clusterMetadata = systemManager.getClusterMetadata();
+}
+
+void TopicFactory::createTopics() {
+    
+    for (BrokerMetadata brokerMetadata : clusterMetadata.getBrokersMetadata()) {
+
+        for (TopicMetadata topicMetadata : brokerMetadata.getTopicsMetadata()) {
+            // Perform some operation for each element
+            TopicProxy * topicProxy = new TopicProxy(topicMetadata);
+            topicProxy->setBrokerMetadata(brokerMetadata);
+            topics.push_back(topicProxy);
+        }
+    }
+    
+}
+
+TopicFactory::~TopicFactory() {
+    
 }
 
 Topic * TopicFactory::getTopic(TopicMetadata topicMetadata) {
-    int alreadyCreated = topicAlreadyCreated(topicMetadata);
+    int topicIndex = findTopic(topicMetadata);
 
-    if( alreadyCreated == -1) { //Topic doesn't exist
-        if (local){
-            topics[topicIndex] = createLocalTopic(topicMetadata);
-        } else {
-            //Need to sync with the system manager
-            //Otherwise the topic doesn't exist if we consider a static environment
-        }
-        return topics[topicIndex++];
-
-    } else { //Topic Already created
-        return topics[alreadyCreated];
-    }
-
-    return nullptr;
+    if (topicIndex != -1)
+        return topics[topicIndex];
+    else 
+        return nullptr;
 }
 
 
-int TopicFactory::topicAlreadyCreated(TopicMetadata topicMetadata) {
-    for (int i = 0; i < topicIndex; i++) {
+int TopicFactory::findTopic(TopicMetadata topicMetadata) {
+    for (size_t i = 0; i < topics.size(); i++) {
         if(strcmp(topics[i]->getTopicMetadata().getName(), topicMetadata.getName()) == 0) {
             return i;
         }
@@ -35,6 +51,6 @@ int TopicFactory::topicAlreadyCreated(TopicMetadata topicMetadata) {
 }
 
 
-TopicLocal * TopicFactory::createLocalTopic(TopicMetadata topicMetadata) {
-    return new TopicLocal(topicMetadata);
+void TopicFactory::setLocal(bool local) {
+    this->local = local;
 }

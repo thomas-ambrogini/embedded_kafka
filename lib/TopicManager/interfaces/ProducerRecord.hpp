@@ -12,6 +12,15 @@ class ProducerRecord {
     public:
         ProducerRecord(TopicMetadata t, Record r) : topicMetadata(t), record(r) {}
 
+
+        TopicMetadata getTopicMetadata() {
+            return topicMetadata;
+        }
+
+        Record getRecord() {
+            return record;
+        }
+
 		
 };
 

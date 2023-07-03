@@ -2,12 +2,15 @@
 #define BROKER_H
 
 #include "BrokerMetadata.hpp"
+#include "TopicHandler.hpp"
 
 class Broker {
-    private:
+    protected:
         BrokerMetadata brokerMetadata;
+        TopicHandler topicHandler;
+
     public:
-        void start();
+        virtual void start() = 0;
 };
 
 

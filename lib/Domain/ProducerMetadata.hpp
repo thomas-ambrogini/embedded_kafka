@@ -1,20 +1,18 @@
-#ifndef CONSUMERMETADATA_H
-#define CONSUMERMETADATA_H
+#ifndef PRODUCERMETADATA_H
+#define PRODUCERMETADATA_H
 
-#include "PlatformDependentMetadata.hpp"
 #include "json.hpp"
 
-using json = nlohmann::json;
+using json = nlohmann::json; 
 
-class ConsumerMetadata {
+class ProducerMetadata {
     private:
         int id;
     public:
 
-        ConsumerMetadata() {}
+        ProducerMetadata() {}
 
-        ConsumerMetadata(int value) : id(value) {}
-
+        ProducerMetadata(int value) : id(value) {}
 
         int getId() {
             return id;
@@ -24,10 +22,8 @@ class ConsumerMetadata {
             id = i;
         }
 
-
         void to_json(json& j) const {
             j = json{{"id", id}};
-
         }
 
         void from_json(const json& j) {
@@ -35,9 +31,10 @@ class ConsumerMetadata {
         }
 };
 
-inline void to_json(nlohmann::json& j, const ConsumerMetadata& consumerMetadata) {
-    consumerMetadata.to_json(j);
+inline void to_json(nlohmann::json& j, const ProducerMetadata& producerMetadata) {
+    producerMetadata.to_json(j);
 }
+
 
 
 

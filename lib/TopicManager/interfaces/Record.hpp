@@ -6,6 +6,7 @@ class Record {
         char*         data;
         char*         key;
     public:
+        Record(char * d) : data(d) {}
         Record(char* d, char* k) : data(d), key(k) {}
 
         char* getData() {

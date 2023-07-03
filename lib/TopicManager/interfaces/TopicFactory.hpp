@@ -4,22 +4,33 @@
 #include <string.h>
 #include "Record.hpp"
 #include "TopicMetadata.hpp"
-#include "TopicLocal.hpp"
 #include "Topic.hpp"
+#include "TopicProxy.hpp"
 #include "SystemManager.hpp"
+#include "ClusterMetadata.hpp"
+#include "Communication.hpp"
+#include "UDPSocketClientSupport.hpp"
+
+#include "json.hpp"
+
+using json = nlohmann::json; 
 
 class TopicFactory {
     private:
-        Topic ** topics = new Topic*[5];
-        int topicIndex = 0;
-        
-        SystemManager systemManager;
+        ClusterMetadata clusterMetadata;
+        std::vector<Topic *> topics;
         
         bool local = true;
 
-        int topicAlreadyCreated(TopicMetadata topicMetadata);
-        TopicLocal * createLocalTopic(TopicMetadata topicMetadata);
+        int findTopic(TopicMetadata topicMetadata);
+
+        void retrieveClusterInformation();
+        void createTopics();
+        
     public:
+        TopicFactory();
+        ~TopicFactory();
+
         Topic * getTopic(TopicMetadata topicMetadata);
 
         void setLocal(bool local);

@@ -1,7 +1,7 @@
 #include "TopicLocal.hpp"
 
 TopicLocal::TopicLocal(TopicMetadata topicMetadata) { 
-    this->metadata = topicMetadata;
+    this->topicMetadata = topicMetadata;
 }
 
 

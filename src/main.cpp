@@ -2,39 +2,44 @@
 #include "UDPSocketClientSupport.hpp"
 #include "UDPSocketServer.hpp"
 #include "Configurer.hpp"
-
+#include "SystemManager.hpp"
+#include "TopicFactory.hpp"
+#include "Producer.hpp"
+#include "Consumer.hpp"
+#include "BrokerLinux.hpp"
 
  int main() {
-    int serverPort = 12345;
+    //CONFIGURER
+    Configurer configurer;
 
-    Configurer configurer(serverPort);
+    //GENERAL STUFF
+    const char * topicName = "Topic1";
+    TopicMetadata topicMetadata(strdup(topicName));
 
-    Communication * communication = UDPSocketClientSupport::connect("127.0.0.1", serverPort);
-    //char msg[] = "Hello";
 
-    nlohmann::json request;
-    request["operation"] = "getClusterInformation";
+    //BROKER
+    BrokerMetadata brokerMetadata(new LinuxMetadata(1235));
+    BrokerLinux broker(brokerMetadata);
 
-    // Serialize the JSON object to a string
-    std::string requestString = request.dump();
+    // CONSUMER 
+    Consumer consumer;
+    consumer.subscribe(topicMetadata);
 
-    // UDPSocketServer server(serverPort);
-    // server.startListening();
+    //PRODUCER
+    const char * data = "Hello!";
+    Record record(strdup(data));
+    ProducerRecord producerRecord(topicMetadata, record);
+    Producer producer;
+    producer.publish(producerRecord);
+    
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    std::cout << "Sending the following message:" << requestString << std::endl;
-    communication->comm_write(strdup(requestString.c_str()));
 
-    char * response = communication->comm_read();
-    std::cout << "Received Reponse: " << response << std::endl;
-
-    json j = json::parse(response);
-    ClusterMetadata clusterMetadata;
-    clusterMetadata.from_json(j);
-
-    std::cout << clusterMetadata.getBrokersMetadata()[0].getTopicsMetadata()[0].getName() << std::endl;
+    std::cout << "Message received by the consumer: " << consumer.waitForMessage(topicMetadata) << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    
+
+
     return 0;
 
 }

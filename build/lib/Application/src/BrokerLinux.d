@@ -1,5 +1,6 @@
-../build/objects/../lib/Application/src/Broker.o: \
- ../lib/Application/src/Broker.cpp \
+../build/objects/../lib/Application/src/BrokerLinux.o: \
+ ../lib/Application/src/BrokerLinux.cpp \
+ /home/thomas/embedded_kafka/lib/Application/interfaces/BrokerLinux.hpp \
  /home/thomas/embedded_kafka/lib/Application/interfaces/Broker.hpp \
  /home/thomas/embedded_kafka/lib/Domain/BrokerMetadata.hpp \
  /home/thomas/embedded_kafka/lib/Domain/PlatformDependentMetadata.hpp \
@@ -13,4 +14,8 @@
  /home/thomas/embedded_kafka/lib/TopicManager/interfaces/Topic.hpp \
  /home/thomas/embedded_kafka/lib/Domain/ConsumerMetadata.hpp \
  /home/thomas/embedded_kafka/lib/Communication/interfaces/Communication.hpp \
- /home/thomas/embedded_kafka/lib/TopicManager/interfaces/Callback.hpp
+ /home/thomas/embedded_kafka/lib/TopicManager/interfaces/Callback.hpp \
+ /home/thomas/embedded_kafka/lib/Communication/interfaces/UDPSocketServer.hpp \
+ /home/thomas/embedded_kafka/lib/Communication/interfaces/UDPSocketCommunication.hpp \
+ /home/thomas/embedded_kafka/lib/Communication/interfaces/Communication.hpp \
+ /home/thomas/embedded_kafka/lib/Communication/interfaces/UDPSocketCommunication.hpp

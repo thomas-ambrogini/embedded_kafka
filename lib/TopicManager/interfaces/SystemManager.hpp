@@ -3,22 +3,31 @@
 
 #include "BrokerMetadata.hpp"
 #include "ClusterMetadata.hpp"
+#include "Communication.hpp"
+#include "UDPSocketClientSupport.hpp"
+#include "json.hpp"
+
+using json = nlohmann::json; 
+
 
 class SystemManager {
     private:
-        BrokerMetadata bootrapBroker;
+        BrokerMetadata bootstrapBroker;
         ClusterMetadata clusterMetadata;
 
         void init();
 
-
     public:
+
+        SystemManager();
 
         // SystemManager() : bootrapBroker(A53_0, 12) {
         //     init();
         // }
 
-        ClusterMetadata getClusterMetadata();
+        ClusterMetadata getClusterMetadata() {
+            return clusterMetadata;
+        }
 		
 };
 

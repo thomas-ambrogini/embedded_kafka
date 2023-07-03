@@ -6,25 +6,45 @@
 #include "Record.hpp"
 #include "TopicMetadata.hpp"
 #include "ConsumerMetadata.hpp"
+#include "ProducerMetadata.hpp"
 
 #include <vector>
 
 class Topic {
-    protected:
-        TopicMetadata metadata;
+    private:
+        std::vector<Record> records;
         std::vector<ConsumerMetadata> consumers;
 
+        void addRecord(Record record);
+        int findConsumerIndex(ConsumerMetadata consumerMetadata);
+    protected:
+        TopicMetadata topicMetadata;
+
     public:
+        Topic(TopicMetadata t) : topicMetadata(t) {
+
+        }
+
         //Virtual Destructor to destroy derived classes
         virtual ~Topic() {}
 
         //virtual functions
-		virtual void  publish(Record record)    = 0;
-        virtual void  subscribe()               = 0;
-        virtual void  unsubscribe()             = 0;
-        virtual char* poll()                    = 0;
+        virtual void  publish(ProducerMetadata producerMetadata, Record record);
+        virtual void  subscribe(ConsumerMetadata consumerMetadata);
+        virtual void  unsubscribe(ConsumerMetadata consumerMetadata);
+        
+        //Do i really want it?
+        //virtual char* poll()                                                                 = 0;
 
-        TopicMetadata getTopicMetadata();
+
+        //GETTER
+        TopicMetadata getTopicMetadata() {
+            return topicMetadata;
+        }
+
+        char * getLastRecord() {
+            return records.back().getData();
+        }
 
 };
 

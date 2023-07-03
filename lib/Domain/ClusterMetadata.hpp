@@ -25,33 +25,6 @@ class ClusterMetadata {
             brokersMetadata.push_back(b);
         }
 
-        char * serialize() {
-            std::ostringstream oss;
-            oss << "{";
-
-            for (BrokerMetadata brokerMetadata : brokersMetadata) {
-                oss << "PlatformMetadata{";
-                oss << brokerMetadata.getPlatformMetadata()->serialize() << ",";
-                oss << "},";
-
-                oss << "Topics[";
-                for (TopicMetadata topicMetadata : brokerMetadata.getTopicsMetadata()) {
-                    oss << "{";
-                    oss << "Name(" << topicMetadata.getName() << "),";
-                    oss << "}";
-                }
-
-                oss << "]";
-            }
-            oss << "}";
-
-            std::string str = oss.str();
-            char* charPtr = strdup(str.c_str());
-
-            return charPtr;
-        }
-
-
         void to_json(json& j) const {
             j = json{{"brokersMetadata", brokersMetadata}};
         }
@@ -68,7 +41,7 @@ class ClusterMetadata {
 };
 
 inline void to_json(json& j, const ClusterMetadata& obj) {
-  obj.to_json(j);
+    obj.to_json(j);
 }
 
 
