@@ -8,8 +8,6 @@
     int serverPort = 12345;
 
     Configurer configurer(serverPort);
-    std::cout << configurer.getServerPort() << std::endl;
-
 
     Communication * communication = UDPSocketClientSupport::connect("127.0.0.1", serverPort);
     //char msg[] = "Hello";
@@ -28,6 +26,12 @@
 
     char * response = communication->comm_read();
     std::cout << "Received Reponse: " << response << std::endl;
+
+    json j = json::parse(response);
+    ClusterMetadata clusterMetadata;
+    clusterMetadata.from_json(j);
+
+    std::cout << clusterMetadata.getBrokersMetadata()[0].getTopicsMetadata()[0].getName() << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
     

@@ -6,7 +6,7 @@ void Configurer::start() {
 
     UDPSocketServer * server = new UDPSocketServer(serverPort);
 
-    server->startListening([](const char* message, Communication* communication) {
+    server->startListening([this](const char* message, Communication* communication) {
         // Custom logic to handle the received message
         // std::cout << "Received message: " << message << " from "
         //           << inet_ntoa(clientAddress.sin_addr) << ":"
@@ -21,9 +21,9 @@ void Configurer::start() {
         std::string operation = deserializedRequest["operation"];
 
         std::cout << "Operation: " << operation << std::endl;
-        std::cout << "Serialization: " << clusterMetadata.serialize() << std::endl;
-        char msg[] = clusterMetadata.serialize();
-        communication->comm_write(msg);
+
+        json j = clusterMetadata;
+        communication->comm_write(strdup(j.dump().c_str()));
     });
 
 }
@@ -45,12 +45,13 @@ void Configurer::retrieveClusterInformation() {
             
             for (const auto& topicEntry : entry["topics"]) {
                 std::string topicNameString = topicEntry["name"];
-                TopicMetadata topicMetadata(topicNameString.c_str());
+                TopicMetadata topicMetadata(strdup(topicNameString.c_str()));
                 brokerMetadata.addTopicMetadata(topicMetadata);
             }
 
             clusterMetadata.addBrokerMetadata(brokerMetadata);
         }
+
 
     } else {
         std::cout << "The file was empty or not found" <<std::endl;

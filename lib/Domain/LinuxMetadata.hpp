@@ -14,6 +14,8 @@ class LinuxMetadata : public PlatformDependentMetadata {
         int port;
     public:
 
+    LinuxMetadata() {}
+
     LinuxMetadata(int p) : port(p) {}
 
     ~LinuxMetadata() {}
@@ -32,10 +34,19 @@ class LinuxMetadata : public PlatformDependentMetadata {
         return port;
     }
 
+    void to_json(json& j) const override {
+        j = json{{"type", "LinuxMetadata"}, {"port", port}};
+    }
 
-
+    void from_json(const json& j) override {
+        port = j.at("port").get<int>();
+    }
 
 };
+
+// inline void to_json(nlohmann::json& j, const LinuxMetadata& obj) {
+//   obj.to_json(j);
+// }
 
 
 #endif

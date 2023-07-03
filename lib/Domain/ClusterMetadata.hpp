@@ -4,10 +4,17 @@
 #include "BrokerMetadata.hpp"
 #include "LinuxMetadata.hpp"
 #include <iostream>
+#include "json.hpp"
+#include <string>
+#include <vector>
+
+using json = nlohmann::json;
+
 
 class ClusterMetadata {
     private:
         std::vector<BrokerMetadata> brokersMetadata;
+
     public:
 
         std::vector<BrokerMetadata> getBrokersMetadata() {
@@ -20,17 +27,23 @@ class ClusterMetadata {
 
         char * serialize() {
             std::ostringstream oss;
+            oss << "{";
 
             for (BrokerMetadata brokerMetadata : brokersMetadata) {
-                oss << "PlatformMetadata(";
+                oss << "PlatformMetadata{";
                 oss << brokerMetadata.getPlatformMetadata()->serialize() << ",";
-                oss << "),";
+                oss << "},";
 
-                oss << "Topics(";
+                oss << "Topics[";
                 for (TopicMetadata topicMetadata : brokerMetadata.getTopicsMetadata()) {
+                    oss << "{";
                     oss << "Name(" << topicMetadata.getName() << "),";
+                    oss << "}";
                 }
+
+                oss << "]";
             }
+            oss << "}";
 
             std::string str = oss.str();
             char* charPtr = strdup(str.c_str());
@@ -38,9 +51,25 @@ class ClusterMetadata {
             return charPtr;
         }
 
-        
+
+        void to_json(json& j) const {
+            j = json{{"brokersMetadata", brokersMetadata}};
+        }
+
+        void from_json(const json& j) {
+
+            for (const auto& item : j.at("brokersMetadata")) {
+                BrokerMetadata obj;
+                obj.from_json(item);
+                brokersMetadata.push_back(obj);
+            }
+        }
 
 };
+
+inline void to_json(json& j, const ClusterMetadata& obj) {
+  obj.to_json(j);
+}
 
 
 

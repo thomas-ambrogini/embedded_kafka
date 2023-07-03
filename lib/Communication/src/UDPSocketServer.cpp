@@ -36,7 +36,7 @@ UDPSocketServer::UDPSocketServer(int port) : socket_fd(-1) {
 //     listeningThread.detach();
 // }
 
-void UDPSocketServer::startListening(std::function<void(const char*, Communication *)> handler) {
+void UDPSocketServer::startListening(std::function<void(const char*, Communication * )> handler) {
     messageHandler = handler;
     std::thread listeningThread(&UDPSocketServer::receiveMessages, this);
     listeningThread.detach();
