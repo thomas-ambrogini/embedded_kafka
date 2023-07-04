@@ -10,6 +10,7 @@ APP_DIR  := $(BUILD)/apps
 TARGET   := main
 
 SERVER = socket_server.o
+BROKER = broker.o
 
 INCLUDE := \
 	-I${BASE_DIRECTORY}/lib/Application/interfaces \
@@ -21,10 +22,14 @@ INCLUDE := \
 SRC      :=                      \
    $(wildcard ../lib/Application/src/*.cpp) \
    $(wildcard ../lib/Communication/src/*.cpp) \
-   $(wildcard ../lib/TopicManager/src/*.cpp) \
-   $(wildcard ../src/*.cpp)         \
+   $(wildcard ../lib/TopicManager/src/*.cpp)  \
+
+MAIN_SRC := \
+   $(wildcard ../src/*.cpp)
 
 OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+
+MAIN_OBJECTS := $(MAIN_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 DEPENDENCIES := \
         $(OBJECTS:.o=.d)
@@ -49,6 +54,10 @@ build:
 
 server:
 	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/socket_server $(SERVER) $(LDFLAGS)
+
+
+broker:
+	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/broker $(BROKER) $(LDFLAGS)
 
 debug: CXXFLAGS += -DDEBUG -g
 debug: all

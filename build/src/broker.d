@@ -1,5 +1,4 @@
-../build/objects/../lib/Application/src/BrokerLinux.o: \
- ../lib/Application/src/BrokerLinux.cpp \
+../build/objects/../src/broker.o: ../src/broker.cpp \
  /home/thomas/ThomasGithub/embedded_kafka/lib/Application/interfaces/BrokerLinux.hpp \
  /home/thomas/ThomasGithub/embedded_kafka/lib/Application/interfaces/Broker.hpp \
  /home/thomas/ThomasGithub/embedded_kafka/lib/Domain/BrokerMetadata.hpp \

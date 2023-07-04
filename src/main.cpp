@@ -1,4 +1,3 @@
-#include "UDPSocketCommunication.hpp"
 #include "UDPSocketClientSupport.hpp"
 #include "UDPSocketServer.hpp"
 #include "Configurer.hpp"

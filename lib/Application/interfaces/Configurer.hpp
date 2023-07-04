@@ -15,19 +15,11 @@
 #include <fstream>
 #include "json.hpp"
 
-
 using json = nlohmann::json;
 
 class Configurer {
-    private:
-        int serverPort;
-        ClusterMetadata clusterMetadata;
-        std::string configFile = "configFile.json";
-        
-        void start();
-        void retrieveClusterInformation();
     public:
-        Configurer(int s = 1234) : serverPort(s) {
+        Configurer(int s = 1234) : serverPort(s) { //se fa qualcosa mettere nel cpp
             start();
         }
 
@@ -36,12 +28,15 @@ class Configurer {
             return serverPort;
         }
 
+    private:
+        int serverPort;
+        ClusterMetadata clusterMetadata;
+        std::string configFile = "configFile.json"; //mettere const nel config file
+        
+        void start();
+        void retrieveClusterInformation();
 };
 
 json readJsonFile(const std::string& filename);
-
-
-
-
 
 #endif

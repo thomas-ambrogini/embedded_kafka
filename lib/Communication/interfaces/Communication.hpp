@@ -6,15 +6,10 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
-
 class Communication {
     public:
-        //virtual functions
-		virtual char* comm_read()  = 0;
-		virtual bool comm_write(char *msg) = 0;
-
+		virtual int comm_read(char * buffer, const size_t size)    = 0;
+		virtual int comm_write(const char *msg, const size_t size) = 0;
 };
-
-
 
 #endif

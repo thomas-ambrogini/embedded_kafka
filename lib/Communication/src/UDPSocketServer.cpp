@@ -83,7 +83,5 @@ void UDPSocketServer::receiveMessages() {
 
         // Call the message handler callback
         messageHandler(buffer, communication);
-
-
     }
 }
