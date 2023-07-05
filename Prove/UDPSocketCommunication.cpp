@@ -11,10 +11,6 @@ UDPSocketCommunication::UDPSocketCommunication(const char *ipAddress, unsigned i
     }
 }
 
-UDPSocketCommunication::~UDPSocketCommunication()
-{
-}
-
 int UDPSocketCommunication::open()
 {
     socketfd = socket(AF_INET, SOCK_DGRAM, 0);

@@ -7,8 +7,6 @@
 class Communication
 {
 public:
-	virtual ~Communication() {}
-
 	virtual int open() = 0;
 	virtual void close() = 0;
 	virtual int write(const char *msg, const size_t size, const Destination &destination) = 0;
