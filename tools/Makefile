@@ -6,41 +6,48 @@ LDFLAGS  := -L/usr/lib -lstdc++ -lm
 
 BUILD    := ../build
 OBJ_DIR  := $(BUILD)/objects
+SRC_DIR  := ../src
+LIB_DIR  := ../lib
 APP_DIR  := $(BUILD)/apps
 TARGET   := main
 
 SERVER = socket_server.o
-BROKER = broker.o
+BROKER = ../build/objects/broker.o
 
-INCLUDE := \
-	-I${BASE_DIRECTORY}/lib/Application/interfaces \
-	-I${BASE_DIRECTORY}/lib/ExternalLibraries \
-	-I${BASE_DIRECTORY}/lib/ExternalLibraries/interfaces \
-	-I${BASE_DIRECTORY}/lib/Communication/interfaces \
-	-I${BASE_DIRECTORY}/lib/TopicManager/interfaces \
-	-I${BASE_DIRECTORY}/lib/Domain \
 
-SRC      :=                      \
-   $(wildcard ../lib/Application/src/*.cpp) \
-   $(wildcard ../lib/Communication/src/*.cpp) \
-   $(wildcard ../lib/TopicManager/src/*.cpp)  \
-   $(wildcard ../lib/ExternalLibraries/src/*.cpp)  \
+# Find all middleware header directories recursively
+LIB_INCDIRS := $(shell find $(LIB_DIR) -type d -name 'interfaces')
+# Generate include flags for each middleware header directory
+INCLUDES := $(patsubst %,-I%,$(LIB_INCDIRS))
+
+
+#Find all SRCS of the lib
+LIB_SRC := $(shell find $(LIB_DIR) -type f -name '*.cpp')
+#Make all the SRCS objects
+LIB_OBJ := $(patsubst $(LIB_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(LIB_SRC))
 
 MAIN_SRC := \
-   $(wildcard ../src/*.cpp)
+   $(wildcard $(SRC_DIR)/*.cpp)
+
+MAIN_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(MAIN_SRC))
+
 
 OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 MAIN_OBJECTS := $(MAIN_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
+print_main_objects:
+	@echo $(INCLUDES)
+
 DEPENDENCIES := \
         $(OBJECTS:.o=.d)
 
-all: build $(APP_DIR)/$(TARGET)
+all: build broker configurer producer consumer
 
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -MMD -o $@
+
 
 $(APP_DIR)/$(TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
@@ -58,9 +65,28 @@ server:
 	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/socket_server $(SERVER) $(LDFLAGS)
 
 
-broker:
-	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/broker $(BROKER) $(LDFLAGS)
+broker: $(OBJ_DIR)/broker.o $(LIB_OBJ)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/broker $^ $(LDFLAGS)
 
+configurer: $(OBJ_DIR)/configurer.o $(LIB_OBJ)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/configurer $^ $(LDFLAGS)
+
+producer: $(OBJ_DIR)/producer.o $(LIB_OBJ)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/producer $^ $(LDFLAGS)
+
+consumer: $(OBJ_DIR)/consumer.o $(LIB_OBJ)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/consumer $^ $(LDFLAGS)
+
+prova: $(OBJ_DIR)/prova.o $(LIB_OBJ)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/prova $^ $(LDFLAGS)
+
+# Rule to compile broker.cpp, server.cpp, configurer.cpp and client.cpp into object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# Rule to compile lib source files into object files
+$(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
 

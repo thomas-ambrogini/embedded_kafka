@@ -9,33 +9,30 @@
 #include "SystemManager.hpp"
 #include "ClusterMetadata.hpp"
 #include "Communication.hpp"
-#include "UDPSocketClientSupport.hpp"
+#include "CommunicationType.hpp"
 
 #include "json.hpp"
 
-using json = nlohmann::json; 
+using json = nlohmann::json;
 
-class TopicFactory {
-    private:
-        ClusterMetadata clusterMetadata;
-        std::vector<Topic *> topics;
-        
-        bool local = true;
+class TopicFactory
+{
+public:
+    TopicFactory(CommunicationType commType, const Logger &logger);
+    ~TopicFactory();
 
-        int findTopic(TopicMetadata topicMetadata);
+    Topic *getTopic(TopicMetadata topicMetadata);
 
-        void retrieveClusterInformation();
-        void createTopics();
-        
-    public:
-        TopicFactory();
-        ~TopicFactory();
+private:
+    ClusterMetadata clusterMetadata;
+    std::vector<Topic *> topics;
+    const CommunicationType communicationType;
+    const Logger &logger;
 
-        Topic * getTopic(TopicMetadata topicMetadata);
+    int findTopic(TopicMetadata topicMetadata);
 
-        void setLocal(bool local);
+    void retrieveClusterInformation();
+    void createTopics();
 };
-
-
 
 #endif

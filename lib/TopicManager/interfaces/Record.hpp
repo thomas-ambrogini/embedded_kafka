@@ -1,20 +1,18 @@
 #ifndef RECORD_H
 #define RECORD_H
 
-class Record {
-    private:
-        char*         data;
-        char*         key;
-    public:
-        Record(char * d) : data(d) {}
-        Record(char* d, char* k) : data(d), key(k) {}
+#include <string>
 
-        char* getData() {
-            return data;
-        }
-		
+class Record
+{
+public:
+    Record(const std::string data);
+
+    const std::string &getData() const;
+
+private:
+    std::string data;
+    char *key;
 };
-
-
 
 #endif

@@ -7,9 +7,9 @@
 class StandardOutputLogger : public Logger
 {
 public:
-    void log(const char *message) override;
-    void log(const char *prefix, const char *message);
-    void logError(const char *errorMessage) override;
+    // void log(const char *message) const override;
+    void log(const char *format, ...) const override;
+    void logError(const char *errorMessage) const override;
 };
 
 #endif

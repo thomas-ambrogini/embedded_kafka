@@ -4,42 +4,30 @@
 #include "ConsumerMetadata.hpp"
 #include "TopicMetadata.hpp"
 #include <vector>
-#include <functional>
 #include "TopicFactory.hpp"
 #include "Topic.hpp"
 
-//You can put the consumer on a thread at the application level if you want it asynch
+class Consumer
+{
 
-class Consumer {
+public:
+    Consumer(const CommunicationType communicationType, const Logger &logger);
 
-    using MessageCallback = std::function<void(const char *&, const TopicMetadata&)>;
+    void subscribe(TopicMetadata topicMetadata);
+    void unsubscribe(TopicMetadata topicMetadata);
 
-    private:
-        TopicFactory topicFactory;
-        ConsumerMetadata consumerMetadata;
+    char *waitForMessage(TopicMetadata topicMetadata);
 
-        std::vector<TopicMetadata> subscribedTopics;
+    std::vector<TopicMetadata> listSubscribedTopics();
 
-        MessageCallback callback;
+private:
+    ConsumerMetadata consumerMetadata;
+    std::vector<TopicMetadata> subscribedTopics;
+    const CommunicationType communicationType;
+    const Logger &logger;
+    TopicFactory topicFactory;
 
-        void askForID();
-    public:
-        Consumer();
-
-        void  subscribe(TopicMetadata topicMetadata);
-        void  subscribe(TopicMetadata topicMetadata, MessageCallback callback);
-
-        void  unsubscribe(TopicMetadata topicMetadata);
-
-        void  setCallback(MessageCallback callback);
-
-        char * waitForMessage(TopicMetadata topicMetadata);
-
-        std::vector<TopicMetadata> listSubscribedTopics();
-
-
+    void askForID();
 };
-
-
 
 #endif

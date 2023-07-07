@@ -1,61 +1,44 @@
 #include "TopicHandler.hpp"
 
-TopicHandler::TopicHandler() {
+TopicHandler::TopicHandler(const CommunicationType c, const Logger &l) : communicationType(c), logger(l)
+{
     init();
 }
 
-void TopicHandler::init() {
-    const char * topicName = "Topic1";
-    TopicMetadata topicMetadata(strdup(topicName));
-    Topic * topic = new Topic(topicMetadata);
+void TopicHandler::init()
+{
+    std::string topicName = "Topic1";
+    TopicMetadata topicMetadata(topicName);
+    Topic *topic = new Topic(topicMetadata);
     topics.push_back(topic);
 
     Callback callback(topicMetadata);
     callbacks.push_back(callback);
 }
 
-void TopicHandler::save(Record record, TopicMetadata topicMetadata, ProducerMetadata producerMetadata) {
-    int topicIndex = findTopicIndex(topicMetadata);
+void TopicHandler::save(Record record, TopicMetadata topicMetadata, ProducerMetadata producerMetadata)
+{
+    record.getData();
+    topicMetadata.getName();
+    producerMetadata.getId();
+}
 
-    if(topicIndex != -1 ) {
-        Topic * topic = topics[topicIndex];
-        topic->publish(producerMetadata, record);
+int TopicHandler::findTopicIndex(TopicMetadata topicMetadata)
+{
+    topicMetadata.getName();
+    return 1;
+}
+
+void TopicHandler::subscribe(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata, Communication *communication)
+{
+    consumerMetadata.getId();
+    topicMetadata.getName();
+    if (communication)
+    {
     }
 }
 
-
-int TopicHandler::findTopicIndex(TopicMetadata topicMetadata) {
-    for (size_t i = 0; i < topics.size(); ++i) {
-        if (strcmp(topics[i]->getTopicMetadata().getName(), topicMetadata.getName()) == 0) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-
-void TopicHandler::subscribe(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata, Communication * communication) {
-    int topicIndex = findTopicIndex(topicMetadata);
-
-    if(topicIndex != -1 ) {
-        Topic * topic = topics[topicIndex];
-        topic->subscribe(consumerMetadata);
-
-        callbacks[topicIndex].addCommunicationChannel(communication);
-    }
-}
-
-
-void TopicHandler::updateConsumers(TopicMetadata topicMetadata) {
-    int topicIndex = findTopicIndex(topicMetadata);
-
-    if(topicIndex != -1 ) {
-        Topic * topic = topics[topicIndex];
-        Callback callback = callbacks[topicIndex];
-        
-        for (Communication * comm : callback.getChannels()) {
-            comm->comm_write(topic->getLastRecord());
-        }
-    }
+void TopicHandler::updateConsumers(TopicMetadata topicMetadata)
+{
+    topicMetadata.getName();
 }

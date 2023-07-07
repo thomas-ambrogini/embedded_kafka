@@ -7,52 +7,37 @@
 #include "LocalOffset.hpp"
 #include "BrokerMetadata.hpp"
 #include "Communication.hpp"
-#include "UDPSocketClientSupport.hpp"
-
+#include "TopicMetadata.hpp"
+#include "CommunicationFactory.hpp"
+#include "CommunicationType.hpp"
+#include "EndpointFactory.hpp"
+#include "Endpoint.hpp"
 #include "json.hpp"
 
-using json = nlohmann::json; 
+using json = nlohmann::json;
 
-class TopicProxy : public Topic {
-    private:
-        BrokerMetadata brokerMetadata;
-        Communication * communication;
+class TopicProxy : public Topic
+{
+public:
+    TopicProxy(CommunicationType communicationType, TopicMetadata topicMetadata, const Logger &logger);
 
-        char ** dataBuffer = new char * [10];
-        int bufferIndex = 0;
-        std::vector<LocalOffset> offsets;
+    ~TopicProxy();
 
+    void publish(ProducerMetadata producerMetadata, Record record) override;
+    void subscribe(ConsumerMetadata consumerMetadata) override;
+    void unsubscribe(ConsumerMetadata consumerMetadata) override;
+    // char*  poll(ConsumerMetadata consumerMetadata) override;
 
-        int findConsumer(int consumerId);
+    void setBrokerMetadata(BrokerMetadata b);
+    BrokerMetadata getBrokerMetadata() const;
 
-    public:
+private:
+    const CommunicationType communicationType;
+    const Logger &logger;
+    BrokerMetadata brokerMetadata;
+    Communication *communication;
 
-        void   publish(ProducerMetadata producerMetadata, Record record) override;
-        void   subscribe(ConsumerMetadata consumerMetadata) override;
-        void   unsubscribe(ConsumerMetadata consumerMetadata) override;
-        //char*  poll(ConsumerMetadata consumerMetadata) override;
-
-        char * waitForMessage() {
-            return communication->comm_read();
-        }
-
-        ~TopicProxy()  override {
-            std::cout << "TopicProxy destructor called." << std::endl;
-        }
-
-        TopicProxy(TopicMetadata t) : Topic(t), brokerMetadata(new LinuxMetadata(1235)) {
-            topicMetadata = t;
-            communication = UDPSocketClientSupport::connect("127.0.0.1", ((LinuxMetadata *)brokerMetadata.getPlatformMetadata())->getPort());
-        }
-
-        void setBrokerMetadata(BrokerMetadata b) {
-            brokerMetadata = b;
-        }
-
-        BrokerMetadata getBrokerMetadata() {
-            return brokerMetadata;
-        }
-
+    int findConsumer(int consumerId);
 };
 
 #endif

@@ -2,17 +2,27 @@
 #define BROKER_H
 
 #include "BrokerMetadata.hpp"
-#include "TopicHandler.hpp"
+#include "Endpoint.hpp"
+#include "CommunicationType.hpp"
+#include "CommunicationFactory.hpp"
+#include "EndpointFactory.hpp"
+#include "ProducerMetadata.hpp"
 
-class Broker {
-    protected:
-        BrokerMetadata brokerMetadata;
-        TopicHandler topicHandler;
+class Broker
+{
+public:
+    Broker(enum CommunicationType commType, const Endpoint &endpoint, const Logger &logger);
+    ~Broker();
 
-    public:
-        virtual void start() = 0;
+    void start();
+
+private:
+    BrokerMetadata brokerMetadata;
+    Communication *communication;
+    const CommunicationType communicationType;
+    const Logger &logger;
+
+    void handleOperation(const char *request);
 };
-
-
 
 #endif

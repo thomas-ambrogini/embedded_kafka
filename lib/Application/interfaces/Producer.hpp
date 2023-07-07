@@ -4,19 +4,24 @@
 #include "ProducerRecord.hpp"
 #include "TopicFactory.hpp"
 #include "ProducerMetadata.hpp"
+#include "Logger.hpp"
+#include "CommunicationType.hpp"
 
-class Producer {
-    private:
-        TopicFactory topicFactory;
-        ProducerMetadata producerMetadata;
+class Producer
+{
+public:
+    Producer(const CommunicationType communicationType, const Logger &logger);
 
-        void askForID();
-    public:
-        Producer();
+    void publish(ProducerRecord producerRecord);
 
-        void publish(ProducerRecord producerRecord);
+private:
+    ProducerMetadata producerMetadata;
+    const CommunicationType communicationType;
+    const Logger &logger;
+
+    TopicFactory topicFactory;
+
+    void askForID();
 };
-
-
 
 #endif

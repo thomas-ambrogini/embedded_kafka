@@ -4,26 +4,17 @@
 #include "Record.hpp"
 #include "TopicMetadata.hpp"
 
-class ProducerRecord {
-    private:
-        TopicMetadata topicMetadata;
-        Record record;
+class ProducerRecord
+{
+public:
+    ProducerRecord(TopicMetadata topicMetadata, Record record);
 
-    public:
-        ProducerRecord(TopicMetadata t, Record r) : topicMetadata(t), record(r) {}
+    TopicMetadata getTopicMetadata() const;
+    Record getRecord() const;
 
-
-        TopicMetadata getTopicMetadata() {
-            return topicMetadata;
-        }
-
-        Record getRecord() {
-            return record;
-        }
-
-		
+private:
+    TopicMetadata topicMetadata;
+    Record record;
 };
-
-
 
 #endif

@@ -2,35 +2,29 @@
 #define SYSTEMMANAGER_H
 
 #include "BrokerMetadata.hpp"
+#include "CommunicationFactory.hpp"
 #include "ClusterMetadata.hpp"
 #include "Communication.hpp"
-#include "UDPSocketClientSupport.hpp"
+#include "CommunicationType.hpp"
+#include "EndpointFactory.hpp"
 #include "json.hpp"
 
-using json = nlohmann::json; 
+using json = nlohmann::json;
 
+class SystemManager
+{
+public:
+    SystemManager(const CommunicationType commType, const Logger &l);
 
-class SystemManager {
-    private:
-        BrokerMetadata bootstrapBroker;
-        ClusterMetadata clusterMetadata;
+    ClusterMetadata getClusterMetadata() const;
 
-        void init();
+private:
+    BrokerMetadata bootstrapBroker;
+    ClusterMetadata clusterMetadata;
+    const Logger &logger;
+    const CommunicationType communicationType;
 
-    public:
-
-        SystemManager();
-
-        // SystemManager() : bootrapBroker(A53_0, 12) {
-        //     init();
-        // }
-
-        ClusterMetadata getClusterMetadata() {
-            return clusterMetadata;
-        }
-		
+    void init();
 };
-
-
 
 #endif

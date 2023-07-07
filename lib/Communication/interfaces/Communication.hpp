@@ -2,17 +2,21 @@
 #define COMMUNICATION_H
 
 #include <cstddef>
-#include "Destination.hpp"
+#include "Endpoint.hpp"
+#include "Logger.hpp"
 
 class Communication
 {
 public:
+	Communication(const Logger &l) : logger(l) {}
+
 	virtual ~Communication() {}
 
-	virtual int open() = 0;
-	virtual void close() = 0;
-	virtual int write(const char *msg, const size_t size, const Destination &destination) = 0;
-	virtual int read(char *buffer, const size_t size, Destination &source) = 0;
+	virtual int write(const char *msg, const size_t size, const Endpoint &destination) = 0;
+	virtual int read(char *buffer, const size_t size, Endpoint &source) = 0;
+
+protected:
+	const Logger &logger;
 };
 
 #endif

@@ -1,76 +1,79 @@
 #include "Configurer.hpp"
 
-void Configurer::start() {
-
-    retrieveClusterInformation();
-
-    UDPSocketServer * server = new UDPSocketServer(serverPort);
-
-    server->startListening([this](const char* message, Communication* communication) {
-        // Custom logic to handle the received message
-        // std::cout << "Received message: " << message << " from "
-        //           << inet_ntoa(clientAddress.sin_addr) << ":"
-        //           << ntohs(clientAddress.sin_port) << std::endl;
-
-        // Add your custom processing or actions here
-
-        // Deserialize the request message from the string
-        nlohmann::json deserializedRequest = nlohmann::json::parse(message);
-
-        // Extract the fields from the deserialized request
-        std::string operation = deserializedRequest["operation"];
-
-        std::cout << "Operation: " << operation << std::endl;
-
-        json j = clusterMetadata;
-        communication->comm_write(strdup(j.dump().c_str()));
-    });
-
+Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : communicationType(commType), logger(l)
+{
+    communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
+    start();
 }
 
+Configurer::~Configurer()
+{
+    delete communication;
+}
 
-void Configurer::retrieveClusterInformation() {
-    json jsonData = readJsonFile(configFile);
+void Configurer::start()
+{
+    retrieveClusterInformation();
 
-    if (!jsonData.empty()) {
-        // JSON file read successfully
-        // Perform operations on jsonData
-
-        for (const auto& entry : jsonData["brokers"]) {
-            int port = entry["port"];
-            LinuxMetadata * platformMetadata = new LinuxMetadata(port);
-            //LinuxMetadata* linMet = static_cast<LinuxMetadata*>(platformMetadata);
-
-            BrokerMetadata brokerMetadata(platformMetadata);
-            
-            for (const auto& topicEntry : entry["topics"]) {
-                std::string topicNameString = topicEntry["name"];
-                TopicMetadata topicMetadata(strdup(topicNameString.c_str()));
-                brokerMetadata.addTopicMetadata(topicMetadata);
-            }
-
-            clusterMetadata.addBrokerMetadata(brokerMetadata);
+    while (true)
+    {
+        char clientBuffer[1024];
+        Endpoint *clientSource = EndpointFactory::createEndpoint(communicationType);
+        if (communication->read(clientBuffer, sizeof(clientBuffer), *clientSource) < 0)
+        {
+            logger.logError("Failed to receive message from client");
+            break;
         }
+        logger.log("Request received from the client: %s", clientBuffer);
 
+        nlohmann::json deserializedRequest = nlohmann::json::parse(clientBuffer);
+        std::string operation = deserializedRequest["operation"];
 
-    } else {
-        std::cout << "The file was empty or not found" <<std::endl;
+        logger.log("Operation Received: %s", operation.c_str());
+
+        json clusterJson;
+        clusterMetadata.to_json(clusterJson);
+
+        logger.log("Information which are sent: %s with size %d", clusterJson.dump().c_str(), clusterJson.dump().size());
+
+        communication->write(clusterJson.dump().c_str(), clusterJson.dump().size() + 1, *clientSource);
+        logger.log("Sent back the response");
+
+        delete clientSource;
     }
 }
 
+void Configurer::retrieveClusterInformation()
+{
+    json jsonData = readJsonFile(configFile);
 
-json readJsonFile(const std::string& filename) {
+    if (!jsonData.empty())
+    {
+        clusterMetadata.from_json(jsonData);
+    }
+    else
+    {
+        logger.logError("The config JSON file was empty or not found");
+    }
+}
+
+json Configurer::readJsonFile(const std::string &filename)
+{
     std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
+    if (!file.is_open())
+    {
+        logger.logError("Failed to open the config file");
         return json();
     }
 
     json jsonData;
-    try {
+    try
+    {
         file >> jsonData;
-    } catch (const json::exception& e) {
-        std::cerr << "Failed to parse JSON file: " << e.what() << std::endl;
+    }
+    catch (const json::exception &e)
+    {
+        logger.logError("Failed to parse JSON file");
         return json();
     }
 

@@ -1,24 +1,21 @@
-#include "BrokerLinux.hpp"
-#include <iostream>
+#include "Broker.hpp"
+#include "StandardOutputLogger.hpp"
 
- int main(int argc, char* argv[]) {
-    if(argc != 2) {
-        return -1;
+int main(int argc, char *argv[])
+{
+    int brokerPort = 1234;
+
+    if (argc == 2)
+    {
+        brokerPort = atoi(argv[1]);
     }
 
-    int brokerPort = atoi(argv[1]);
+    StandardOutputLogger logger;
+    UDPEndpoint endpoint("127.0.0.1", brokerPort);
 
-    std::cout << "The broker will be on port: " << brokerPort << std::endl;
-    
-    //BROKER
-    BrokerMetadata brokerMetadata(new LinuxMetadata(1235));
-    BrokerLinux broker(brokerMetadata);
+    Broker broker(CommunicationType::UDP, endpoint, logger);
 
-    while(true) {
-
-    }
-
+    broker.start();
 
     return 0;
-
 }
