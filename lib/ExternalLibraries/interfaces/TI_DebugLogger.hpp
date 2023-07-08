@@ -1,10 +1,9 @@
-#ifndef STANDARD_OUTPUT_LOGGER_H
-#define STANDARD_OUTPUT_LOGGER_H
+#ifndef TI_DEBUG_LOGGER_H
+#define TI_DEBUG_LOGGER_H
 
 #include "Logger.hpp"
-#include <iostream>
 
-class StandardOutputLogger : public Logger
+class TI_DebugLogger : public Logger
 {
 public:
     void log(const char *format, ...) const override;

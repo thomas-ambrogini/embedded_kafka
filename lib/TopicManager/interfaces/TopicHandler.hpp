@@ -4,26 +4,30 @@
 #include "Record.hpp"
 #include "TopicMetadata.hpp"
 #include "ProducerMetadata.hpp"
-#include "Topic.hpp"
+#include "RealTopic.hpp"
 #include "Communication.hpp"
-#include "Callback.hpp"
 #include "CommunicationType.hpp"
 #include "Logger.hpp"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class TopicHandler
 {
 public:
-    TopicHandler(const CommunicationType communicationType, const Logger &logger);
+    TopicHandler(const CommunicationType communicationType, const Logger &logger, Communication *communication);
+    ~TopicHandler();
 
     void save(Record record, TopicMetadata topicMetadata, ProducerMetadata producerMetadata);
-    void subscribe(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata, Communication *communication);
-    void updateConsumers(TopicMetadata topicMetadata);
+    void subscribe(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata);
+    void unsubscribe(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata);
+    void poll(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata);
 
 private:
-    std::vector<Topic *> topics;
-    std::vector<Callback> callbacks;
+    std::vector<RealTopic> topics;
     const CommunicationType communicationType;
     const Logger &logger;
+    Communication *communication;
 
     void init();
     int findTopicIndex(TopicMetadata topicMetadata);

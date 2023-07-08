@@ -1,6 +1,8 @@
 #ifndef CONSUMERMETADATA_H
 #define CONSUMERMETADATA_H
 
+#include "Endpoint.hpp"
+#include "UDPEndpoint.hpp"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -8,37 +10,25 @@ using json = nlohmann::json;
 class ConsumerMetadata
 {
 public:
-    ConsumerMetadata() {}
+    ConsumerMetadata();
+    ConsumerMetadata(int id, Endpoint *endpoint);
 
-    ConsumerMetadata(int value) : id(value) {}
+    int getId() const;
 
-    int getId()
-    {
-        return id;
-    }
+    void setEndpoint(Endpoint *endpoint);
+    Endpoint *getEndpoint() const;
 
-    void setId(int i)
-    {
-        id = i;
-    }
+    bool operator<(const ConsumerMetadata &other) const;
+    bool operator==(const ConsumerMetadata &other) const;
 
-    void to_json(json &j) const
-    {
-        j = json{{"id", id}};
-    }
-
-    void from_json(const json &j)
-    {
-        id = j.at("id").get<int>();
-    }
+    void to_json(json &j) const;
+    void from_json(const json &j);
 
 private:
     int id;
+    Endpoint *endpoint;
 };
 
-inline void to_json(nlohmann::json &j, const ConsumerMetadata &consumerMetadata)
-{
-    consumerMetadata.to_json(j);
-}
+void to_json(nlohmann::json &j, const ConsumerMetadata &consumerMetadata);
 
 #endif

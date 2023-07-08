@@ -1,3 +1,6 @@
+#ifndef PROCESSORS_H
+#define PROCESSORS_H
+
 enum Processor
 {
     M4,
@@ -8,3 +11,5 @@ enum Processor
     R5_1_0,
     R5_1_1
 };
+
+#endif

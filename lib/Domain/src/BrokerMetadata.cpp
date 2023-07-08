@@ -1,5 +1,4 @@
 #include "BrokerMetadata.hpp"
-#include <iostream>
 
 BrokerMetadata::BrokerMetadata()
 {
@@ -12,8 +11,6 @@ BrokerMetadata::BrokerMetadata(Endpoint *ep) : endpoint(ep)
 void BrokerMetadata::to_json(json &j) const
 {
     j = json{{"topics", topicsMetadata}};
-
-    std::cout << "arrivo qua" << std::endl;
 
     json polymorphicJson;
     endpoint->to_json(polymorphicJson);

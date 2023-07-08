@@ -29,7 +29,7 @@ private:
     const Logger &logger;
     Communication *communication;
 
-    const std::string configFile = "configFile.json";
+    const std::string configFile = "../conf/configFile.json";
 
     void start();
     void retrieveClusterInformation();

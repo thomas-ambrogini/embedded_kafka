@@ -1,6 +1,12 @@
 #include "TopicProxy.hpp"
 
-TopicProxy::TopicProxy(const CommunicationType type, TopicMetadata t, const Logger &l) : Topic(t), communicationType(type), logger(l), brokerMetadata(new UDPEndpoint(1235))
+TopicProxy::TopicProxy(const CommunicationType type, TopicMetadata t, const Logger &l) : Topic(t, l), communicationType(type), brokerMetadata(new UDPEndpoint(1235))
+{
+    Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
+    communication = CommunicationFactory::createCommunication(communicationType, *sourceEndpoint, logger);
+}
+
+TopicProxy::TopicProxy(CommunicationType type, BrokerMetadata bm, TopicMetadata t, const Logger &l) : Topic(t, l), communicationType(type), brokerMetadata(bm)
 {
     Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
     communication = CommunicationFactory::createCommunication(communicationType, *sourceEndpoint, logger);
@@ -8,7 +14,7 @@ TopicProxy::TopicProxy(const CommunicationType type, TopicMetadata t, const Logg
 
 TopicProxy::~TopicProxy()
 {
-    std::cout << "TopicProxy destructor called." << std::endl;
+    logger.log("[Topic Proxy] TopicProxy destructor called");
 }
 
 void TopicProxy::publish(ProducerMetadata producerMetadata, Record record)
@@ -20,7 +26,7 @@ void TopicProxy::publish(ProducerMetadata producerMetadata, Record record)
     request["record"] = record.getData();
 
     std::string requestString = request.dump();
-    logger.log("Sending the following message: %s", requestString.c_str());
+    logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
 
     communication->write(requestString.c_str(), requestString.size() + 1, *brokerMetadata.getEndpoint());
 }
@@ -33,7 +39,7 @@ void TopicProxy::subscribe(ConsumerMetadata consumerMetadata)
     request["topicMetadata"] = topicMetadata;
 
     std::string requestString = request.dump();
-    logger.log("Sending the following message: %s", requestString);
+    logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
 
     communication->write(requestString.c_str(), requestString.size() + 1, *brokerMetadata.getEndpoint());
 }
@@ -46,17 +52,35 @@ void TopicProxy::unsubscribe(ConsumerMetadata consumerMetadata)
     request["topicMetadata"] = topicMetadata;
 
     std::string requestString = request.dump();
-    logger.log("Sending the following message: %s", requestString);
+    logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
 
     communication->write(requestString.c_str(), requestString.size() + 1, *brokerMetadata.getEndpoint());
 }
 
-void TopicProxy::setBrokerMetadata(BrokerMetadata b)
+Record TopicProxy::poll(ConsumerMetadata consumerMetadata)
 {
-    brokerMetadata = b;
-}
+    json request;
+    request["operation"] = "poll";
+    request["consumerMetadata"] = consumerMetadata;
+    request["topicMetadata"] = topicMetadata;
 
-BrokerMetadata TopicProxy::getBrokerMetadata() const
-{
-    return brokerMetadata;
+    std::string requestString = request.dump();
+    logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
+
+    communication->write(requestString.c_str(), requestString.size() + 1, *brokerMetadata.getEndpoint());
+
+    char response[1024];
+
+    if (communication->read(response, sizeof(response), *brokerMetadata.getEndpoint()) < 0)
+    {
+        logger.logError("[Topic Proxy] Failed to receive message from client");
+    }
+
+    logger.log("[Topic Proxy] Response received from the broker: %s", response);
+
+    nlohmann::json deserializedResponse = nlohmann::json::parse(response);
+    Record record;
+    record.from_json(deserializedResponse);
+
+    return record;
 }

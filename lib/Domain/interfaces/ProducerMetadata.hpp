@@ -3,39 +3,23 @@
 
 #include "json.hpp"
 
-using json = nlohmann::json; 
+using json = nlohmann::json;
 
-class ProducerMetadata {
-    private:
-        int id;
-    public:
+class ProducerMetadata
+{
+private:
+    int id;
 
-        ProducerMetadata() {}
+public:
+    ProducerMetadata();
+    ProducerMetadata(int value);
 
-        ProducerMetadata(int value) : id(value) {}
+    int getId() const;
 
-        int getId() {
-            return id;
-        }
-
-        void setId(int i) {
-            id = i;
-        }
-
-        void to_json(json& j) const {
-            j = json{{"id", id}};
-        }
-
-        void from_json(const json& j) {
-            id = j.at("id").get<int>();
-        }
+    void to_json(json &j) const;
+    void from_json(const json &j);
 };
 
-inline void to_json(nlohmann::json& j, const ProducerMetadata& producerMetadata) {
-    producerMetadata.to_json(j);
-}
-
-
-
+void to_json(nlohmann::json &j, const ProducerMetadata &producerMetadata);
 
 #endif

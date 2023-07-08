@@ -9,14 +9,12 @@
 
 class Consumer
 {
-
 public:
     Consumer(const CommunicationType communicationType, const Logger &logger);
 
     void subscribe(TopicMetadata topicMetadata);
     void unsubscribe(TopicMetadata topicMetadata);
-
-    char *waitForMessage(TopicMetadata topicMetadata);
+    Record poll(TopicMetadata topicMetadata);
 
     std::vector<TopicMetadata> listSubscribedTopics();
 

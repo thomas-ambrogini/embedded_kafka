@@ -23,8 +23,7 @@ void TopicFactory::createTopics()
 
         for (TopicMetadata topicMetadata : brokerMetadata.getTopicsMetadata())
         {
-            TopicProxy *topicProxy = new TopicProxy(communicationType, topicMetadata, logger);
-            topicProxy->setBrokerMetadata(brokerMetadata);
+            TopicProxy *topicProxy = new TopicProxy(communicationType, brokerMetadata, topicMetadata, logger);
             logger.log("%s", topicProxy->getTopicMetadata().getName().c_str());
             topics.push_back(topicProxy);
         }
@@ -38,7 +37,6 @@ TopicFactory::~TopicFactory()
 Topic *TopicFactory::getTopic(TopicMetadata topicMetadata)
 {
     int topicIndex = findTopic(topicMetadata);
-    logger.log("Index of the topic you are looking for: %d", topicIndex);
     if (topicIndex != -1)
         return topics[topicIndex];
     else
@@ -49,8 +47,6 @@ int TopicFactory::findTopic(TopicMetadata topicMetadata)
 {
     for (size_t i = 0; i < topics.size(); i++)
     {
-        logger.log("[Find Topic] Comparing: %s and %s", topics[i]->getTopicMetadata().getName().c_str(), topicMetadata.getName().c_str());
-
         if (topics[i]->getTopicMetadata().getName() == topicMetadata.getName())
         {
             return i;

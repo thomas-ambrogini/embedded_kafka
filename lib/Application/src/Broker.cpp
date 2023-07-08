@@ -1,9 +1,8 @@
 #include "Broker.hpp"
 
-Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : communicationType(commType), logger(l)
+Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : communicationType(commType), logger(l), communication(CommunicationFactory::createCommunication(commType, endpoint, logger)), topicHandler(communicationType, logger, communication)
 {
-    communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
-    logger.log("The broker created the communication");
+    logger.log("[Broker] The broker created the communication");
 }
 
 Broker::~Broker()
@@ -15,29 +14,28 @@ void Broker::start()
 {
     while (true)
     {
-        char clientBuffer[1024];
+        char clientRequest[1024];
 
-        Endpoint *clientSource = EndpointFactory::createEndpoint(communicationType);
-        if (communication->read(clientBuffer, sizeof(clientBuffer), *clientSource) < 0)
+        Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
+        if (communication->read(clientRequest, sizeof(clientRequest), *sourceEndpoint) < 0)
         {
-            logger.logError("Failed to receive message from client");
+            logger.logError("[Broker] Failed to receive message from client");
             break;
         }
 
-        handleOperation(clientBuffer);
+        logger.log("[Broker] Request received from the client: %s", clientRequest);
+        sourceEndpoint->printEndpointInformation(logger);
 
-        logger.log("Request received from the client: %s", clientBuffer);
-        clientSource->printEndpointInformation(logger);
+        handleOperation(clientRequest, sourceEndpoint);
     }
 }
 
-void Broker::handleOperation(const char *request)
+void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 {
-    // Deserialize the request message from the string
     nlohmann::json deserializedRequest = nlohmann::json::parse(request);
-
-    // Extract the fields from the deserialized request
     std::string operation = deserializedRequest["operation"];
+
+    logger.log("[Broker] Operation to do: %s", operation.c_str());
 
     if (operation == "publish")
     {
@@ -46,18 +44,36 @@ void Broker::handleOperation(const char *request)
         producerMetadata.from_json(jsonProducerMetadata);
 
         std::string data = deserializedRequest["record"];
-        Record record(strdup(data.c_str()));
+        Record record(data);
 
         json jsonTopicMetadata = deserializedRequest["topicMetadata"];
         TopicMetadata topicMetadata;
         topicMetadata.from_json(jsonTopicMetadata);
 
-        std::cout << "The producer with ID: " << producerMetadata.getId() << " sent the following record: " << data << " to be published on the topic: " << topicMetadata.getName() << std::endl;
+        logger.log("[Broker] The producer with ID: %d, sent the following record: %s to be published on the topic: %s", producerMetadata.getId(), record.getData().c_str(), topicMetadata.getName().c_str());
 
         topicHandler.save(record, topicMetadata, producerMetadata);
-        topicHandler.updateConsumers(topicMetadata);
+        // topicHandler.updateConsumers(topicMetadata);
     }
     else if (operation == "subscribe")
+    {
+        json jsonConsumerMetadata = deserializedRequest["consumerMetadata"];
+        ConsumerMetadata consumerMetadata;
+        consumerMetadata.from_json(jsonConsumerMetadata);
+        if (consumerMetadata.getEndpoint() == nullptr)
+        {
+            consumerMetadata.setEndpoint(sourceEndpoint);
+        }
+
+        json jsonTopicMetadata = deserializedRequest["topicMetadata"];
+        TopicMetadata topicMetadata;
+        topicMetadata.from_json(jsonTopicMetadata);
+
+        logger.log("[Broker] The consumer with ID: %d wants to subscribe on the topic: %s", consumerMetadata.getId(), topicMetadata.getName().c_str());
+
+        topicHandler.subscribe(consumerMetadata, topicMetadata);
+    }
+    else if (operation == "unsubscribe")
     {
         json jsonConsumerMetadata = deserializedRequest["consumerMetadata"];
         ConsumerMetadata consumerMetadata;
@@ -67,11 +83,26 @@ void Broker::handleOperation(const char *request)
         TopicMetadata topicMetadata;
         topicMetadata.from_json(jsonTopicMetadata);
 
-        std::cout << "The consumer with ID: " << consumerMetadata.getId() << " wants to subscribe on the topic: " << topicMetadata.getName() << std::endl;
+        logger.log("[Broker] The consumer with ID: %d wants to unsubscribe from the topic: %s", consumerMetadata.getId(), topicMetadata.getName().c_str());
 
-        topicHandler.subscribe(consumerMetadata, topicMetadata, communication);
+        topicHandler.unsubscribe(consumerMetadata, topicMetadata);
     }
-    else if (operation == "unsubscribe")
+    else if (operation == "poll")
     {
+        json jsonConsumerMetadata = deserializedRequest["consumerMetadata"];
+        ConsumerMetadata consumerMetadata;
+        consumerMetadata.from_json(jsonConsumerMetadata);
+        if (consumerMetadata.getEndpoint() == nullptr)
+        {
+            consumerMetadata.setEndpoint(sourceEndpoint);
+        }
+
+        json jsonTopicMetadata = deserializedRequest["topicMetadata"];
+        TopicMetadata topicMetadata;
+        topicMetadata.from_json(jsonTopicMetadata);
+
+        logger.log("[Broker] The consumer with ID: %d wants to unsubscribe from the topic: %s", consumerMetadata.getId(), topicMetadata.getName().c_str());
+
+        topicHandler.poll(consumerMetadata, topicMetadata);
     }
 }

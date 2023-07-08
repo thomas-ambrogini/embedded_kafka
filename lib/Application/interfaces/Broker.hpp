@@ -7,6 +7,9 @@
 #include "CommunicationFactory.hpp"
 #include "EndpointFactory.hpp"
 #include "ProducerMetadata.hpp"
+#include "Record.hpp"
+#include "ConsumerMetadata.hpp"
+#include "TopicHandler.hpp"
 
 class Broker
 {
@@ -18,11 +21,12 @@ public:
 
 private:
     BrokerMetadata brokerMetadata;
-    Communication *communication;
     const CommunicationType communicationType;
     const Logger &logger;
+    Communication *communication;
+    TopicHandler topicHandler;
 
-    void handleOperation(const char *request);
+    void handleOperation(const char *request, Endpoint *sourceEndpoint);
 };
 
 #endif
