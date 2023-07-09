@@ -4,6 +4,7 @@
 #define TI_DEBUG_LOGGER_H
 
 #include "Logger.hpp"
+#include <kernel/dpl/DebugP.h>
 
 class TI_DebugLogger : public Logger
 {
