@@ -2,6 +2,7 @@
 
 Producer::Producer(const CommunicationType c, const Logger &l) : communicationType(c), logger(l), topicFactory(c, logger)
 {
+    communicationType;
     askForID();
 }
 

@@ -2,6 +2,7 @@
 
 Consumer::Consumer(const CommunicationType commType, const Logger &l) : communicationType(commType), logger(l), topicFactory(communicationType, logger)
 {
+    communicationType;
     askForID();
 }
 
