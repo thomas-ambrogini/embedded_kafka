@@ -4,7 +4,7 @@ RPMessageEndpoint::RPMessageEndpoint() : coreId(-1), serviceEndpoint(-1)
 {
 }
 
-RPMessageEndpoint::RPMessageEndpoint(uint32_t c, u_int16_t e) : coreId(c), serviceEndpoint(e)
+RPMessageEndpoint::RPMessageEndpoint(uint32_t c, uint16_t e) : coreId(c), serviceEndpoint(e)
 {
 }
 
