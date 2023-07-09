@@ -16,7 +16,6 @@ public:
 
 private:
     ProducerMetadata producerMetadata;
-    const CommunicationType communicationType;
     const Logger &logger;
 
     TopicFactory topicFactory;

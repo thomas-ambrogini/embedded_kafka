@@ -1,8 +1,7 @@
 #include "Producer.hpp"
 
-Producer::Producer(const CommunicationType c, const Logger &l) : communicationType(c), logger(l), topicFactory(c, logger)
+Producer::Producer(const CommunicationType c, const Logger &l) : logger(l), topicFactory(c, logger)
 {
-    communicationType;
     askForID();
 }
 

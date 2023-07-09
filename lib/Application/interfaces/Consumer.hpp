@@ -21,7 +21,6 @@ public:
 private:
     ConsumerMetadata consumerMetadata;
     std::vector<TopicMetadata> subscribedTopics;
-    const CommunicationType communicationType;
     const Logger &logger;
     TopicFactory topicFactory;
 

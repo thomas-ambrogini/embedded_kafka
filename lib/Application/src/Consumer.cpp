@@ -1,8 +1,7 @@
 #include "Consumer.hpp"
 
-Consumer::Consumer(const CommunicationType commType, const Logger &l) : communicationType(commType), logger(l), topicFactory(communicationType, logger)
+Consumer::Consumer(const CommunicationType commType, const Logger &l) : logger(l), topicFactory(commType, logger)
 {
-    communicationType;
     askForID();
 }
 
