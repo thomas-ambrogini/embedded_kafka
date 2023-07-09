@@ -2,6 +2,7 @@
 
 TopicHandler::TopicHandler(const CommunicationType commType, const Logger &l, Communication *comm) : communicationType(commType), logger(l), communication(comm)
 {
+    logger.log("Communicatin Type: %d", communicationType);
     init();
 }
 

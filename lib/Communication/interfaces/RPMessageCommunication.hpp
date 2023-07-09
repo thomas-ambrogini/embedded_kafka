@@ -1,3 +1,5 @@
+#ifdef __TI_ARM__
+
 #ifndef RPMESSAGE_COMMUNICATION_H
 #define RPMESSAGE_COMMUNICATION_H
 
@@ -27,4 +29,5 @@ private:
     const RPMessageEndpoint endpoint;
 };
 
+#endif
 #endif

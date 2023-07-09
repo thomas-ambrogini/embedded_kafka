@@ -1,3 +1,5 @@
+#ifdef __unix__
+
 #ifndef UDPSOCKET_COMMUNICATION_H
 #define UDPSOCKET_COMMUNICATION_H
 
@@ -28,5 +30,7 @@ private:
 
     void open();
 };
+
+#endif
 
 #endif
