@@ -1,9 +1,9 @@
-#ifdef __TI_ARM__
-
 #include "TI_DebugLogger.hpp"
 
 void TI_DebugLogger::log(const char *format, ...) const
 {
+#ifdef __TI_ARM__
+
     va_list args;
     va_start(args, format);
 
@@ -14,11 +14,15 @@ void TI_DebugLogger::log(const char *format, ...) const
     va_end(args);
 
     DebugP_log(buffer);
+
+#endif
 }
 
 void TI_DebugLogger::logError(const char *errorMessage) const
 {
+#ifdef __TI_ARM__
+
     DebugP_log("%s \r\n", errorMessage);
-}
 
 #endif
+}
