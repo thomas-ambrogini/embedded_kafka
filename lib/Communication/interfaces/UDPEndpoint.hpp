@@ -16,7 +16,7 @@ public:
 
     ~UDPEndpoint() override;
 
-    void printEndpointInformation(const Logger &logger);
+    void printEndpointInformation(const Logger &logger) override;
 
     void to_json(json &j) const override;
     void from_json(const json &j) override;

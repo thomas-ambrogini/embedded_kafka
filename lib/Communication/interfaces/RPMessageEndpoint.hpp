@@ -11,23 +11,23 @@ class RPMessageEndpoint : public Endpoint
 {
 public:
     RPMessageEndpoint();
-    RPMessageEndpoint(const Processor processor, u_int16_t endpoint);
+    RPMessageEndpoint(uint32_t coreId, u_int16_t endpoint);
 
     ~RPMessageEndpoint() override;
 
-    void printEndpointInformation(const Logger &logger);
+    void printEndpointInformation(const Logger &logger) override;
 
     void to_json(json &j) const override;
     void from_json(const json &j) override;
 
-    void setIpAddress(const char *ip);
-    void setPort(unsigned int port);
-    const char *getIpAddress() const;
-    unsigned int getPort() const;
+    void setCoreId(uint32_t coreId);
+    void setServiceEndpoint(uint16_t serviceEndpoint);
+    uint32_t getCoreId() const;
+    uint16_t getServiceEndpoint() const;
 
 private:
-    Processor processor;
-    u_int16_t endpoint;
+    uint32_t coreId;
+    uint16_t serviceEndpoint;
 };
 
 #endif
