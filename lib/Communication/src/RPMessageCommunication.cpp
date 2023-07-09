@@ -1,3 +1,5 @@
+#ifdef __TI_ARM__
+
 #include "RPMessageCommunication.hpp"
 
 RPMessageCommunication::RPMessageCommunication(const RPMessageEndpoint &ep, const Logger &l) : : Communication(l), endpoint(ep)
@@ -72,3 +74,5 @@ int RPMessageCommunication::write(const char *message, size_t messageSize, const
 
     return 1;
 }
+
+#endif

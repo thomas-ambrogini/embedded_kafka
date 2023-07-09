@@ -1,3 +1,5 @@
+#ifdef __unix__
+
 #include "UDPSocketCommunication.hpp"
 
 UDPSocketCommunication::UDPSocketCommunication(const UDPEndpoint &ep, const Logger &l) : Communication(l), endpoint(ep)
@@ -110,3 +112,5 @@ int UDPSocketCommunication::write(const char *message, size_t messageSize, const
 
     return sentBytes;
 }
+
+#endif
