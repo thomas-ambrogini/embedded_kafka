@@ -1,4 +1,4 @@
-#ifdef __TI_ARM__
+#ifdef SOC_AM64X
 
 #include "RPMessageCommunication.hpp"
 

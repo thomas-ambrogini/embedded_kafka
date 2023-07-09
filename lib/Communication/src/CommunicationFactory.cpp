@@ -11,7 +11,7 @@ Communication *CommunicationFactory::createCommunication(CommunicationType commT
         break;
 
     case RPMessage:
-#ifdef __TI_ARM__
+#ifdef SOC_AM64X
         return new RPMessageCommunication(dynamic_cast<const RPMessageEndpoint &>(endpoint), logger);
 #endif
         break;

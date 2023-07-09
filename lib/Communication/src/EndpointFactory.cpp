@@ -11,7 +11,7 @@ Endpoint *EndpointFactory::createEndpoint(CommunicationType commType)
         break;
 
     case RPMessage:
-#ifdef __TI_ARM__
+#ifdef SOC_AM64X
         return new RPMessageEndpoint();
 #endif
         break;

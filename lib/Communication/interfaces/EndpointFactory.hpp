@@ -10,7 +10,7 @@
 #include "UDPSocketCommunication.hpp"
 #endif
 
-#ifdef __TI_ARM__
+#ifdef SOC_AM64X
 #include "RPMessageCommunication.hpp"
 #include "RPMessageEndpoint.hpp"
 #endif
