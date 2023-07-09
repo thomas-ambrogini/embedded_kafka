@@ -19,4 +19,6 @@ Communication *CommunicationFactory::createCommunication(CommunicationType commT
     default:
         return nullptr;
     }
+
+    return nullptr;
 }
