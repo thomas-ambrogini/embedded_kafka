@@ -4,7 +4,9 @@
 #include "Communication.hpp"
 #include "CommunicationType.hpp"
 #include "UDPSocketCommunication.hpp"
+#include "RPMessageCommunication.hpp"
 #include "UDPEndpoint.hpp"
+#include "RPMessageEndpoint.hpp"
 #include "Logger.hpp"
 
 class CommunicationFactory
@@ -16,6 +18,9 @@ public:
         {
         case UDP:
             return new UDPSocketCommunication(dynamic_cast<const UDPEndpoint &>(endpoint), logger);
+            break;
+        case RPMessage:
+            return new RPMessageCommunication(dynamic_cast<const RPMessageEndpoint &>(endpoint), logger);
             break;
 
         default:
