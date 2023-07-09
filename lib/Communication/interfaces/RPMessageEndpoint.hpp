@@ -11,7 +11,7 @@ class RPMessageEndpoint : public Endpoint
 {
 public:
     RPMessageEndpoint();
-    RPMessageEndpoint(uint32_t coreId, u_int16_t endpoint);
+    RPMessageEndpoint(uint32_t coreId, uint16_t endpoint);
 
     ~RPMessageEndpoint() override;
 
