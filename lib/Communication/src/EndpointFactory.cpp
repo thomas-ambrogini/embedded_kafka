@@ -14,7 +14,10 @@ Endpoint *EndpointFactory::createEndpoint(CommunicationType commType)
 #ifdef __TI_ARM__
         return new RPMessageEndpoint();
 #endif
+        break;
     default:
         return nullptr;
     }
+
+    return nullptr;
 }
