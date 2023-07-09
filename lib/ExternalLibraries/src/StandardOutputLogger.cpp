@@ -1,3 +1,5 @@
+#ifdef __unix__
+
 #include "StandardOutputLogger.hpp"
 
 void StandardOutputLogger::log(const char *format, ...) const
@@ -15,3 +17,5 @@ void StandardOutputLogger::logError(const char *errorMessage) const
 {
     std::cerr << "Error: " << errorMessage << std::endl;
 }
+
+#endif

@@ -1,3 +1,5 @@
+#ifdef __unix__
+
 #ifndef STANDARD_OUTPUT_LOGGER_H
 #define STANDARD_OUTPUT_LOGGER_H
 
@@ -11,4 +13,5 @@ public:
     void logError(const char *errorMessage) const override;
 };
 
+#endif
 #endif
