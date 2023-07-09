@@ -1,7 +1,5 @@
-// Class to be used on the A53 for configuration purposes
-// It can read a JSON file and create the configuration that the system manager on other processor can come to ask.
+#ifdef __unix__
 
-// launch a server waiting for requests where it responds with the information about the cluster (position of the topics)
 #ifndef CONFIGURER_H
 #define CONFIGURER_H
 
@@ -20,6 +18,7 @@ class Configurer
 {
 public:
     Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l);
+    Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile);
 
     ~Configurer();
 
@@ -36,4 +35,5 @@ private:
     json readJsonFile(const std::string &filename);
 };
 
+#endif
 #endif

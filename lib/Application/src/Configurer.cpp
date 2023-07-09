@@ -1,6 +1,14 @@
+#ifdef __unix__
+
 #include "Configurer.hpp"
 
 Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : communicationType(commType), logger(l)
+{
+    communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
+    start();
+}
+
+Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile) : communicationType(commType), logger(l), configFile(configFile)
 {
     communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
     start();
@@ -81,3 +89,5 @@ json Configurer::readJsonFile(const std::string &filename)
 
     return jsonData;
 }
+
+#endif
