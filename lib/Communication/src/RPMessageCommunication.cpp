@@ -2,7 +2,7 @@
 
 #include "RPMessageCommunication.hpp"
 
-RPMessageCommunication::RPMessageCommunication(const RPMessageEndpoint &ep, const Logger &l) : : Communication(l), endpoint(ep)
+RPMessageCommunication::RPMessageCommunication(const RPMessageEndpoint &ep, const Logger &l) : Communication(l), endpoint(ep)
 {
     endpoint.printEndpointInformation(logger);
     int32_t status;
@@ -22,12 +22,10 @@ RPMessageCommunication::~RPMessageCommunication()
 int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &source)
 {
     uint32_t status;
-    uint16_t msgSize, remoteCoreId, remoteCoreServiceEndpoint;
-
-    msgSize = sizeof(msgBuf);
+    uint16_t remoteCoreId, remoteCoreServiceEndpoint;
 
     status = RPMessage_recv(&msgObject,
-                            buffer, &msgSize,
+                            buffer, &bufferSize,
                             &remoteCoreId,
                             &remoteCoreServiceEndpoint,
                             SystemP_WAIT_FOREVER);
@@ -49,15 +47,8 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
 
 int RPMessageCommunication::write(const char *message, size_t messageSize, const Endpoint &destination)
 {
-    try
-    {
-        const RPMessageEndpoint &rpMessageDestination = dynamic_cast<const RPMessageEndpoint &>(destination);
-    }
-    catch (const std::bad_cast &e)
-    {
-        logger.logError("[RPMessage write] Bad cast, the source information will not be returned");
-    }
 
+    const RPMessageEndpoint &rpMessageDestination = dynamic_cast<const RPMessageEndpoint &>(destination);
     uint32_t status;
     uint16_t msgSize;
 
