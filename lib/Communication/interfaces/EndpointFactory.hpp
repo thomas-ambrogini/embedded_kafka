@@ -3,25 +3,22 @@
 
 #include "Communication.hpp"
 #include "CommunicationType.hpp"
-#include "UDPSocketCommunication.hpp"
-#include "UDPEndpoint.hpp"
 #include "Logger.hpp"
+
+#ifdef __unix__
+#include "UDPEndpoint.hpp"
+#include "UDPSocketCommunication.hpp"
+#endif
+
+#ifdef __TI_ARM__
+#include "RPMessageCommunication.hpp"
+#include "RPMessageEndpoint.hpp"
+#endif
 
 class EndpointFactory
 {
 public:
-    static Endpoint *createEndpoint(CommunicationType commType)
-    {
-        switch (commType)
-        {
-        case UDP:
-            return new UDPEndpoint();
-            break;
-
-        default:
-            return nullptr;
-        }
-    }
+    static Endpoint *createEndpoint(CommunicationType commType);
 };
 
 #endif
