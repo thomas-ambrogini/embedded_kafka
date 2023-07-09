@@ -1,4 +1,4 @@
-#ifdef __TI_ARM__
+#ifdef SOC_AM64X
 
 #ifndef TI_DEBUG_LOGGER_H
 #define TI_DEBUG_LOGGER_H
