@@ -32,15 +32,8 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
 
     DebugP_assert(status == SystemP_SUCCESS);
 
-    try
-    {
-        dynamic_cast<RPMessageEndpoint &>(source).setCoreId(remoteCoreId);
-        dynamic_cast<RPMessageEndpoint &>(source).setServiceEndpoint(remoteCoreServiceEndpoint);
-    }
-    catch (const std::bad_cast &e)
-    {
-        logger.logError("[RPMessage read] Bad cast, the source information will not be returned");
-    }
+    static_cast<RPMessageEndpoint &>(source).setCoreId(remoteCoreId);
+    static_cast<RPMessageEndpoint &>(source).setServiceEndpoint(remoteCoreServiceEndpoint);
 
     return 1;
 }
@@ -48,7 +41,8 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
 int RPMessageCommunication::write(const char *message, size_t messageSize, const Endpoint &destination)
 {
 
-    const RPMessageEndpoint &rpMessageDestination = dynamic_cast<const RPMessageEndpoint &>(destination);
+    const RPMessageEndpoint &rpMessageDestination = static_cast<const RPMessageEndpoint &>(destination);
+
     uint32_t status;
     uint16_t msgSize;
 
