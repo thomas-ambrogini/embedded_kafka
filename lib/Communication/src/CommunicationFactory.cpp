@@ -12,7 +12,7 @@ Communication *CommunicationFactory::createCommunication(CommunicationType commT
 
     case RPMessage:
 #ifdef SOC_AM64X
-        return new RPMessageCommunication(dynamic_cast<const RPMessageEndpoint &>(endpoint), logger);
+        return new RPMessageCommunication(static_cast<const RPMessageEndpoint &>(endpoint), logger);
 #endif
         break;
 
