@@ -4,18 +4,14 @@
 #include "json.hpp"
 #include "Endpoint.hpp"
 #include "ConsumerMetadata.hpp"
+#include "LatencyDiagnostic.hpp"
 
 using nlohmann::json;
 
 int main()
 {
-    // Endpoint *endpoint = new UDPEndpoint("127.0.0.1", 12345);
-    ConsumerMetadata consumerMetadata(123123, nullptr);
-
-    json consumerJSON;
-    consumerMetadata.to_json(consumerJSON);
-
-    std::cout << "CONSUMER JSON: " << consumerJSON.dump() << std::endl;
+    StandardOutputLogger logger;
+    LatencyDiagnostic latencyDiag(CommunicationType::UDP, logger);
 
     return 0;
 }

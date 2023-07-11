@@ -1,6 +1,12 @@
 #include "TopicFactory.hpp"
 
-TopicFactory::TopicFactory(const CommunicationType commType, const Logger &l) : communicationType(commType), logger(l)
+TopicFactory::TopicFactory(const CommunicationType commType, const Logger &l) : communicationType(commType), logger(l), systemManager(communicationType, logger)
+{
+    retrieveClusterInformation();
+    createTopics();
+}
+
+TopicFactory::TopicFactory(CommunicationType commType, const Logger &l, BrokerMetadata bootstrapBroker) : communicationType(commType), logger(l), systemManager(communicationType, logger, bootstrapBroker)
 {
     retrieveClusterInformation();
     createTopics();
@@ -8,18 +14,22 @@ TopicFactory::TopicFactory(const CommunicationType commType, const Logger &l) : 
 
 void TopicFactory::retrieveClusterInformation()
 {
-    SystemManager systemManager(communicationType, logger);
     clusterMetadata = systemManager.getClusterMetadata();
+}
+
+int TopicFactory::askForID()
+{
+    return systemManager.askForID();
 }
 
 void TopicFactory::createTopics()
 {
     for (BrokerMetadata brokerMetadata : clusterMetadata.getBrokersMetadata())
     {
-        logger.log("Creating the broker instance in the TopicFactory for broker with the following endpoint info:");
+        logger.log("[Topic Factory] Creating the broker instance in the TopicFactory for broker with the following endpoint info:");
         brokerMetadata.getEndpoint()->printEndpointInformation(logger);
 
-        logger.log("In this broker we have the following topics:");
+        logger.log("[Topic Factory] In this broker we have the following topics:");
 
         for (TopicMetadata topicMetadata : brokerMetadata.getTopicsMetadata())
         {

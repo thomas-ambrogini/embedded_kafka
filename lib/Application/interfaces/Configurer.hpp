@@ -6,6 +6,7 @@
 #include "ClusterMetadata.hpp"
 #include "BrokerMetadata.hpp"
 #include <fstream>
+#include <atomic>
 #include "json.hpp"
 #include "CommunicationFactory.hpp"
 #include "Communication.hpp"
@@ -22,6 +23,8 @@ public:
 
     ~Configurer();
 
+    void start();
+
 private:
     ClusterMetadata clusterMetadata;
     CommunicationType communicationType;
@@ -29,10 +32,11 @@ private:
     Communication *communication;
 
     const std::string configFile = "../conf/configFile.json";
+    std::atomic<int> counter;
 
-    void start();
     void retrieveClusterInformation();
     json readJsonFile(const std::string &filename);
+    void handleOperation(const char *request, Endpoint *sourceEndpoint);
 };
 
 #endif

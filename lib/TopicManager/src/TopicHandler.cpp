@@ -3,7 +3,12 @@
 TopicHandler::TopicHandler(const CommunicationType commType, const Logger &l, Communication *comm) : communicationType(commType), logger(l), communication(comm)
 {
     logger.log("Communicatin Type: %d", communicationType);
-    init();
+}
+
+TopicHandler::TopicHandler(const CommunicationType commType, const Logger &l, Communication *comm, std::vector<std::string> topicNames) : communicationType(commType), logger(l), communication(comm)
+{
+    logger.log("Communication Type: %d", communicationType);
+    init(topicNames);
 }
 
 TopicHandler::~TopicHandler()
@@ -11,13 +16,14 @@ TopicHandler::~TopicHandler()
     delete communication;
 }
 
-void TopicHandler::init()
+void TopicHandler::init(std::vector<std::string> &topicNames)
 {
-    std::string topicName = "Topic1";
-    TopicMetadata topicMetadata(topicName);
-
-    RealTopic topic(topicMetadata, logger);
-    topics.push_back(topic);
+    for (const std::string &topicName : topicNames)
+    {
+        TopicMetadata topicMetadata(topicName);
+        RealTopic topic(topicMetadata, logger);
+        topics.push_back(topic);
+    }
 }
 
 void TopicHandler::save(Record record, TopicMetadata topicMetadata, ProducerMetadata producerMetadata)

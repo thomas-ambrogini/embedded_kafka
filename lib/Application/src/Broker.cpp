@@ -5,6 +5,11 @@ Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logge
     logger.log("[Broker] The broker created the communication");
 }
 
+Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l, std::vector<std::string> topicNames) : communicationType(commType), logger(l), communication(CommunicationFactory::createCommunication(commType, endpoint, logger)), topicHandler(communicationType, logger, communication, topicNames)
+{
+    logger.log("[Broker] The broker created the communication");
+}
+
 Broker::~Broker()
 {
     delete communication;
@@ -12,22 +17,23 @@ Broker::~Broker()
 
 void Broker::start()
 {
+    char clientRequest[1024];
+    Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
+
     while (true)
     {
-        char clientRequest[1024];
-
-        Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
         if (communication->read(clientRequest, sizeof(clientRequest), *sourceEndpoint) < 0)
         {
             logger.logError("[Broker] Failed to receive message from client");
             break;
         }
-
         logger.log("[Broker] Request received from the client: %s", clientRequest);
         sourceEndpoint->printEndpointInformation(logger);
 
         handleOperation(clientRequest, sourceEndpoint);
     }
+
+    delete sourceEndpoint;
 }
 
 void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)

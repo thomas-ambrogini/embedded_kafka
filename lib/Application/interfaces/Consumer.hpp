@@ -11,6 +11,7 @@ class Consumer
 {
 public:
     Consumer(const CommunicationType communicationType, const Logger &logger);
+    Consumer(const CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker);
 
     void subscribe(TopicMetadata topicMetadata);
     void unsubscribe(TopicMetadata topicMetadata);

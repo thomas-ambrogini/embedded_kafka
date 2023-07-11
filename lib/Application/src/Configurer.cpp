@@ -2,16 +2,14 @@
 
 #include "Configurer.hpp"
 
-Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : communicationType(commType), logger(l)
+Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : communicationType(commType), logger(l), counter(0)
 {
     communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
-    start();
 }
 
-Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile) : communicationType(commType), logger(l), configFile(configFile)
+Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile) : communicationType(commType), logger(l), configFile(configFile), counter(0)
 {
     communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
-    start();
 }
 
 Configurer::~Configurer()
@@ -23,31 +21,45 @@ void Configurer::start()
 {
     retrieveClusterInformation();
 
+    char clientRequest[1024];
+    Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
+
     while (true)
     {
-        char clientBuffer[1024];
-        Endpoint *clientSource = EndpointFactory::createEndpoint(communicationType);
-        if (communication->read(clientBuffer, sizeof(clientBuffer), *clientSource) < 0)
+        if (communication->read(clientRequest, sizeof(clientRequest), *sourceEndpoint) < 0)
         {
-            logger.logError("Failed to receive message from client");
+            logger.logError("[Configurer] Failed to receive message from client");
             break;
         }
-        logger.log("Request received from the client: %s", clientBuffer);
+        logger.log("Request received from the client: %s", clientRequest);
+        sourceEndpoint->printEndpointInformation(logger);
 
-        nlohmann::json deserializedRequest = nlohmann::json::parse(clientBuffer);
-        std::string operation = deserializedRequest["operation"];
+        handleOperation(clientRequest, sourceEndpoint);
+    }
 
-        logger.log("Operation Received: %s", operation.c_str());
+    delete sourceEndpoint;
+}
 
+void Configurer::handleOperation(const char *request, Endpoint *sourceEndpoint)
+{
+    nlohmann::json deserializedRequest = nlohmann::json::parse(request);
+    std::string operation = deserializedRequest["operation"];
+
+    logger.log("[Configurer] Operation Received: %s", operation.c_str());
+
+    if (operation == "getClusterInformation")
+    {
         json clusterJson;
         clusterMetadata.to_json(clusterJson);
 
-        logger.log("Information which are sent: %s with size %d", clusterJson.dump().c_str(), clusterJson.dump().size());
+        communication->write(clusterJson.dump().c_str(), clusterJson.dump().size() + 1, *sourceEndpoint);
+    }
+    else if (operation == "askForID")
+    {
+        json idJson;
+        idJson["ID"] = counter.fetch_add(1);
 
-        communication->write(clusterJson.dump().c_str(), clusterJson.dump().size() + 1, *clientSource);
-        logger.log("Sent back the response");
-
-        delete clientSource;
+        communication->write(idJson.dump().c_str(), idJson.dump().size() + 1, *sourceEndpoint);
     }
 }
 

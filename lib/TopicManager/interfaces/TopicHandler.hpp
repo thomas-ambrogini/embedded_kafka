@@ -16,6 +16,8 @@ class TopicHandler
 {
 public:
     TopicHandler(const CommunicationType communicationType, const Logger &logger, Communication *communication);
+    TopicHandler(const CommunicationType communicationType, const Logger &logger, Communication *communication, std::vector<std::string> topicNames);
+
     ~TopicHandler();
 
     void save(Record record, TopicMetadata topicMetadata, ProducerMetadata producerMetadata);
@@ -29,7 +31,8 @@ private:
     const Logger &logger;
     Communication *communication;
 
-    void init();
+    void init(std::vector<std::string> &topicNames);
+
     int findTopicIndex(TopicMetadata topicMetadata);
 };
 

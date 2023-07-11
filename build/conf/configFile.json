@@ -1,16 +1,12 @@
 {
   "brokers": [
     {
-      "endpoint": {
-        "ip": "127.0.0.1",
-        "port": 1234,
-        "type": "UDPSocket"
-      },
-      "topics": [
-        {
-          "name": "Topic1"
-        }
-      ]
+      "endpoint": { "ip": "127.0.0.1", "port": 1234, "type": "UDPSocket" },
+      "topics": [{ "name": "Measurements" }, { "name": "LatencyDiagnostic" }]
+    },
+    {
+      "endpoint": { "ip": "127.0.0.1", "port": 1235, "type": "UDPSocket" },
+      "topics": [{ "name": "Results" }, { "name": "LatencyDiagnostic" }]
     }
   ]
 }

@@ -6,19 +6,26 @@
 
 int main(int argc, char *argv[])
 {
-    int brokerPort = 1234;
+    StandardOutputLogger logger;
     CommunicationType commType = CommunicationType::UDP;
+    int bootstrapBrokerPort = 12345;
+
     if (argc == 2)
     {
-        brokerPort = atoi(argv[1]);
+        try
+        {
+            bootstrapBrokerPort = std::stoi(argv[1]);
+        }
+        catch (const std::exception &)
+        {
+            logger.logError("Invalid format of the boostrap broker port");
+        }
     }
 
-    StandardOutputLogger logger;
-    UDPEndpoint endpointBroker("127.0.0.1", brokerPort);
+    BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
+    Consumer consumer(commType, logger, bootstrapBroker);
 
-    Consumer consumer(commType, logger);
-
-    std::string topicName = "Topic1";
+    std::string topicName = "Measurements";
     TopicMetadata topic(topicName);
 
     consumer.subscribe(topic);
@@ -29,7 +36,8 @@ int main(int argc, char *argv[])
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    consumer.unsubscribe(topic);
+    consumer.poll(topic);
+    // consumer.unsubscribe(topic);
 
     return 0;
 }

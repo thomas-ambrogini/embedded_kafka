@@ -18,16 +18,21 @@ using json = nlohmann::json;
 class TopicFactory
 {
 public:
-    TopicFactory(CommunicationType commType, const Logger &logger);
+    TopicFactory(CommunicationType communicationType, const Logger &logger);
+    TopicFactory(CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker);
     ~TopicFactory();
 
     Topic *getTopic(TopicMetadata topicMetadata);
+
+    int askForID();
 
 private:
     ClusterMetadata clusterMetadata;
     std::vector<Topic *> topics;
     const CommunicationType communicationType;
     const Logger &logger;
+
+    SystemManager systemManager;
 
     int findTopic(TopicMetadata topicMetadata);
 

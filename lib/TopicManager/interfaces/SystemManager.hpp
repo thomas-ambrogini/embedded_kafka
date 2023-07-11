@@ -14,17 +14,29 @@ using json = nlohmann::json;
 class SystemManager
 {
 public:
-    SystemManager(const CommunicationType commType, const Logger &l);
+    SystemManager(const CommunicationType communicationType, const Logger &logger);
+    SystemManager(const CommunicationType communicationType, const Logger &logger, BrokerMetadata boostrapBroker);
+
+    ~SystemManager();
 
     ClusterMetadata getClusterMetadata() const;
+
+    int askForID();
 
 private:
     BrokerMetadata bootstrapBroker;
     ClusterMetadata clusterMetadata;
-    const Logger &logger;
+
     const CommunicationType communicationType;
+    const Logger &logger;
+
+    Endpoint *sourceEndpoint;
+    Communication *communication;
 
     void init();
+    void createCommunication();
+
+    void request(const char *request, size_t requestSize, char *response, size_t responseSize);
 };
 
 #endif

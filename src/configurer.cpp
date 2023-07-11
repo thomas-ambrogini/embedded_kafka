@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     UDPEndpoint endpointConfigurer("127.0.0.1", configurerPort);
 
     Configurer configurer(CommunicationType::UDP, endpointConfigurer, logger);
+    configurer.start();
 
     return 0;
 }

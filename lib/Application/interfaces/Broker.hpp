@@ -15,6 +15,8 @@ class Broker
 {
 public:
     Broker(enum CommunicationType commType, const Endpoint &endpoint, const Logger &logger);
+    Broker(enum CommunicationType commType, const Endpoint &endpoint, const Logger &logger, std::vector<std::string> topicNames);
+
     ~Broker();
 
     void start();

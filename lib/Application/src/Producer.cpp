@@ -5,9 +5,15 @@ Producer::Producer(const CommunicationType c, const Logger &l) : logger(l), topi
     askForID();
 }
 
+Producer::Producer(const CommunicationType c, const Logger &l, BrokerMetadata bootstrapBroker) : logger(l), topicFactory(c, logger, bootstrapBroker)
+{
+    askForID();
+}
+
 void Producer::askForID()
 {
-    producerMetadata = ProducerMetadata(1);
+    int id = topicFactory.askForID();
+    producerMetadata = ProducerMetadata(id);
 }
 
 void Producer::publish(ProducerRecord producerRecord)

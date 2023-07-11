@@ -9,6 +9,7 @@ OBJ_DIR  := $(BUILD)/objects
 SRC_DIR  := ../src
 LIB_DIR  := ../lib
 APP_DIR  := $(BUILD)/apps
+SCRIPTS_DIR := $(SRC_DIR)/scripts
 
 LIB_INCDIRS := $(shell find $(LIB_DIR) -type d -name 'interfaces')
 INCLUDES := $(patsubst %,-I%,$(LIB_INCDIRS))
@@ -19,7 +20,15 @@ LIB_OBJ := $(patsubst $(LIB_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(LIB_SRC))
 MAIN_SRC := $(shell find $(SRC_DIR) -type f -name '*.cpp')
 MAIN_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(MAIN_SRC))
 
+SCRIPT_SRC := $(shell find $(SCRIPTS_DIR) -type f -name '*.cpp')
+SCRIPT_OBJS := $(patsubst $(SCRIPTS_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SCRIPT_SRC))
+
 all: build broker configurer producer consumer
+
+# Rule to compile scripts source files
+$(OBJ_DIR)/%.o: $(SCRIPTS_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # Rule to compile broker.cpp, server.cpp, configurer.cpp and client.cpp into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -51,6 +60,9 @@ consumer: $(OBJ_DIR)/consumer.o $(LIB_OBJ)
 
 prova: $(OBJ_DIR)/prova.o $(LIB_OBJ)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/prova $^ $(LDFLAGS)
+
+scripts: $(OBJ_DIR)/createBrokers.o $(LIB_OBJ)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(APP_DIR)/createBrokers $^ $(LDFLAGS)
 
 clean:
 	-@rm -rvf $(OBJ_DIR)/*

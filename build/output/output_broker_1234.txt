@@ -1,0 +1,232 @@
+Topics in this broker: 
+Measurements
+Communication Type: 0
+Destructor of Real Topic called
+Base destructor of Topic called
+[Broker] The broker created the communication
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"Hello","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 51750
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: Hello to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: Hello
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"World","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 51750
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: World to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: World
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"!","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 51750
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: ! to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: !
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"subscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 43286
+[Broker] Operation to do: subscribe
+[Broker] The consumer with ID: 1 wants to subscribe on the topic: Measurements
+[Topic Handler] The consumer 1 is looking for the topic: Measurements
+[Topic Handler] The messages will be delivered to:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 43286
+[Real Topic] The consumer 1 has subscribed to the topic: Measurements
+[Real Topic] Number of subscribers: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"poll","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 43286
+[Broker] Operation to do: poll
+[Broker] The consumer with ID: 1 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 1 is looking for new records to read from the topic: Measurements
+[Topic Handler] Endpoint of the consumer:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 43286
+[Real Topic] The consumer 1 wants to read a record from the topic: Measurements
+[Real Topic] Offset of the record to read: 0
+[Real Topic] Next offset to read: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"unsubscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 43286
+[Broker] Operation to do: unsubscribe
+[Broker] The consumer with ID: 1 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 1 is looking for the topic: Measurements to unsubscribe from it
+[Real Topic] The consumer 1 has unsubscribed to the topic: Measurements
+[Real Topic] Number of subscribers remained: 0
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"subscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 35671
+[Broker] Operation to do: subscribe
+[Broker] The consumer with ID: 1 wants to subscribe on the topic: Measurements
+[Topic Handler] The consumer 1 is looking for the topic: Measurements
+[Topic Handler] The messages will be delivered to:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 35671
+[Real Topic] The consumer 1 has subscribed to the topic: Measurements
+[Real Topic] Number of subscribers: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"poll","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 35671
+[Broker] Operation to do: poll
+[Broker] The consumer with ID: 1 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 1 is looking for new records to read from the topic: Measurements
+[Topic Handler] Endpoint of the consumer:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 35671
+[Real Topic] The consumer 1 wants to read a record from the topic: Measurements
+[Real Topic] Offset of the record to read: 0
+[Real Topic] Next offset to read: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"unsubscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 35671
+[Broker] Operation to do: unsubscribe
+[Broker] The consumer with ID: 1 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 1 is looking for the topic: Measurements to unsubscribe from it
+[Real Topic] The consumer 1 has unsubscribed to the topic: Measurements
+[Real Topic] Number of subscribers remained: 0
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"Hello","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 50930
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: Hello to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: Hello
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"World","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 50930
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: World to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: World
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"!","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 50930
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: ! to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: !
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"Hello","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 57173
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: Hello to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: Hello
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"World","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 57173
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: World to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: World
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"!","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 57173
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: ! to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: !
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"Hello","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 59180
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: Hello to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: Hello
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"World","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 59180
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: World to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: World
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"!","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 59180
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: ! to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: !
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"Hello","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 48745
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: Hello to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: Hello
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"World","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 48745
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: World to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: World
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":1},"record":"!","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 48745
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 1, sent the following record: ! to be published on the topic: Measurements
+[Topic Handler] The producer 1 is looking for the topic: Measurements
+[Real Topic] The producer 1 added the following record: !
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":0},"record":"Hello","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 48580
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 0, sent the following record: Hello to be published on the topic: Measurements
+[Topic Handler] The producer 0 is looking for the topic: Measurements
+[Real Topic] The producer 0 added the following record: Hello
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":0},"record":"World","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 48580
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 0, sent the following record: World to be published on the topic: Measurements
+[Topic Handler] The producer 0 is looking for the topic: Measurements
+[Real Topic] The producer 0 added the following record: World
+[Broker] Request received from the client: {"operation":"publish","producerMetadata":{"id":0},"record":"!","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 48580
+[Broker] Operation to do: publish
+[Broker] The producer with ID: 0, sent the following record: ! to be published on the topic: Measurements
+[Topic Handler] The producer 0 is looking for the topic: Measurements
+[Real Topic] The producer 0 added the following record: !
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"subscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 33422
+[Broker] Operation to do: subscribe
+[Broker] The consumer with ID: 1 wants to subscribe on the topic: Measurements
+[Topic Handler] The consumer 1 is looking for the topic: Measurements
+[Topic Handler] The messages will be delivered to:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 33422
+[Real Topic] The consumer 1 has subscribed to the topic: Measurements
+[Real Topic] Number of subscribers: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"poll","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 33422
+[Broker] Operation to do: poll
+[Broker] The consumer with ID: 1 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 1 is looking for new records to read from the topic: Measurements
+[Topic Handler] Endpoint of the consumer:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 33422
+[Real Topic] The consumer 1 wants to read a record from the topic: Measurements
+[Real Topic] Offset of the record to read: 0
+[Real Topic] Next offset to read: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":1},"operation":"unsubscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 33422
+[Broker] Operation to do: unsubscribe
+[Broker] The consumer with ID: 1 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 1 is looking for the topic: Measurements to unsubscribe from it
+[Real Topic] The consumer 1 has unsubscribed to the topic: Measurements
+[Real Topic] Number of subscribers remained: 0
+[Broker] Request received from the client: {"consumerMetadata":{"id":2},"operation":"subscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 58938
+[Broker] Operation to do: subscribe
+[Broker] The consumer with ID: 2 wants to subscribe on the topic: Measurements
+[Topic Handler] The consumer 2 is looking for the topic: Measurements
+[Topic Handler] The messages will be delivered to:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 58938
+[Real Topic] The consumer 2 has subscribed to the topic: Measurements
+[Real Topic] Number of subscribers: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":2},"operation":"poll","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 58938
+[Broker] Operation to do: poll
+[Broker] The consumer with ID: 2 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 2 is looking for new records to read from the topic: Measurements
+[Topic Handler] Endpoint of the consumer:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 58938
+[Real Topic] The consumer 2 wants to read a record from the topic: Measurements
+[Real Topic] Offset of the record to read: 0
+[Real Topic] Next offset to read: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":2},"operation":"unsubscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 58938
+[Broker] Operation to do: unsubscribe
+[Broker] The consumer with ID: 2 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The consumer 2 is looking for the topic: Measurements to unsubscribe from it
+[Real Topic] The consumer 2 has unsubscribed to the topic: Measurements
+[Real Topic] Number of subscribers remained: 0
+[Broker] Request received from the client: {"consumerMetadata":{"id":0},"operation":"subscribe","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 41487
+[Broker] Operation to do: subscribe
+[Broker] The consumer with ID: 0 wants to subscribe on the topic: Measurements
+[Topic Handler] The consumer 0 is looking for the topic: Measurements
+[Topic Handler] The messages will be delivered to:
+[UDPSocket] IPAddress: 127.0.0.1, Port: 41487
+[Real Topic] The consumer 0 has subscribed to the topic: Measurements
+[Real Topic] Number of subscribers: 1
+[Broker] Request received from the client: {"consumerMetadata":{"id":0},"operation":"poll","topicMetadata":{"name":"Measurements"}}
+[UDPSocket] IPAddress: 127.0.0.1, Port: 41487
+[Broker] Operation to do: poll
+[Broker] The consumer with ID: 0 wants to unsubscribe from the topic: Measurements
+[Topic Handler] The
