@@ -9,7 +9,7 @@ void TI_DebugLogger::log(const char *format, ...) const
 
     char buffer[256];
     vsnprintf(buffer, sizeof(buffer), format, args);
-    strncat(buffer, "\n", sizeof(buffer) - strlen(buffer) - 1); // Append endline character
+    strncat(buffer, "\r\n", sizeof(buffer) - strlen(buffer) - 1); // Append endline character
 
     va_end(args);
 
