@@ -41,7 +41,6 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
 
 int RPMessageCommunication::write(const char *message, size_t messageSize, const Endpoint &destination)
 {
-    void *void_message = const_cast<char *>(message);
     const RPMessageEndpoint &rpMessageDestination = static_cast<const RPMessageEndpoint &>(destination);
 
     uint32_t status;
@@ -50,7 +49,7 @@ int RPMessageCommunication::write(const char *message, size_t messageSize, const
     msgSize = strlen(message) + 1;
 
     status = RPMessage_send(
-        void_message, msgSize,
+        const_cast<char *>(message), msgSize,
         rpMessageDestination.getCoreId(),
         rpMessageDestination.getServiceEndpoint(),
         RPMessage_getLocalEndPt(&msgObject),
