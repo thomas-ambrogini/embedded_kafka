@@ -11,7 +11,7 @@ class Endpoint
 public:
     virtual ~Endpoint() {}
 
-    virtual void printEndpointInformation(const Logger &logger) = 0;
+    virtual void printEndpointInformation(const Logger &logger) const = 0;
 
     virtual void to_json(json &j) const = 0;
     virtual void from_json(const json &j) = 0;

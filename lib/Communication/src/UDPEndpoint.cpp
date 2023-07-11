@@ -20,7 +20,7 @@ UDPEndpoint::~UDPEndpoint()
 {
 }
 
-void UDPEndpoint::printEndpointInformation(const Logger &logger)
+void UDPEndpoint::printEndpointInformation(const Logger &logger) const
 {
     logger.log("[UDPSocket] IPAddress: %s, Port: %d", ipAddress, port);
 }

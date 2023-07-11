@@ -14,7 +14,7 @@ RPMessageEndpoint::~RPMessageEndpoint()
 {
 }
 
-void RPMessageEndpoint::printEndpointInformation(const Logger &logger)
+void RPMessageEndpoint::printEndpointInformation(const Logger &logger) const
 {
     logger.log("[RPMessage] CoreId: %d, ServiceEndpoint: %d", coreId, serviceEndpoint);
 }

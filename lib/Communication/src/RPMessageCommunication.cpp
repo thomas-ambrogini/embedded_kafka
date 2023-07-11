@@ -23,9 +23,10 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
 {
     uint32_t status;
     uint16_t remoteCoreId, remoteCoreServiceEndpoint;
+    uint16_t size = static_cast<uint16_t>(bufferSize);
 
     status = RPMessage_recv(&msgObject,
-                            buffer, &bufferSize,
+                            buffer, &size,
                             &remoteCoreId,
                             &remoteCoreServiceEndpoint,
                             SystemP_WAIT_FOREVER);
@@ -40,7 +41,7 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
 
 int RPMessageCommunication::write(const char *message, size_t messageSize, const Endpoint &destination)
 {
-
+    void *void_message = const_cast<char *>(message);
     const RPMessageEndpoint &rpMessageDestination = static_cast<const RPMessageEndpoint &>(destination);
 
     uint32_t status;
@@ -49,7 +50,7 @@ int RPMessageCommunication::write(const char *message, size_t messageSize, const
     msgSize = strlen(message) + 1;
 
     status = RPMessage_send(
-        message, msgSize,
+        void_message, msgSize,
         rpMessageDestination.getCoreId(),
         rpMessageDestination.getServiceEndpoint(),
         RPMessage_getLocalEndPt(&msgObject),

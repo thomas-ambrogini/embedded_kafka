@@ -1,3 +1,5 @@
+#ifdef SOC_AM64X
+
 #ifndef RPMESSAGEENDPOINT_H
 #define RPMESSAGEENDPOINT_H
 
@@ -15,7 +17,7 @@ public:
 
     ~RPMessageEndpoint() override;
 
-    void printEndpointInformation(const Logger &logger) override;
+    void printEndpointInformation(const Logger &logger) const override;
 
     void to_json(json &j) const override;
     void from_json(const json &j) override;
@@ -30,4 +32,5 @@ private:
     uint16_t serviceEndpoint;
 };
 
+#endif
 #endif
