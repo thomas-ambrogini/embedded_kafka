@@ -25,6 +25,9 @@ public:
     uint32_t getCoreId() const;
     uint16_t getServiceEndpoint() const;
 
+    bool operator<(const RPMessageEndpoint &other) const;
+    // bool operator=(const RPMessageEndpoint &other) const;
+
 private:
     uint32_t coreId;
     uint16_t serviceEndpoint;

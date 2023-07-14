@@ -21,6 +21,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <semaphore.h>
+#include <map>
 
 #include <linux/rpmsg.h>
 #include <ti_rpmsg_char.h>
@@ -37,10 +38,14 @@ public:
 
 private:
     const RPMessageEndpoint endpoint;
-    rpmsg_char_dev_t *rcdev;
+    std::vector<int> fds;
+    std::map<RPMessageEndpoint, rpmsg_char_dev_t *> endpointMap;
 
     int send_msg(int fd, const char *msg, int len);
     int recv_msg(int fd, int len, char *reply_msg, int *reply_len);
+
+    int checkEndpoint();
+    void close_devs();
 };
 
 #endif

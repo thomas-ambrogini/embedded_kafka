@@ -58,6 +58,7 @@
     "fcntl.h": "c",
     "dirent.h": "c",
     "communicationfactory.hpp": "c",
-    "udpendpoint.hpp": "c"
+    "udpendpoint.hpp": "c",
+    "standardoutputlogger.hpp": "c"
   }
 }

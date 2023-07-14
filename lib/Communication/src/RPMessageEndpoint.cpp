@@ -44,3 +44,17 @@ uint16_t RPMessageEndpoint::getServiceEndpoint() const
 {
     return serviceEndpoint;
 }
+
+bool RPMessageEndpoint::operator<(const RPMessageEndpoint &other) const
+{
+    if (coreId < other.coreId)
+    {
+        return true;
+    }
+    else if (coreId == other.coreId)
+    {
+        return serviceEndpoint < other.serviceEndpoint;
+    }
+
+    return false;
+}
