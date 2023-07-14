@@ -12,7 +12,7 @@ class TI_DebugLogger : public Logger
 {
 public:
     void log(const char *format, ...) const override;
-    void logError(const char *errorMessage) const override;
+    void logError(const char *format, ...) const override;
 };
 
 #endif

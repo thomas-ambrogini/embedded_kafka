@@ -4,7 +4,8 @@
 enum CommunicationType
 {
     UDP,
-    RPMessage
+    RPMessage,
+    RPMessageLinux
 };
 
 #endif

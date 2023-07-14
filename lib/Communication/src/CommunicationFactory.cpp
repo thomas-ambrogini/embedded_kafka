@@ -16,6 +16,12 @@ Communication *CommunicationFactory::createCommunication(CommunicationType commT
 #endif
         break;
 
+    case RPMessageLinux:
+#ifdef __unix__
+        return new RPMessageLinuxCommunication(static_cast<const RPMessageEndpoint &>(endpoint), logger);
+#endif
+        break;
+
     default:
         return nullptr;
     }

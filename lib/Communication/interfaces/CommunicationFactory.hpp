@@ -7,13 +7,15 @@
 
 #ifdef __unix__
 #include "UDPEndpoint.hpp"
-#include "UDPSocketCommunication.hpp"
+#include "RPMessageLinuxCommunication.hpp"
 #endif
 
 #ifdef SOC_AM64X
 #include "RPMessageCommunication.hpp"
-#include "RPMessageEndpoint.hpp"
 #endif
+
+#include "UDPSocketCommunication.hpp"
+#include "RPMessageEndpoint.hpp"
 
 class CommunicationFactory
 {

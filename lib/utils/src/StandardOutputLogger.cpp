@@ -13,9 +13,14 @@ void StandardOutputLogger::log(const char *format, ...) const
     va_end(args);
 }
 
-void StandardOutputLogger::logError(const char *errorMessage) const
+void StandardOutputLogger::logError(const char *format, ...) const
 {
-    std::cerr << "Error: " << errorMessage << std::endl;
+    va_list args;
+    va_start(args, format);
+
+    std::vfprintf(stderr, format, args);
+
+    va_end(args);
 }
 
 #endif

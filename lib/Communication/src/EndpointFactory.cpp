@@ -15,6 +15,13 @@ Endpoint *EndpointFactory::createEndpoint(CommunicationType commType)
         return new RPMessageEndpoint();
 #endif
         break;
+
+    case RPMessageLinux:
+#ifdef __unix__
+        return new RPMessageEndpoint();
+#endif
+        break;
+
     default:
         return nullptr;
     }

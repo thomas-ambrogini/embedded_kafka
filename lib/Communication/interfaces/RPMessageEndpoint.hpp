@@ -1,5 +1,3 @@
-#ifdef SOC_AM64X
-
 #ifndef RPMESSAGEENDPOINT_H
 #define RPMESSAGEENDPOINT_H
 
@@ -32,5 +30,4 @@ private:
     uint16_t serviceEndpoint;
 };
 
-#endif
 #endif

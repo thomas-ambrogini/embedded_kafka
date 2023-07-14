@@ -1,5 +1,3 @@
-#ifdef SOC_AM64X
-
 #include "RPMessageEndpoint.hpp"
 
 RPMessageEndpoint::RPMessageEndpoint() : coreId(-1), serviceEndpoint(-1)
@@ -46,5 +44,3 @@ uint16_t RPMessageEndpoint::getServiceEndpoint() const
 {
     return serviceEndpoint;
 }
-
-#endif

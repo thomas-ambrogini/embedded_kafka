@@ -5,7 +5,7 @@
 #include <cstring>
 #include "json.hpp"
 
-using nlohmann::json;
+using json = nlohmann::json;
 
 class UDPEndpoint : public Endpoint
 {
