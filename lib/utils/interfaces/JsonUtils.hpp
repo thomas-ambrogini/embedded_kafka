@@ -1,7 +1,10 @@
 #ifndef JSONUTILS_H
 #define JSONUTILS_H
 
+#ifdef __unix__
 #include <fstream>
+#endif
+
 #include "Logger.hpp"
 #include "json.hpp"
 

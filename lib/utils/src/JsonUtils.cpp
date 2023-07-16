@@ -2,6 +2,8 @@
 
 json JsonUtils::readJsonFile(const std::string &filename, const Logger &logger)
 {
+#ifdef __unix__
+
     std::ifstream file(filename);
     if (!file.is_open())
     {
@@ -23,10 +25,13 @@ json JsonUtils::readJsonFile(const std::string &filename, const Logger &logger)
     file.close();
 
     return jsonData;
+#endif
 }
 
 void JsonUtils::writeJsonFile(const std::string &filename, const json jsonData, const Logger &logger)
 {
+#ifdef __unix__
+
     std::ofstream file(filename);
 
     if (!file.is_open())
@@ -39,4 +44,6 @@ void JsonUtils::writeJsonFile(const std::string &filename, const json jsonData, 
     file << jsonString;
 
     file.close();
+
+#endif
 }
