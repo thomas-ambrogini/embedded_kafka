@@ -13,8 +13,10 @@ using json = nlohmann::json;
 class JsonUtils
 {
 public:
+#ifdef __unix__
     static json readJsonFile(const std::string &filename, const Logger &logger);
     static void writeJsonFile(const std::string &filename, const json jsonData, const Logger &logger);
+#endif
 };
 
 #endif

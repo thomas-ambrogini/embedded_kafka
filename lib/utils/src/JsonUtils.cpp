@@ -1,8 +1,9 @@
 #include "JsonUtils.hpp"
 
+#ifdef __unix__
+
 json JsonUtils::readJsonFile(const std::string &filename, const Logger &logger)
 {
-#ifdef __unix__
 
     std::ifstream file(filename);
     if (!file.is_open())
@@ -25,12 +26,12 @@ json JsonUtils::readJsonFile(const std::string &filename, const Logger &logger)
     file.close();
 
     return jsonData;
-#endif
 }
+#endif
 
+#ifdef __unix__
 void JsonUtils::writeJsonFile(const std::string &filename, const json jsonData, const Logger &logger)
 {
-#ifdef __unix__
 
     std::ofstream file(filename);
 
@@ -44,6 +45,5 @@ void JsonUtils::writeJsonFile(const std::string &filename, const json jsonData, 
     file << jsonString;
 
     file.close();
-
-#endif
 }
+#endif
