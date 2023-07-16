@@ -1,10 +1,11 @@
+#ifdef __unix__
+
 #ifndef RPMESSAGE_LINUX_COMMUNICATION_H
 #define RPMESSAGE_LINUX_COMMUNICATION_H
 
 #include "Communication.hpp"
 #include <inttypes.h>
 #include "RPMessageEndpoint.hpp"
-
 #include <sys/select.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -22,7 +23,6 @@
 #include <stdbool.h>
 #include <semaphore.h>
 #include <map>
-
 #include <linux/rpmsg.h>
 #include <ti_rpmsg_char.h>
 
@@ -48,4 +48,5 @@ private:
     void close_devs();
 };
 
+#endif
 #endif

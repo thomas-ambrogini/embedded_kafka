@@ -1,3 +1,5 @@
+#ifdef __unix__
+
 #include "RPMessageLinuxCommunication.hpp"
 
 RPMessageLinuxCommunication::RPMessageLinuxCommunication(const RPMessageEndpoint &ep, const Logger &l) : Communication(l), endpoint(ep)
@@ -140,3 +142,5 @@ void RPMessageLinuxCommunication::close_devs()
         rpmsg_char_close(iter->second);
     }
 }
+
+#endif
