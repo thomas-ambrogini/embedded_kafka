@@ -11,6 +11,8 @@ LatencyDiagnostic::LatencyDiagnostic(const CommunicationType commType, const Log
 
 void LatencyDiagnostic::createTopic()
 {
+#ifdef __unix__
+
     std::string topicName = "LatencyDiagnostic";
     TopicMetadata latencyTopic(topicName);
 
@@ -28,6 +30,8 @@ void LatencyDiagnostic::createTopic()
     logger.log("New cluster data: %s", jsonData.dump().c_str());
 
     JsonUtils::writeJsonFile(configFile, jsonData, logger);
+
+#endif
 }
 
 void LatencyDiagnostic::start()
