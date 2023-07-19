@@ -59,6 +59,12 @@
     "dirent.h": "c",
     "communicationfactory.hpp": "c",
     "udpendpoint.hpp": "c",
-    "standardoutputlogger.hpp": "c"
+    "standardoutputlogger.hpp": "c",
+    "condition_variable": "cpp",
+    "source_location": "cpp",
+    "mutex": "cpp",
+    "shared_mutex": "cpp",
+    "variant": "cpp",
+    "future": "cpp"
   }
 }

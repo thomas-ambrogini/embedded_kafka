@@ -1,0 +1,2 @@
+/usr/bin/ar qc libti_rpmsg_char_library.a CMakeFiles/ti_rpmsg_char_library.dir/rpmsg_char.c.o CMakeFiles/ti_rpmsg_char_library.dir/soc.c.o CMakeFiles/ti_rpmsg_char_library.dir/utils.c.o
+/usr/bin/ranlib libti_rpmsg_char_library.a

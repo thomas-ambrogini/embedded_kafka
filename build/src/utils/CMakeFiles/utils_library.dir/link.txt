@@ -1,0 +1,2 @@
+/usr/bin/ar qc libutils_library.a CMakeFiles/utils_library.dir/JsonUtils.cpp.o CMakeFiles/utils_library.dir/StandardOutputLogger.cpp.o CMakeFiles/utils_library.dir/TI_DebugLogger.cpp.o
+/usr/bin/ranlib libutils_library.a

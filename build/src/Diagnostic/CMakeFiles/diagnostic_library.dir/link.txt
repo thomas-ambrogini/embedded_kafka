@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdiagnostic_library.a CMakeFiles/diagnostic_library.dir/LatencyDiagnostic.cpp.o
+/usr/bin/ranlib libdiagnostic_library.a
