@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtopicmanager_library.a CMakeFiles/topicmanager_library.dir/ProducerRecord.cpp.o CMakeFiles/topicmanager_library.dir/RealTopic.cpp.o CMakeFiles/topicmanager_library.dir/Record.cpp.o CMakeFiles/topicmanager_library.dir/SystemManager.cpp.o CMakeFiles/topicmanager_library.dir/Topic.cpp.o CMakeFiles/topicmanager_library.dir/TopicFactory.cpp.o CMakeFiles/topicmanager_library.dir/TopicHandler.cpp.o CMakeFiles/topicmanager_library.dir/TopicProxy.cpp.o
-/usr/bin/ranlib libtopicmanager_library.a

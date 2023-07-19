@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcommunication_library.a CMakeFiles/communication_library.dir/CommunicationFactory.cpp.o CMakeFiles/communication_library.dir/CommunicationUtils.cpp.o CMakeFiles/communication_library.dir/RPMessageCommunication.cpp.o CMakeFiles/communication_library.dir/RPMessageLinuxCommunication.cpp.o CMakeFiles/communication_library.dir/UDPSocketCommunication.cpp.o
-/usr/bin/ranlib libcommunication_library.a

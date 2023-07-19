@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdomain_library.a CMakeFiles/domain_library.dir/BrokerMetadata.cpp.o CMakeFiles/domain_library.dir/ClusterMetadata.cpp.o CMakeFiles/domain_library.dir/ConsumerMetadata.cpp.o CMakeFiles/domain_library.dir/EndpointFactory.cpp.o CMakeFiles/domain_library.dir/ProducerMetadata.cpp.o CMakeFiles/domain_library.dir/RPMessageEndpoint.cpp.o CMakeFiles/domain_library.dir/TopicMetadata.cpp.o CMakeFiles/domain_library.dir/UDPEndpoint.cpp.o
-/usr/bin/ranlib libdomain_library.a
