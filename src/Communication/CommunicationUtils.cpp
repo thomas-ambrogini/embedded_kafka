@@ -7,7 +7,7 @@ namespace CommunicationUtils
         communication->write(request, requestSize + 1, *destinationEndpoint);
 
         Endpoint *senderEndpoint = EndpointFactory::createEndpoint(communicationType);
-        int resultRead = communication->read(response, responseSize, *senderEndpoint);
+        communication->read(response, responseSize, *senderEndpoint);
 
         delete senderEndpoint;
     }
