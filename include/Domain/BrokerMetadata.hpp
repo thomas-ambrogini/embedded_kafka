@@ -7,6 +7,7 @@
 #include "json.hpp"
 #include "Endpoint.hpp"
 #include "UDPEndpoint.hpp"
+#include "RPMessageEndpoint.hpp"
 
 using json = nlohmann::json;
 

@@ -19,10 +19,13 @@ void RPMessageEndpoint::printEndpointInformation(const Logger &logger) const
 
 void RPMessageEndpoint::to_json(json &j) const
 {
+    j = json{{"type", "RPMessage"}, {"coreId", coreId}, {"serviceEndpoint", serviceEndpoint}};
 }
 
 void RPMessageEndpoint::from_json(const json &j)
 {
+    coreId = j.at("coreId").get<int>();
+    serviceEndpoint = j.at("serviceEndpoint").get<int>();
 }
 
 void RPMessageEndpoint::setCoreId(uint32_t c)

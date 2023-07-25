@@ -1,5 +1,3 @@
-#ifdef __unix__
-
 #include "UDPEndpoint.hpp"
 
 UDPEndpoint::UDPEndpoint() : ipAddress("127.0.0.1"), port(0)
@@ -56,5 +54,3 @@ const char *UDPEndpoint::getIpAddress() const
 {
     return ipAddress;
 }
-
-#endif

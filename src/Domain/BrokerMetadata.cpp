@@ -28,6 +28,12 @@ void BrokerMetadata::from_json(const json &j)
         udpEndpoint->from_json(polymorphicJson);
         endpoint = udpEndpoint;
     }
+    else if (type == "RPMessage")
+    {
+        RPMessageEndpoint *rpMessageEndpoint = new RPMessageEndpoint();
+        rpMessageEndpoint->from_json(polymorphicJson);
+        endpoint = rpMessageEndpoint;
+    }
 
     for (const auto &item : j.at("topics"))
     {
