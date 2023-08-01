@@ -66,5 +66,6 @@
     "shared_mutex": "cpp",
     "variant": "cpp",
     "future": "cpp"
-  }
+  },
+  "cmake.configureOnOpen": false
 }

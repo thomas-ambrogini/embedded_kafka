@@ -21,6 +21,8 @@ public:
     void addTopicMetadata(const TopicMetadata t);
     Endpoint *getEndpoint() const;
 
+    void setEndpoint(Endpoint *endpoint);
+
     void to_json(json &j) const;
     void from_json(const json &j);
 

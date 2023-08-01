@@ -16,6 +16,7 @@ class SystemManager
 {
 public:
     SystemManager(const CommunicationType communicationType, const Logger &logger, BrokerMetadata boostrapBroker);
+    SystemManager(const CommunicationType communicationType, const Logger &logger);
 
     ~SystemManager();
 
@@ -35,6 +36,7 @@ private:
 
     void init();
     void createCommunication();
+    void initLinuxCommunication();
 };
 
 #endif

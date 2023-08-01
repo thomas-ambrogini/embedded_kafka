@@ -5,6 +5,11 @@ Producer::Producer(const CommunicationType c, const Logger &l, BrokerMetadata bo
     askForID();
 }
 
+Producer::Producer(const CommunicationType c, const Logger &l) : logger(l), topicFactory(c, logger)
+{
+    askForID();
+}
+
 void Producer::askForID()
 {
     int id = topicFactory.askForID();

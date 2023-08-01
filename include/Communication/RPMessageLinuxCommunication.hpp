@@ -27,6 +27,8 @@
 #include <map>
 #include <linux/rpmsg.h>
 
+#define MAX_MESSAGE_SIZE_LINUX 512
+
 class RPMessageLinuxCommunication : public Communication
 {
 public:
@@ -47,6 +49,7 @@ private:
 
     int checkEndpoint();
     void close_devs();
+    void setSourceEndpoint(int fd, Endpoint &source);
 };
 
 #endif

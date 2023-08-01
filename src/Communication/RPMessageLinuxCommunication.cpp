@@ -30,18 +30,10 @@ int RPMessageLinuxCommunication::write(const char *message, size_t messageSize, 
 
     sprintf(eptdev_name, "rpmsg-char-%d-%d", rpMessageDestination.getCoreId(), getpid());
 
-    if (endpointMap.find(rpMessageDestination) != endpointMap.end())
+    if (endpointMap.find(rpMessageDestination) == endpointMap.end())
     {
-        logger.log("The endpoint is already in the map, no need to create a new dev");
-    }
-    else
-    {
-        logger.log("The endpoint wasn't in the map, creating the dev");
-
         rcdev = rpmsg_char_open(static_cast<rproc_id>(rpMessageDestination.getCoreId()), NULL, RPMSG_ADDR_ANY, rpMessageDestination.getServiceEndpoint(),
                                 eptdev_name, flags);
-        logger.log("RCDEV ENDPOINT: %d and FD: %d", rcdev->endpt, rcdev->fd);
-
         endpointMap.insert(std::make_pair(rpMessageDestination, rcdev));
         fds.push_back(rcdev->fd);
     }
@@ -71,6 +63,7 @@ int RPMessageLinuxCommunication::read(char *buffer, size_t bufferSize, Endpoint 
     timeout.tv_usec = 0;
 
     int num_ready = select(maxfd + 1, &read_fds, nullptr, nullptr, NULL);
+
     if (num_ready == -1)
     {
         logger.log("Error in select");
@@ -81,16 +74,15 @@ int RPMessageLinuxCommunication::read(char *buffer, size_t bufferSize, Endpoint 
     }
     else
     {
-        logger.log("Input is available");
         for (const auto &fd : fds)
         {
             if (FD_ISSET(fd, &read_fds))
             {
-                int bytesRead = recv_msg(fd, 256, buffer, &packet_len);
+                setSourceEndpoint(fd, source);
+                int bytesRead = recv_msg(fd, MAX_MESSAGE_SIZE_LINUX, buffer, &packet_len);
                 if (packet_len > 0)
                 {
                     buffer[packet_len] = '\0';
-                    logger.log("Read message: %s, from fd %d", buffer, fd);
                 }
                 return bytesRead;
             }
@@ -103,8 +95,6 @@ int RPMessageLinuxCommunication::read(char *buffer, size_t bufferSize, Endpoint 
 int RPMessageLinuxCommunication::send_msg(int fd, const char *msg, int len)
 {
     int ret = 0;
-
-    logger.log("Sending the message %s, with size %d", msg, len);
 
     ret = ::write(fd, msg, len);
     if (ret < 0)
@@ -140,6 +130,20 @@ void RPMessageLinuxCommunication::close_devs()
     for (auto iter = endpointMap.begin(); iter != endpointMap.end(); ++iter)
     {
         rpmsg_char_close(iter->second);
+    }
+}
+
+void RPMessageLinuxCommunication::setSourceEndpoint(int fd, Endpoint &source)
+{
+    for (const auto &pair : endpointMap)
+    {
+        const rpmsg_char_dev_t &value = *pair.second;
+        if (value.fd == fd)
+        {
+            const RPMessageEndpoint &endpoint = pair.first;
+            static_cast<RPMessageEndpoint &>(source).setCoreId(endpoint.getCoreId());
+            static_cast<RPMessageEndpoint &>(source).setServiceEndpoint(endpoint.getServiceEndpoint());
+        }
     }
 }
 

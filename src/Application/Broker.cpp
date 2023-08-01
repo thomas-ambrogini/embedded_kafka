@@ -116,7 +116,7 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 void Broker::askForTopics()
 {
     json requestJson;
-    requestJson["operation"] = "getTopics";
+    requestJson["operation"] = "initTopics";
 
     json endpointJson;
     brokerMetadata.getEndpoint()->to_json(endpointJson);

@@ -1,5 +1,3 @@
-#ifdef __unix__
-
 #ifndef CONFIGURER_H
 #define CONFIGURER_H
 
@@ -11,13 +9,9 @@
 #include "Logger.hpp"
 #include "json.hpp"
 #include "JsonUtils.hpp"
+#include "CommunicationUtils.hpp"
 
-#include <fstream>
 #include <atomic>
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <future>
 
 using json = nlohmann::json;
 
@@ -25,7 +19,7 @@ class Configurer
 {
 public:
     Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l);
-    Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile);
+    Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile, const bool testing);
 
     ~Configurer();
 
@@ -40,6 +34,8 @@ private:
     int numberOfBrokers;
     std::vector<Endpoint *> brokerEndpoints;
     bool initOver;
+    BrokerMetadata linuxConfigurerMetadata;
+    const bool testing;
 
     const std::string configFile = "../conf/configFile.json";
     const std::string topicsFile = "build/conf/topics.json";
@@ -49,7 +45,7 @@ private:
     void retrieveTopics();
     void handleOperation(const char *request, Endpoint *sourceEndpoint);
     void checkInit();
+    void initCommunication();
 };
 
-#endif
 #endif

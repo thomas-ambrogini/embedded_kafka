@@ -62,3 +62,8 @@ Endpoint *BrokerMetadata::getEndpoint() const
 {
     return endpoint;
 }
+
+void BrokerMetadata::setEndpoint(Endpoint *endpoint)
+{
+    this->endpoint = endpoint;
+}

@@ -3,8 +3,20 @@
 #include "RPMessageEndpoint.hpp"
 #include "EndpointFactory.hpp"
 
+#include <chrono>
+
+#define gMsgEchoCount (100000u)
+
+void fillBuffer(char *buffer, int bufferSize)
+{
+	memset(buffer, 'c', bufferSize - 1);
+	buffer[bufferSize - 1] = '\0';
+}
+
 int main(int argc, char *argv[])
 {
+	uint32_t msg;
+	uint16_t msgSize;
 	char packet_buf[512], packet_buf_read[512], packet_buf_read2[512] = {0};
 
 	StandardOutputLogger logger;
@@ -13,33 +25,36 @@ int main(int argc, char *argv[])
 	sourceEndpoint->setServiceEndpoint(14);
 	Communication *communication = CommunicationFactory::createCommunication(CommunicationType::RPMessageLinux, *sourceEndpoint, logger);
 
-	memset(packet_buf, 0, sizeof(packet_buf));
-	sprintf(packet_buf, "hello there %d!", 1);
 	RPMessageEndpoint *destinationEndpoint = static_cast<RPMessageEndpoint *>(EndpointFactory::createEndpoint(CommunicationType::RPMessageLinux));
 	destinationEndpoint->setCoreId(2);
 	destinationEndpoint->setServiceEndpoint(14);
 
-	logger.log("I want to send the message: %s, with size: %d", packet_buf, sizeof(packet_buf));
+	communication->write(packet_buf, msgSize, *destinationEndpoint);
 
-	communication->write(packet_buf, strlen(packet_buf), *destinationEndpoint);
-	communication->read(packet_buf_read, strlen(packet_buf), *sourceEndpoint);
-	logger.log("Message Received: %s", packet_buf_read);
+	logger.log("i can do this");
 
-	communication->write(packet_buf, strlen(packet_buf), *destinationEndpoint);
+	communication->read(packet_buf_read, sizeof(packet_buf), *destinationEndpoint);
 
-	destinationEndpoint->setCoreId(3);
-	destinationEndpoint->setServiceEndpoint(14);
-	communication->write(packet_buf, strlen(packet_buf), *destinationEndpoint);
+	fillBuffer(packet_buf, 256 - 16);
+	msgSize = strlen(packet_buf) + 1;
 
-	communication->read(packet_buf_read2, strlen(packet_buf), *sourceEndpoint);
+	logger.log("I want to send the message: %s, with size: %d", packet_buf, msgSize);
 
-	logger.log("Message Received 2: %s", packet_buf_read2);
+	auto start = std::chrono::high_resolution_clock::now();
 
-	communication->read(packet_buf_read2, strlen(packet_buf), *sourceEndpoint);
+	for (msg = 0; msg < gMsgEchoCount; msg++)
+	{
+		communication->write(packet_buf, msgSize, *destinationEndpoint);
+		communication->read(packet_buf_read, sizeof(packet_buf), *destinationEndpoint);
+	}
 
-	logger.log("Message Received 3: %s", packet_buf_read2);
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+
+	std::cout << "Time taken: " << duration / (gMsgEchoCount) << " microseconds" << std::endl;
 
 	delete communication;
+	delete sourceEndpoint;
 
 	return 0;
 }
