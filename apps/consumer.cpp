@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-        std::cout << "Enter a message (type 'help' for usage, 'exit' to quit): ";
+        std::cout << "Enter the operation to do (type 'help' for usage, 'exit' to quit): ";
         std::getline(std::cin, userInput);
 
         if (userInput == "help")
