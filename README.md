@@ -19,6 +19,14 @@ cmake -S . -B build
 cmake --build build
 ```
 
+### Build for the board
+
+```bash
+cd embedded_kafka
+cmake -DCMAKE_TOOLCHAIN_FILE=~/toolchain-linux-arm.cmake -S . -B build
+cmake --build build
+```
+
 ### Build with helping script
 
 ```bash

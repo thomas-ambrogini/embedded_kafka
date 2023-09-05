@@ -24,11 +24,15 @@ while getopts "hbts:pc" opt; do
         cmake --build ../build
         ;;
     t)
-        # Shift the option index so that $1 refers to the first non-option argument
         shift $((OPTIND-1))
         scripts/create_topics_file.sh "$@"
         ;;
     s)
+        target_directory="build/output"
+        if [ ! -d "$target_directory" ]; then
+            mkdir -p "$target_directory"
+        fi
+        
         nohup build/apps/configurer  >> build/output/configurer.txt &
         scripts/launch_brokers.sh $OPTARG
         ;;
