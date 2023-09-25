@@ -1,0 +1,34 @@
+<h1>Topics</h1>
+
+<!-- views/messages.handlebars -->
+{{!-- {{#each topicPairs}}
+  <div class="row">
+    {{#each this}}
+      <div class="topic-box">
+        <h3>{{name}}</h3>
+        <ul>
+          {{#each messages}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/each}}
+  </div>
+{{/each}} --}}
+
+{{#each topicPairs}}
+  <div class="row">
+    {{#each this}}
+      <div class="topic-box">
+        <h3>{{name}}</h3>
+        <div class="message-box">
+          <ul>
+            {{#each messages}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/each}}

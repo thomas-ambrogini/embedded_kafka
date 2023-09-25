@@ -3,31 +3,33 @@
 /**
  * Module dependencies.
  */
-
-var app = require('../app');
-var debug = require('debug')('node-server:server');
-var http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+const fs = require("fs");
+var socketIo = require("socket.io");
+var http = require("http");
+var app = require("../app");
+var debug = require("debug")("node-server:server");
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+var io = socketIo(server); // `io` is created in this scope
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -54,22 +56,20 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
@@ -77,14 +77,47 @@ function onError(error) {
   }
 }
 
+const filePath = "monitor/topics.txt"; // Specify the path to the file to monitor
+
+function sendFileContent() {
+  fs.readFile(filePath, "utf-8", (err, data) => {
+    if (err) {
+      console.error("Error reading file:", err);
+    } else {
+      io.emit("fileContent", data);
+    }
+  });
+}
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Send the initial file content when a client connects
+  sendFileContent();
+
+  // Handle custom events
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg); // Broadcast the message to all connected clients
+  });
+
+  // Watch the file for changes and send updates to connected clients
+  fs.watch(filePath, (event, filename) => {
+    if (event === "change") {
+      sendFileContent();
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
+
 /**
  * Event listener for HTTP server "listening" event.
  */
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
 }
