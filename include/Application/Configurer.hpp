@@ -42,7 +42,7 @@ private:
     bool initOver;
 
     const std::string configFile = "../conf/configFile.json";
-    const std::string topicsFile = "build/conf/topics.json";
+    const std::string topicsFile = "../../conf/topics.json";
     std::atomic<int> counter;
 
     void retrieveClusterInformation();

@@ -9,3 +9,8 @@ target_link_libraries(consumer PRIVATE application_library)
 
 add_executable(producer "${embedded_kafka_SOURCE_DIR}/apps/producer.cpp")
 target_link_libraries(producer PRIVATE application_library)
+
+add_subdirectory(Brokers)
+add_subdirectory(Configurers)
+add_subdirectory(Consumers)
+add_subdirectory(Producers)

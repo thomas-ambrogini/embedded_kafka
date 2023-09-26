@@ -1,6 +1,6 @@
 #!/bin/bash
 
-script_to_run="build/apps/broker"
+script_to_run="build/apps/Brokers/brokerPC"
 brokers_count="$1"
 port=1234
 
