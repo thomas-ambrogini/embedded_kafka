@@ -5,13 +5,8 @@
 #include <thread>
 #include <iostream>
 #include <string>
-
-void usage()
-{
-    std::cout << "Usage: Enter one of the following operations: " << std::endl
-              << "'exit' to quit the program." << std::endl
-              << "'publish' to publish data to a topic" << std::endl;
-}
+#include <ctime>
+#include <cstdlib>
 
 int main(int argc, char *argv[])
 {
@@ -32,20 +27,24 @@ int main(int argc, char *argv[])
         }
     }
 
+    // Seed the random number generator
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+
     BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
     Producer producer(commType, logger, bootstrapBroker);
 
-    std::string topicName = "Prova";
+    std::string topicName = "Measurement";
     TopicMetadata topic(topicName);
 
+    while (true)
+    {
+        float randomNumber = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * 90.0f;
+        std::string randomString = std::to_string(randomNumber);
 
-    while (true) {
-        std::string message = "Message " + std::to_string(messageNumber);
-        ProducerRecord producerRecord(topicName, message);
+        ProducerRecord producerRecord(topicName, randomString);
         producer.publish(producerRecord);
-        messageNumber++;
 
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
     return 0;

@@ -3,18 +3,20 @@
 /**
  * Module dependencies.
  */
-const fs = require("fs");
-var socketIo = require("socket.io");
 var http = require("http");
 var app = require("../app");
 var debug = require("debug")("node-server:server");
+
+var socketApi = require("../socketApi");
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
-var io = socketIo(server); // `io` is created in this scope
+// var io = socketIo(server); // `io` is created in this scope
+var io = socketApi.io;
+io.attach(server);
 
 /**
  * Get port from environment and store in Express.
@@ -76,41 +78,6 @@ function onError(error) {
       throw error;
   }
 }
-
-const filePath = "monitor/topics.txt"; // Specify the path to the file to monitor
-
-function sendFileContent() {
-  fs.readFile(filePath, "utf-8", (err, data) => {
-    if (err) {
-      console.error("Error reading file:", err);
-    } else {
-      io.emit("fileContent", data);
-    }
-  });
-}
-
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  // Send the initial file content when a client connects
-  sendFileContent();
-
-  // Handle custom events
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg); // Broadcast the message to all connected clients
-  });
-
-  // Watch the file for changes and send updates to connected clients
-  fs.watch(filePath, (event, filename) => {
-    if (event === "change") {
-      sendFileContent();
-    }
-  });
-
-  socket.on("disconnect", () => {
-    console.log("A user disconnected");
-  });
-});
 
 /**
  * Event listener for HTTP server "listening" event.

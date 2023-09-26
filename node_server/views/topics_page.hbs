@@ -1,34 +1,20 @@
 <h1>Topics</h1>
 
-<!-- views/messages.handlebars -->
-{{!-- {{#each topicPairs}}
-  <div class="row">
-    {{#each this}}
-      <div class="topic-box">
-        <h3>{{name}}</h3>
-        <ul>
-          {{#each messages}}
-            <li>{{this}}</li>
-          {{/each}}
-        </ul>
-      </div>
-    {{/each}}
+{{#each topics}}
+  <div class="topic-box">
+    <h2>{{this.name}}</h2>
+    <div class="message-box">
+      <ul class="message-list">
+        {{#each this.messages}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-{{/each}} --}}
-
-{{#each topicPairs}}
-  <div class="row">
-    {{#each this}}
-      <div class="topic-box">
-        <h3>{{name}}</h3>
-        <div class="message-box">
-          <ul>
-            {{#each messages}}
-              <li>{{this}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      </div>
-    {{/each}}
-  </div>
+  {{#if @indexIsOdd}}
+    <div class="clearfix"></div>
+  {{/if}}
 {{/each}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/client.js"></script>
