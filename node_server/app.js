@@ -29,9 +29,8 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/menu", menuRouter);
 
-app.use("/topic_form", topicFormRouter);
-app.use("/create_topics", createTopicsRouter);
-
+app.use("/topicForm", topicFormRouter);
+app.use("/createTopic", createTopicsRouter);
 app.use("/topicsPage", topicsPageRouter);
 
 // catch 404 and forward to error handler

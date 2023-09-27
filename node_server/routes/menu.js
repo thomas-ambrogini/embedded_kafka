@@ -3,8 +3,8 @@ var router = express.Router();
 
 const pages = [
   { title: "Home", url: "/" },
-  { title: "About Us", url: "/about" },
-  { title: "Create Topics", url: "/topic_form" },
+  { title: "Create Topics", url: "/topicForm" },
+  { title: "Topics Page", url: "/topicsPage" },
 ];
 
 /* GET menu page. */

@@ -5,7 +5,6 @@ var socketApi = require("../socketApi");
 var io = socketApi.io;
 const topics = require("topicData");
 const { diffChars } = require("diff");
-const { log } = require("console");
 
 const files = {};
 

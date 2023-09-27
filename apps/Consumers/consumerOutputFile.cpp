@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     while (true)
     {
         Record record = consumer.poll(topic);
-        if (record.getData() != "NOT_VALID")
+        if (record.getData() != "NOT VALID")
         {
             outputFile << record.getData() << std::endl;
         }
