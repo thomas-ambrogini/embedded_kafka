@@ -1,5 +1,6 @@
 var createError = require("http-errors");
 var express = require("express");
+const exphbs = require('express-handlebars');
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -8,16 +9,28 @@ var app = express();
 
 // Routers
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var menuRouter = require("./routes/menu");
-
-var topicFormRouter = require("./routes/topicForm");
-var createTopicsRouter = require("./routes/createTopics");
+var createTopicsRouter = require("./routes/createTopic");
 var topicsPageRouter = require("./routes/topicsPage");
+var homeRouter = require("./routes/home");
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "hbs");
+var hbs = exphbs.create();
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.set("views", "./views");
+
+// Define your menu items
+const menuItems = [
+  { label: 'Home', url: '/home' },
+  { label: 'Create Topic', url: '/createTopics' },
+  { label: 'Topics Page', url: '/topicsPage' }
+];
+
+// Middleware to set common data
+app.use((req, res, next) => {
+  res.locals.menuItems = menuItems;
+  next();
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -26,12 +39,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/menu", menuRouter);
-
-app.use("/topicForm", topicFormRouter);
-app.use("/createTopic", createTopicsRouter);
+app.use("/createTopics", createTopicsRouter);
 app.use("/topicsPage", topicsPageRouter);
+app.use("/home", homeRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

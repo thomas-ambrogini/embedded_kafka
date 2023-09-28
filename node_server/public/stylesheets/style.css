@@ -39,3 +39,95 @@
   clear: both;
   display: table;
 }
+
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: #333; /* Background color of the sidebar */
+  color: #FFF; /* Text color */
+  width: 250px; /* Width of the sidebar */
+  height: 100%; /* Make the sidebar full height */
+  position: fixed;
+  top: 0;
+  left: 0; /* Start with the sidebar on-screen */
+  transition: transform 0.3s ease-in; /* Smooth transition for sliding in/out */
+  overflow-y: auto; /* Add vertical scrollbar if the content overflows */
+  box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.2); /* Optional shadow */
+  z-index: 1; /* Ensure sidebar is above other content */
+}
+
+/* Menu Styles */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  padding: 15px 0;
+  border-bottom: 1px solid #333; /* Separator line between menu items */
+}
+
+.menu li:last-child {
+  border-bottom: none; /* Remove the separator line for the last item */
+}
+
+.menu a {
+  color: #FFF; /* Text color for menu items */
+  text-decoration: none;
+  display: block;
+  padding: 10px 20px;
+  transition: background-color 0.3s; /* Smooth background color change on hover */
+}
+
+.menu a:hover {
+  background-color: #333; /* Background color on hover */
+}
+
+/* Toggle Button Style */
+.menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 2;
+  color: #FFF; /* Button color */
+  font-size: 24px; /* Adjust the size as needed */
+}
+
+
+/* Content Styles */
+.content {
+  margin-left: 250px; /* Adjust this to match the width of your sidebar */
+  padding: 20px; /* Add padding for spacing */
+}
+
+/* Example styles for headings and paragraphs */
+.content h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.content p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #666;
+}
+
+/* Example style for a button */
+.content .button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s; /* Smooth background color change on hover */
+}
+
+.content .button:hover {
+  background-color: #0056b3; /* Button background color on hover */
+}
+
+/* Other content-specific styles can be added here */
