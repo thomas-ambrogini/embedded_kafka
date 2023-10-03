@@ -21,9 +21,9 @@ app.set("views", "./views");
 
 // Define your menu items
 const menuItems = [
-  { label: 'Home', url: '/home' },
-  { label: 'Create Topic', url: '/createTopics' },
-  { label: 'Topics Page', url: '/topicsPage' }
+  { menu_id: "menu-home", label: 'Home', url: '/home' },
+  { menu_id: "menu-create-topics", label: 'Create Topic', url: '/createTopics' },
+  { menu_id: "menu-show-topics", label: 'Topics Page', url: '/topicsPage' }
 ];
 
 // Middleware to set common data

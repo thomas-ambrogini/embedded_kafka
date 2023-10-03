@@ -1,3 +1,128 @@
+/* Title */
+.title-line {
+  clear: both;
+  display: block;
+  margin: 10px 1% 10px 1%;
+  overflow: hidden;
+  width: 96%;
+}
+.title-line-img {
+  float: left;
+  width: 20%;
+}
+.title-line-img img{
+  max-width: 80px;
+}
+.title-line-txt{
+  float: left;
+  width: 80%;
+  font-weight: bold;
+  font-size: 200%;
+  padding-top: 20px;
+}
+/* Sections generic */
+.section {
+  clear: both;
+  width: 100%;
+}
+.section-hidden {
+  display: none;
+}
+/* TI cores */
+.ti-cores {
+  clear: both;
+  display: block;
+  margin: 10px 1%;
+  width: 98%;
+}
+.ti-core {
+  border: 1px solid #a9a9a9;
+  display: block;
+  float: left;
+  margin: 0 0.5%;
+  width: 18%;
+}
+.ti-core-top {
+  border-bottom: 1px solid #a9a9a9;
+  min-height: 50px;
+  margin: 10px 2%;
+  width: 96%;
+}
+.ti-core-top-img
+{
+  float: left;
+  margin-left: 1%;
+  width: 19%;
+}
+.ti-core-top-img img {
+  width: 100%;
+}
+.ti-core-top-txt
+{
+  float: left;
+  font-weight: bold;
+  margin-left: 1%;
+  padding-top: 10px;
+  text-align: center;
+  width: 69%;
+}
+.ti-core-top-led {
+  float: left;
+  padding-top: 10px;
+  width: 9%;
+}
+.ti-core-top-led img {
+  width: 100%;
+}
+/* Processor features*/
+.ti-features {
+  width: 100%;
+}
+.ti-features-line {
+margin: 0 2%;
+width: 96%;
+}
+.ti-features-line-txt {
+float: left;
+margin-left: 1%;
+text-align: left;
+width: 79%;
+}
+.ti-features-line-cmd {
+float: right;
+margin-right: 1%;
+width: 19%;
+}
+
+/* Menu */
+.topnav {
+  background-color: #a9a9a9;
+  clear: both;
+  display: block;
+  overflow: hidden;
+}
+.topnav div {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav div:hover {
+  background-color: #ddd;
+  color: black;
+  cursor: pointer;
+}
+.topnav-active {
+  background-color: #2d3175;
+  color: white;
+}
+.topnav .icon {
+  display: none;
+}
+
 /* CSS styles for the topic and message boxes */
 .topic-box {
   width: 45%; /* Adjust as needed */

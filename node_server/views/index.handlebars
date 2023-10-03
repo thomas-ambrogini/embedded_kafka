@@ -4,17 +4,32 @@
     <meta charset="UTF-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
     <script src="/javascripts/jquery.js"></script>
     <script src="/javascripts/dynamicLoading.js"></script>
   </head>
   <body>
-    <div class="sidebar">
+
+    <div class="title-line">
+      <div class="title-line-img">
+        <img src="img/datasensing-logo.jpg">
+      </div>
+      <div class="title-line-txt">Kafka like System for Etherogeneous communication</div>
+    </div>
+
+    <div class="topnav" id="menu">
+      {{#each menuItems}}
+        <div id="{{menu-id}}" class="topnav-active load-page" data-url="{{url}}">{{label}}</div>
+      {{/each}}
+    </div>
+
+    {{!-- <div class="sidebar">
         <ul class="menu">
             {{#each menuItems}}
                 <li><a href="#" class="load-page" data-url="{{url}}">{{label}}</a></li>
             {{/each}}
         </ul>
-    </div>
+    </div> --}}
 
     <div class="content">
         <h1>{{title}}</h1>
