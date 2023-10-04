@@ -78,6 +78,15 @@ void Configurer::handleOperation(const char *request, Endpoint *sourceEndpoint)
             topicJson.push_back(jsonObject);
         }
         communication->write(topicJson.dump().c_str(), topicJson.dump().size() + 1, *sourceEndpoint);
+
+        json requestJson;
+        requestJson["operation"] = "getClusterInformation";
+        std::string requestString = requestJson.dump();
+
+        char response[512];
+        CommunicationUtils::request(communication, communicationType, sourceEndpoint,
+                                    requestString.c_str(), requestString.size(), response, sizeof(response));
+        logger.log("[Configurer Linux] Received response: %s", response);
     }
     else if (operation == "initTopics")
     {
