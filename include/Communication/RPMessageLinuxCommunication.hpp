@@ -47,6 +47,8 @@ private:
 
     int checkEndpoint();
     void close_devs();
+    void setSourceEndpoint(int fd, Endpoint &source);
+
 };
 
 #endif

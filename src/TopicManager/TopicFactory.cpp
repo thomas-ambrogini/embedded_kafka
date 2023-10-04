@@ -6,6 +6,12 @@ TopicFactory::TopicFactory(CommunicationType commType, const Logger &l, BrokerMe
     createTopics();
 }
 
+TopicFactory::TopicFactory(CommunicationType commType, const Logger &l) : communicationType(commType), logger(l), systemManager(communicationType, logger)
+{
+    retrieveClusterInformation();
+    createTopics();
+}
+
 void TopicFactory::retrieveClusterInformation()
 {
     clusterMetadata = systemManager.getClusterMetadata();

@@ -11,6 +11,7 @@ class Producer
 {
 public:
     Producer(const CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker);
+    Producer(const CommunicationType communicationType, const Logger &logger);
 
     void publish(ProducerRecord producerRecord);
 

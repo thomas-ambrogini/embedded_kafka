@@ -10,6 +10,7 @@ class RPMessageEndpoint : public Endpoint
 {
 public:
     RPMessageEndpoint();
+    RPMessageEndpoint(uint16_t endpoint);
     RPMessageEndpoint(uint32_t coreId, uint16_t endpoint);
 
     ~RPMessageEndpoint() override;
@@ -25,7 +26,6 @@ public:
     uint16_t getServiceEndpoint() const;
 
     bool operator<(const RPMessageEndpoint &other) const;
-    // bool operator=(const RPMessageEndpoint &other) const;
 
 private:
     uint32_t coreId;

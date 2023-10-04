@@ -4,6 +4,10 @@ RPMessageEndpoint::RPMessageEndpoint() : coreId(-1), serviceEndpoint(-1)
 {
 }
 
+RPMessageEndpoint::RPMessageEndpoint(uint16_t endpoint) : coreId(-1), serviceEndpoint(endpoint)
+{
+}
+
 RPMessageEndpoint::RPMessageEndpoint(uint32_t c, uint16_t e) : coreId(c), serviceEndpoint(e)
 {
 }
@@ -19,10 +23,13 @@ void RPMessageEndpoint::printEndpointInformation(const Logger &logger) const
 
 void RPMessageEndpoint::to_json(json &j) const
 {
+    j = json{{"type", "RPMessage"}, {"coreId", coreId}, {"serviceEndpoint", serviceEndpoint}};
 }
 
 void RPMessageEndpoint::from_json(const json &j)
 {
+    coreId = j.at("coreId").get<int>();
+    serviceEndpoint = j.at("serviceEndpoint").get<int>();
 }
 
 void RPMessageEndpoint::setCoreId(uint32_t c)

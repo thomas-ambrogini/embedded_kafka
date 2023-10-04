@@ -6,6 +6,12 @@ SystemManager::SystemManager(const CommunicationType c, const Logger &l, BrokerM
     init();
 }
 
+SystemManager::SystemManager(const CommunicationType c, const Logger &l) : communicationType(c), logger(l)
+{
+    createCommunication();
+    init();
+}
+
 SystemManager::~SystemManager()
 {
     delete sourceEndpoint;
