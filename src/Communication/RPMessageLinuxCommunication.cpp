@@ -30,6 +30,8 @@ int RPMessageLinuxCommunication::write(const char *message, size_t messageSize, 
 
     sprintf(eptdev_name, "rpmsg-char-%d-%d", rpMessageDestination.getCoreId(), getpid());
 
+    logger.log("Looking for the processor: %d and service endpoint %d", rpMessageDestination.getCoreId(), rpMessageDestination.getServiceEndpoint());
+
     if (endpointMap.find(rpMessageDestination) != endpointMap.end())
     {
         logger.log("The endpoint is already in the map, no need to create a new dev");

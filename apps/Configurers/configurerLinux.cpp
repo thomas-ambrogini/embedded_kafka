@@ -13,7 +13,7 @@ int main()
     sourceEndpoint->setCoreId(1);
     sourceEndpoint->setServiceEndpoint(14);
 
-    Configurer configurer(CommunicationType::RPMessageLinux, *sourceEndpoint, logger);
+    Configurer configurer(CommunicationType::RPMessageLinux, *sourceEndpoint, logger, "../conf/configFile.json", false);
     configurer.start();
 
     delete sourceEndpoint;

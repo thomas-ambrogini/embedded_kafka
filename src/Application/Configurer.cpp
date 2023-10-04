@@ -1,13 +1,11 @@
-#ifdef __unix__
-
 #include "Configurer.hpp"
 
-Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile) : communicationType(commType), logger(l), configFile(configFile), counter(1), numberOfBrokers(0), initOver(false)
+Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l, const std::string configFile, const bool testing) : communicationType(commType), logger(l), numberOfBrokers(0), initOver(false), configFile(configFile), counter(1), testing(testing)
 {
-    communication = CommunicationFactory::createCommunication(commType, endpoint, logger);
+    communication = CommunicationFactory::createCommunication(communicationType, endpoint, logger);
 }
 
-Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : Configurer(commType, endpoint, l, "../conf/configFile.json")
+Configurer::Configurer(CommunicationType commType, const Endpoint &endpoint, const Logger &l) : Configurer(commType, endpoint, l, "../conf/configFile.json", true)
 {
 }
 
@@ -18,9 +16,16 @@ Configurer::~Configurer()
 
 void Configurer::start()
 {
-    retrieveTopics();
+    if (!testing)
+    {
+        initCommunication();
+    }
 
-    char clientRequest[1024];
+#ifdef __unix__
+    retrieveTopics();
+#endif
+
+    char clientRequest[512];
     Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
 
     while (true)
@@ -30,6 +35,7 @@ void Configurer::start()
             logger.logError("[Configurer] Failed to receive message from client");
             break;
         }
+
         logger.log("Request received from the client: %s", clientRequest);
         sourceEndpoint->printEndpointInformation(logger);
 
@@ -64,6 +70,17 @@ void Configurer::handleOperation(const char *request, Endpoint *sourceEndpoint)
     }
     else if (operation == "getTopics")
     {
+        json topicJson;
+        for (const auto &topic : topics)
+        {
+            json jsonObject;
+            topic.to_json(jsonObject);
+            topicJson.push_back(jsonObject);
+        }
+        communication->write(topicJson.dump().c_str(), topicJson.dump().size() + 1, *sourceEndpoint);
+    }
+    else if (operation == "initTopics")
+    {
         if (!initOver)
         {
             Endpoint *endpoint = EndpointFactory::createEndpoint(communicationType);
@@ -71,6 +88,20 @@ void Configurer::handleOperation(const char *request, Endpoint *sourceEndpoint)
             brokerEndpoints.push_back(endpoint);
             numberOfBrokers++;
         }
+    }
+    else if (operation == "announceLinuxConfigurer")
+    {
+        RPMessageEndpoint *linuxEndpoint = new RPMessageEndpoint();
+        const RPMessageEndpoint *rpMessageSource = static_cast<const RPMessageEndpoint *>(sourceEndpoint);
+
+        linuxEndpoint->setCoreId(rpMessageSource->getCoreId());
+        linuxEndpoint->setServiceEndpoint(rpMessageSource->getServiceEndpoint());
+
+        const char *initDoneMessage = "init done";
+
+        communication->write(initDoneMessage, strlen(initDoneMessage) + 1, *sourceEndpoint);
+
+        linuxConfigurerMetadata.setEndpoint(linuxEndpoint);
     }
 
     logger.log("status of the cluster:");
@@ -92,6 +123,8 @@ void Configurer::checkInit()
     {
         return;
     }
+
+    retrieveTopics();
 
     initOver = true;
     int numberOfTopics = topics.size();
@@ -151,6 +184,36 @@ void Configurer::checkInit()
 
 void Configurer::retrieveTopics()
 {
+    if (communicationType == CommunicationType::RPMessage)
+    {
+        if (testing)
+        {
+            TopicMetadata topicMetadata("Testing");
+            topics.push_back(topicMetadata);
+
+            return;
+        }
+
+        json requestJson;
+        requestJson["operation"] = "getTopics";
+        std::string requestString = requestJson.dump();
+
+        char response[512];
+        CommunicationUtils::request(communication, communicationType, linuxConfigurerMetadata.getEndpoint(),
+                                    requestString.c_str(), requestString.size() + 1, response, sizeof(response));
+
+        json topicsJson = json::parse(response);
+
+        for (const auto &topic : topicsJson)
+        {
+            TopicMetadata topicMetadata(topic["name"]);
+            topics.push_back(topicMetadata);
+        }
+
+        return;
+    }
+
+#ifdef __unix__
     json jsonData = JsonUtils::readJsonFile(topicsFile, logger);
 
     if (!jsonData.empty())
@@ -165,6 +228,25 @@ void Configurer::retrieveTopics()
     {
         logger.logError("[Configurer] The topics JSON file was empty or not found");
     }
+#endif
 }
 
-#endif
+void Configurer::initCommunication()
+{
+    if (communicationType == CommunicationType::RPMessageLinux)
+    {
+        json requestJson;
+        requestJson["operation"] = "announceLinuxConfigurer";
+        std::string requestString = requestJson.dump();
+
+        RPMessageEndpoint *destinationEndpoint = static_cast<RPMessageEndpoint *>(EndpointFactory::createEndpoint(CommunicationType::RPMessageLinux));
+        destinationEndpoint->setCoreId(2);
+        destinationEndpoint->setServiceEndpoint(14);
+
+        char response[512];
+        CommunicationUtils::request(communication, communicationType, destinationEndpoint,
+                                    requestString.c_str(), requestString.size() + 1, response, sizeof(response));
+
+        logger.log("%s", response);
+    }
+}

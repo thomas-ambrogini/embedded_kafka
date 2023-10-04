@@ -59,7 +59,6 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
         logger.log("[Broker] The producer with ID: %d, sent the following record: %s to be published on the topic: %s", producerMetadata.getId(), record.getData().c_str(), topicMetadata.getName().c_str());
 
         topicHandler.save(record, topicMetadata, producerMetadata);
-        // topicHandler.updateConsumers(topicMetadata);
     }
     else if (operation == "subscribe")
     {
