@@ -1,2 +1,9 @@
 build
+build_linux
 .vscode
+
+include/Communication/IPCNotifyCommunication.hpp
+include/Domain/IPCNotifyEndpoint.hpp
+
+src/Domain/IPCNotifyEndpoint.cpp
+src/Communication/IPCNotifyCommunication.cpp
