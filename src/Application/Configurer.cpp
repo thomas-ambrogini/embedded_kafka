@@ -86,6 +86,7 @@ void Configurer::handleOperation(const char *request, Endpoint *sourceEndpoint)
         char response[512];
         CommunicationUtils::request(communication, communicationType, sourceEndpoint,
                                     requestString.c_str(), requestString.size(), response, sizeof(response));
+
         logger.log("[Configurer Linux] Received response: %s", response);
     }
     else if (operation == "initTopics")
@@ -189,6 +190,12 @@ void Configurer::checkInit()
         clusterMetadata.addBrokerMetadata(broker);
         communication->write(topicJson.dump().c_str(), topicJson.dump().size() + 1, *brokerEndpoints[i]);
     }
+
+    // sends the cluster information to the linux configurer
+
+    json clusterJson;
+    clusterMetadata.to_json(clusterJson);
+    communication->write(clusterJson.dump().c_str(), clusterJson.dump().size() + 1, *linuxConfigurerMetadata.getEndpoint());
 }
 
 void Configurer::retrieveTopics()
@@ -231,6 +238,7 @@ void Configurer::retrieveTopics()
         {
             TopicMetadata obj(entry["name"]);
             topics.push_back(obj);
+            logger.log("Topic name: %s", obj.getName().c_str());
         }
     }
     else
