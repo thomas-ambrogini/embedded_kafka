@@ -1,2 +1,0 @@
-/opt/cross-compilers/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-ar qc libdiagnostic_library.a CMakeFiles/diagnostic_library.dir/LatencyDiagnostic.cpp.o
-/opt/cross-compilers/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-ranlib libdiagnostic_library.a

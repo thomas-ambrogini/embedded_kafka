@@ -1,2 +1,0 @@
-/opt/cross-compilers/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-ar qc libutils_library.a CMakeFiles/utils_library.dir/JsonUtils.cpp.o CMakeFiles/utils_library.dir/StandardOutputLogger.cpp.o CMakeFiles/utils_library.dir/TI_DebugLogger.cpp.o
-/opt/cross-compilers/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-ranlib libutils_library.a

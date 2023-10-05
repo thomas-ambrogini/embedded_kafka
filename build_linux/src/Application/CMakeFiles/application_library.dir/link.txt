@@ -1,2 +1,0 @@
-/opt/cross-compilers/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-ar qc libapplication_library.a CMakeFiles/application_library.dir/Broker.cpp.o CMakeFiles/application_library.dir/Configurer.cpp.o CMakeFiles/application_library.dir/Consumer.cpp.o CMakeFiles/application_library.dir/Producer.cpp.o
-/opt/cross-compilers/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-ranlib libapplication_library.a
