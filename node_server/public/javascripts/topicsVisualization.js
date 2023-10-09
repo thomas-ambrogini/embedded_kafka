@@ -1,8 +1,6 @@
-// public/js/client.js
 document.addEventListener("DOMContentLoaded", () => {
-  const socket = io(); // Connect to the Socket.io server
+  const socket = io();
 
-  // Handle incoming topic updates and messages
   socket.on("topicUpdate", function (data) {
     const { topicName, messages } = data;
     const topicBoxes = document.querySelectorAll(".topic-box");

@@ -1,6 +1,6 @@
 var createError = require("http-errors");
 var express = require("express");
-const exphbs = require('express-handlebars');
+const exphbs = require("express-handlebars");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -12,18 +12,24 @@ var indexRouter = require("./routes/index");
 var createTopicsRouter = require("./routes/createTopic");
 var topicsPageRouter = require("./routes/topicsPage");
 var homeRouter = require("./routes/home");
+var processorsRouter = require("./routes/processors");
 
 // view engine setup
 var hbs = exphbs.create();
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
 app.set("views", "./views");
 
 // Define your menu items
 const menuItems = [
-  { menu_id: "menu-home", label: 'Home', url: '/home' },
-  { menu_id: "menu-create-topics", label: 'Create Topic', url: '/createTopics' },
-  { menu_id: "menu-show-topics", label: 'Topics Page', url: '/topicsPage' }
+  { menu_id: "menu-home", label: "Home", url: "/home" },
+  {
+    menu_id: "menu-create-topics",
+    label: "Create Topic",
+    url: "/createTopics",
+  },
+  { menu_id: "menu-show-topics", label: "Topics", url: "/topicsPage" },
+  { menu_id: "menu-processors", label: "Processors", url: "/processors" },
 ];
 
 // Middleware to set common data
@@ -41,7 +47,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/createTopics", createTopicsRouter);
 app.use("/topicsPage", topicsPageRouter);
-app.use("/home", homeRouter)
+app.use("/home", homeRouter);
+app.use("/processors", processorsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

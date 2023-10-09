@@ -45,6 +45,10 @@ function readFileDeleteContent(filename) {
 
 function monitor(filesToMonitor) {
   function watchFile(filepath) {
+    if (!fs.existsSync(filepath)) {
+      fs.writeFileSync(filepath, "", "utf-8");
+      console.log("File created:", filepath);
+    }
     fs.watchFile(filepath, { interval: 1000 }, (curr, prev) => {
       if (curr.mtime !== prev.mtime) {
         console.log(`File ${filepath} has been modified.`);

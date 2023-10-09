@@ -4,6 +4,7 @@
 #include "EndpointFactory.hpp"
 #include <iostream>
 #include <map>
+#include <cstring>
 
 void usage(std::map<std::string, std::string> &idToProcessor)
 {
@@ -18,7 +19,7 @@ void usage(std::map<std::string, std::string> &idToProcessor)
 
 int main(int argc, char *argv[])
 {
-    char packet_buf[512], packet_buf_read[512], packet_buf_read2[512] = {0};
+    char packet_buf[50], packet_buf_read[512], packet_buf_read2[512] = {0};
 
     std::map<std::string, std::string> idToProcessor = {
         {"2", "R5_0_0"},
@@ -40,16 +41,19 @@ int main(int argc, char *argv[])
     StandardOutputLogger logger;
     RPMessageEndpoint *sourceEndpoint = static_cast<RPMessageEndpoint *>(EndpointFactory::createEndpoint(CommunicationType::RPMessageLinux));
     sourceEndpoint->setCoreId(1);
-    sourceEndpoint->setServiceEndpoint(10);
+    sourceEndpoint->setServiceEndpoint(14);
     Communication *communication = CommunicationFactory::createCommunication(CommunicationType::RPMessageLinux, *sourceEndpoint, logger);
 
     memset(packet_buf, 0, sizeof(packet_buf));
     sprintf(packet_buf, "You can start!");
+    int actual_length = strlen(packet_buf);
+    packet_buf[actual_length] = '\0';
+
     RPMessageEndpoint *destinationEndpoint = static_cast<RPMessageEndpoint *>(EndpointFactory::createEndpoint(CommunicationType::RPMessageLinux));
     destinationEndpoint->setCoreId(id);
     destinationEndpoint->setServiceEndpoint(14);
 
-    logger.log("I want to send the message: %s, with size: %d", packet_buf, sizeof(packet_buf));
+    logger.log("I want to send the message: %s, with length: %d to the core %d", packet_buf, strlen(packet_buf), id);
 
     communication->write(packet_buf, strlen(packet_buf), *destinationEndpoint);
     communication->read(packet_buf_read, strlen(packet_buf), *sourceEndpoint);
