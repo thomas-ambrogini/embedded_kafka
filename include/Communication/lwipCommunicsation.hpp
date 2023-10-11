@@ -21,7 +21,7 @@
 #include "ti_enet_config.h"
 #include "ti_enet_open_close.h"
 #include "app_cpswconfighandler.h"
-#include "app_tcpclient.h"
+#include "app_socket.h"
 #include "ti_enet_lwipif.h"
 #include <inttypes.h>
 
@@ -46,6 +46,9 @@ public:
 private:
     // RPMessage_Object msgObject;
     const lwipEndpoint endpoint;
+
+    //This has to go in the endpoint probably
+    int32_t sock = -1;
 };
 
 #endif
