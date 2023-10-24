@@ -11,6 +11,14 @@ Before proceeding, make sure you have the following tools and libraries installe
 
 - CMake (minimum version 3.12): [Download CMake](https://cmake.org/download/)
 
+### Build for A53 Linux
+
+```bash
+cd embedded_kafka
+cmake -DCMAKE_TOOLCHAIN_FILE=toolchain-linux-arm.cmake -S . -B build_linux
+cmake --build build_linux
+```
+
 ### Build with CMake
 
 ```bash
