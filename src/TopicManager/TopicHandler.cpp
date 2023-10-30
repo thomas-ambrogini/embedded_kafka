@@ -88,3 +88,12 @@ void TopicHandler::addHandledTopic(TopicMetadata topicMetadata)
     RealTopic topic(topicMetadata, logger);
     topics.push_back(topic);
 }
+
+void TopicHandler::printHandledTopics()
+{
+    logger.log("Handled topic by the broker:");
+    for (RealTopic topic : topics) 
+    {
+        logger.log("%s",topic.getTopicMetadata().getName().c_str());
+    }
+}

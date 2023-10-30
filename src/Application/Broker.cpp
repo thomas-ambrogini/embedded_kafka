@@ -1,13 +1,18 @@
 #include "Broker.hpp"
 
-Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l, BrokerMetadata configurerMetadata) : brokerMetadata(const_cast<Endpoint *>(&endpoint)),
+Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l, BrokerMetadata configurerMetadata, const bool testing) : brokerMetadata(const_cast<Endpoint *>(&endpoint)),
                                                                                                                            configurerMetadata(configurerMetadata),
                                                                                                                            communicationType(commType),
                                                                                                                            logger(l),
                                                                                                                            communication(CommunicationFactory::createCommunication(commType, endpoint, logger)),
-                                                                                                                           topicHandler(communicationType, logger, communication)
+                                                                                                                           topicHandler(communicationType, logger, communication),
+                                                                                                                           testing(testing)
 {
-    askForTopics();
+    if(!testing) {
+        askForTopics();
+    }else {
+        createTestingTopic();
+    }
 }
 
 Broker::~Broker()
@@ -134,4 +139,14 @@ void Broker::askForTopics()
         TopicMetadata topicMetadata(topic["name"]);
         topicHandler.addHandledTopic(topicMetadata);
     }
+}
+
+void Broker::createTestingTopic() {
+    TopicMetadata topicMetadata("Testing");
+    topicHandler.addHandledTopic(topicMetadata);
+}
+
+void Broker::printHandledTopics() 
+{
+    topicHandler.printHandledTopics();
 }

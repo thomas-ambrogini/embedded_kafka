@@ -25,6 +25,7 @@ public:
     void poll(ConsumerMetadata consumerMetadata, TopicMetadata topicMetadata);
 
     void addHandledTopic(TopicMetadata topic);
+    void printHandledTopics();
 
 private:
     std::vector<RealTopic> topics;

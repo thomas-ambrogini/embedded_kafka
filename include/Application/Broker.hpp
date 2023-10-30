@@ -15,7 +15,7 @@
 class Broker
 {
 public:
-    Broker(enum CommunicationType commType, const Endpoint &endpoint, const Logger &logger, BrokerMetadata configurerMetadata);
+    Broker(enum CommunicationType commType, const Endpoint &endpoint, const Logger &logger, BrokerMetadata configurerMetadata, const bool testing);
 
     ~Broker();
 
@@ -28,9 +28,12 @@ private:
     const Logger &logger;
     Communication *communication;
     TopicHandler topicHandler;
+    const bool testing;
 
     void handleOperation(const char *request, Endpoint *sourceEndpoint);
     void askForTopics();
+    void createTestingTopic();
+    void printHandledTopics();
 };
 
 #endif
