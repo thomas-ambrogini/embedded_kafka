@@ -1,12 +1,12 @@
 #include "Broker.hpp"
 
-Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l, BrokerMetadata configurerMetadata, const bool testing) : brokerMetadata(const_cast<Endpoint *>(&endpoint)),
+Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logger &l, BrokerMetadata configurerMetadata, const bool t) : brokerMetadata(const_cast<Endpoint *>(&endpoint)),
                                                                                                                            configurerMetadata(configurerMetadata),
                                                                                                                            communicationType(commType),
                                                                                                                            logger(l),
                                                                                                                            communication(CommunicationFactory::createCommunication(commType, endpoint, logger)),
                                                                                                                            topicHandler(communicationType, logger, communication),
-                                                                                                                           testing(testing)
+                                                                                                                           testing(t)
 {
     if(!testing) {
         askForTopics();
