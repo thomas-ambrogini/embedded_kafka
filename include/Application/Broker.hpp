@@ -20,6 +20,7 @@ public:
     ~Broker();
 
     void start();
+    void printHandledTopics();
 
 private:
     BrokerMetadata brokerMetadata;
@@ -33,7 +34,6 @@ private:
     void handleOperation(const char *request, Endpoint *sourceEndpoint);
     void askForTopics();
     void createTestingTopic();
-    void printHandledTopics();
 };
 
 #endif
