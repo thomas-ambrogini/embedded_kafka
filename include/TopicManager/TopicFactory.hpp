@@ -18,8 +18,7 @@ using json = nlohmann::json;
 class TopicFactory
 {
 public:
-    TopicFactory(CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker);
-    TopicFactory(CommunicationType communicationType, const Logger &logger);
+    TopicFactory(CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker, const bool testing);
 
     ~TopicFactory();
 

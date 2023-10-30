@@ -18,6 +18,7 @@ public:
     virtual void subscribe(ConsumerMetadata consumerMetadata) = 0;
     virtual void unsubscribe(ConsumerMetadata consumerMetadata) = 0;
     virtual Record poll(ConsumerMetadata consumerMetadata) = 0;
+    virtual int read(ConsumerMetadata consumerMetadata) = 0;
 
     const TopicMetadata getTopicMetadata() const;
 

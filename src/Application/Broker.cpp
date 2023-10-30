@@ -72,7 +72,10 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
         consumerMetadata.from_json(jsonConsumerMetadata);
         if (consumerMetadata.getEndpoint() == nullptr)
         {
-            consumerMetadata.setEndpoint(sourceEndpoint);
+            Endpoint * consumerEndpoint = EndpointFactory::createEndpoint(CommunicationType::RPMessage);
+            static_cast<RPMessageEndpoint *>(consumerEndpoint)->setCoreId(static_cast<RPMessageEndpoint *>(sourceEndpoint)->getCoreId());
+            static_cast<RPMessageEndpoint *>(consumerEndpoint)->setServiceEndpoint(static_cast<RPMessageEndpoint *>(sourceEndpoint)->getServiceEndpoint()); 
+            consumerMetadata.setEndpoint(consumerEndpoint);
         }
 
         json jsonTopicMetadata = deserializedRequest["topicMetadata"];
@@ -104,7 +107,10 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
         consumerMetadata.from_json(jsonConsumerMetadata);
         if (consumerMetadata.getEndpoint() == nullptr)
         {
-            consumerMetadata.setEndpoint(sourceEndpoint);
+            Endpoint * consumerEndpoint = EndpointFactory::createEndpoint(CommunicationType::RPMessage);
+            static_cast<RPMessageEndpoint *>(consumerEndpoint)->setCoreId(static_cast<RPMessageEndpoint *>(sourceEndpoint)->getCoreId());
+            static_cast<RPMessageEndpoint *>(consumerEndpoint)->setServiceEndpoint(static_cast<RPMessageEndpoint *>(sourceEndpoint)->getServiceEndpoint()); 
+            consumerMetadata.setEndpoint(consumerEndpoint); 
         }
 
         json jsonTopicMetadata = deserializedRequest["topicMetadata"];

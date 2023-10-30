@@ -10,8 +10,7 @@
 class Producer
 {
 public:
-    Producer(const CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker);
-    Producer(const CommunicationType communicationType, const Logger &logger);
+    Producer(const CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker, const bool testing);
 
     void publish(ProducerRecord producerRecord);
 
@@ -19,6 +18,7 @@ private:
     ProducerMetadata producerMetadata;
     const Logger &logger;
     TopicFactory topicFactory;
+    const bool testing;
 
     void askForID();
 };

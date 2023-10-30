@@ -15,7 +15,6 @@ using json = nlohmann::json;
 class TopicProxy : public Topic
 {
 public:
-    TopicProxy(CommunicationType communicationType, TopicMetadata topicMetadata, const Logger &logger);
     TopicProxy(CommunicationType communicationType, BrokerMetadata brokerMetadata, TopicMetadata topicMetadata, const Logger &logger);
 
     ~TopicProxy();
@@ -24,6 +23,8 @@ public:
     void subscribe(ConsumerMetadata consumerMetadata) override;
     void unsubscribe(ConsumerMetadata consumerMetadata) override;
     Record poll(ConsumerMetadata consumerMetadata) override;
+    int read(ConsumerMetadata consumerMetadata) override;
+
 
 private:
     const CommunicationType communicationType;

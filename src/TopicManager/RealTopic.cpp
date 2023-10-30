@@ -51,3 +51,7 @@ std::map<ConsumerMetadata, int> RealTopic::getConsumers() const
 {
     return consumers;
 }
+
+int RealTopic::read(ConsumerMetadata cons) {
+    return cons.getId();
+}

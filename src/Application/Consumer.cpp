@@ -1,8 +1,12 @@
 #include "Consumer.hpp"
 
-Consumer::Consumer(const CommunicationType commType, const Logger &l, BrokerMetadata bootstrapBroker) : logger(l), topicFactory(commType, logger, bootstrapBroker)
+Consumer::Consumer(const CommunicationType commType, const Logger &l, BrokerMetadata bootstrapBroker, const bool t) : logger(l), topicFactory(commType, logger, bootstrapBroker, t), testing(t)
 {
-    askForID();
+    if(!testing) {
+        askForID();
+    }else {
+        consumerMetadata = ConsumerMetadata(1, nullptr);
+    }
 }
 
 void Consumer::askForID()
@@ -28,6 +32,11 @@ Record Consumer::poll(TopicMetadata topicMetadata)
 {
     Topic *topic = topicFactory.getTopic(topicMetadata);
     return topic->poll(consumerMetadata);
+}
+
+int Consumer::read(TopicMetadata topicMetadata) {
+    Topic *topic = topicFactory.getTopic(topicMetadata);
+    return topic->read(consumerMetadata);
 }
 
 std::vector<TopicMetadata> Consumer::listSubscribedTopics()

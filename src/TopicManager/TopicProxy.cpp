@@ -1,17 +1,9 @@
 #include "TopicProxy.hpp"
 
-TopicProxy::TopicProxy(const CommunicationType type, TopicMetadata t, const Logger &l) : Topic(t, l), communicationType(type), brokerMetadata(new UDPEndpoint(1235))
-{
-    Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
-    logger.log("Endpoint of the TopicProxy: ");
-    sourceEndpoint->printEndpointInformation(logger);
-    communication = CommunicationFactory::createCommunication(communicationType, *sourceEndpoint, logger);
-}
-
 TopicProxy::TopicProxy(CommunicationType type, BrokerMetadata bm, TopicMetadata t, const Logger &l) : Topic(t, l), communicationType(type), brokerMetadata(bm)
 {
     Endpoint *sourceEndpoint = EndpointFactory::createEndpoint(communicationType);
-    logger.log("Endpoint of the TopicProxy: ");
+    logger.log("[Topic Proxy] Endpoint of the TopicProxy: ");
     sourceEndpoint->printEndpointInformation(logger);
     communication = CommunicationFactory::createCommunication(communicationType, *sourceEndpoint, logger);
 }
@@ -86,4 +78,9 @@ Record TopicProxy::poll(ConsumerMetadata consumerMetadata)
     record.from_json(deserializedResponse);
 
     return record;
+}
+
+int TopicProxy::read(ConsumerMetadata consumerMetadata){
+    char response[1024];
+    return communication->read(response, sizeof(response), *brokerMetadata.getEndpoint());
 }

@@ -16,6 +16,7 @@ public:
     void subscribe(ConsumerMetadata consumerMetadata) override;
     void unsubscribe(ConsumerMetadata consumerMetadata) override;
     Record poll(ConsumerMetadata consumerMetadata) override;
+    int read(ConsumerMetadata consumerMetadata) override;
 
     std::map<ConsumerMetadata, int> getConsumers() const;
 

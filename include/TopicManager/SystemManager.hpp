@@ -15,8 +15,7 @@ using json = nlohmann::json;
 class SystemManager
 {
 public:
-    SystemManager(const CommunicationType communicationType, const Logger &logger, BrokerMetadata boostrapBroker);
-    SystemManager(const CommunicationType communicationType, const Logger &logger);
+    SystemManager(const CommunicationType communicationType, const Logger &logger, BrokerMetadata boostrapBroker, const bool testing);
 
     ~SystemManager();
 
@@ -33,6 +32,8 @@ private:
 
     Endpoint *sourceEndpoint;
     Communication *communication;
+
+    const bool testing;
 
     void init();
     void createCommunication();

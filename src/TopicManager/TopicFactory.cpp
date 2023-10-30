@@ -1,12 +1,6 @@
 #include "TopicFactory.hpp"
 
-TopicFactory::TopicFactory(CommunicationType commType, const Logger &l, BrokerMetadata bootstrapBroker) : communicationType(commType), logger(l), systemManager(communicationType, logger, bootstrapBroker)
-{
-    retrieveClusterInformation();
-    createTopics();
-}
-
-TopicFactory::TopicFactory(CommunicationType commType, const Logger &l) : communicationType(commType), logger(l), systemManager(communicationType, logger)
+TopicFactory::TopicFactory(CommunicationType commType, const Logger &l, BrokerMetadata bootstrapBroker, const bool t) : communicationType(commType), logger(l), systemManager(communicationType, logger, bootstrapBroker, t)
 {
     retrieveClusterInformation();
     createTopics();

@@ -11,10 +11,11 @@
 class Consumer
 {
 public:
-    Consumer(const CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker);
+    Consumer(const CommunicationType communicationType, const Logger &logger, BrokerMetadata bootstrapBroker, const bool testing);
 
     void subscribe(TopicMetadata topicMetadata);
     void unsubscribe(TopicMetadata topicMetadata);
+    int read(TopicMetadata topicMetadata);
     Record poll(TopicMetadata topicMetadata);
 
     std::vector<TopicMetadata> listSubscribedTopics();
@@ -26,6 +27,7 @@ private:
     TopicFactory topicFactory;
 
     void askForID();
+    const bool testing;
 };
 
 #endif

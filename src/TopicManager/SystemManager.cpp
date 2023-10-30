@@ -1,12 +1,6 @@
 #include "SystemManager.hpp"
 
-SystemManager::SystemManager(const CommunicationType c, const Logger &l, BrokerMetadata b) : bootstrapBroker(b), communicationType(c), logger(l)
-{
-    createCommunication();
-    init();
-}
-
-SystemManager::SystemManager(const CommunicationType c, const Logger &l) : communicationType(c), logger(l)
+SystemManager::SystemManager(const CommunicationType c, const Logger &l, BrokerMetadata b, const bool t) : bootstrapBroker(b), communicationType(c), logger(l), testing(t)
 {
     createCommunication();
     init();
@@ -26,17 +20,28 @@ void SystemManager::createCommunication()
 
 void SystemManager::init()
 {
-    json requestJson;
-    requestJson["operation"] = "getClusterInformation";
-    std::string requestString = requestJson.dump();
+    if(!testing) {
+        json requestJson;
+        requestJson["operation"] = "getClusterInformation";
+        std::string requestString = requestJson.dump();
 
-    char response[1024];
-    CommunicationUtils::request(communication, communicationType, bootstrapBroker.getEndpoint(),
-                                requestString.c_str(), requestString.size(), response, sizeof(response));
-    logger.log("[System Manager] Received response: %s", response);
+        char response[1024];
+        CommunicationUtils::request(communication, communicationType, bootstrapBroker.getEndpoint(),
+                                    requestString.c_str(), requestString.size(), response, sizeof(response));
+        logger.log("[System Manager] Received response: %s", response);
 
-    json j = json::parse(response);
-    clusterMetadata.from_json(j);
+        json j = json::parse(response);
+        clusterMetadata.from_json(j);
+    }
+    else {
+        //Create the information of the cluster statically. With the broker on the R500
+        Endpoint *  brokerEndpoint = new RPMessageEndpoint(1, 12);
+        BrokerMetadata brokerMetadata(brokerEndpoint);
+        
+        TopicMetadata topicMetadata("Testing");
+        brokerMetadata.addTopicMetadata(topicMetadata);
+        clusterMetadata.addBrokerMetadata(brokerMetadata);
+    }
 }
 
 int SystemManager::askForID()
