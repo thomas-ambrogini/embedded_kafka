@@ -11,7 +11,9 @@ RealTopic::~RealTopic()
 void RealTopic::publish(ProducerMetadata producerMetadata, Record record)
 {
     logger.log("[Real Topic] The producer %d added the following record: %s", producerMetadata.getId(), record.getData().c_str());
-    records.push_back(record);
+    if (recordCount < maxRecords) {
+        records[recordCount++] = new Record(std::move(record));
+    }
 }
 
 void RealTopic::subscribe(ConsumerMetadata consumerMetadata)
@@ -35,11 +37,11 @@ Record RealTopic::poll(ConsumerMetadata consumerMetadata)
     int consumerOffset = consumers[consumerMetadata];
     logger.log("[Real Topic] Offset of the record to read: %d", consumerOffset);
 
-    if (consumerOffset < static_cast<int>(records.size()))
+    if (consumerOffset < recordCount)
     {
         consumers[consumerMetadata]++;
         logger.log("[Real Topic] Next offset to read: %d", consumers[consumerMetadata]);
-        return records[consumerOffset];
+        return *(records[consumerOffset]);
     }
     else
     {

@@ -21,7 +21,9 @@ public:
     std::map<ConsumerMetadata, int> getConsumers() const;
 
 private:
-    std::vector<Record> records;
+    static const int maxRecords = 1000;
+    Record *records[maxRecords];
+    int recordCount = 0;
     std::map<ConsumerMetadata, int> consumers;
 };
 
