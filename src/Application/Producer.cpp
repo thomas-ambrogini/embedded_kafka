@@ -5,7 +5,8 @@ Producer::Producer(const CommunicationType c, const Logger &l, BrokerMetadata bo
     if(!testing) {
         askForID();
     } else {
-        producerMetadata = ProducerMetadata(1);
+        int randomInt = rand();
+        producerMetadata = ProducerMetadata(randomInt);
     }
 }
 
@@ -20,5 +21,6 @@ void Producer::publish(ProducerRecord producerRecord)
     Topic *topic = topicFactory.getTopic(producerRecord.getTopicMetadata());
     topic->publish(producerMetadata, producerRecord.getRecord());
 }
+
 
 
