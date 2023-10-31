@@ -18,11 +18,7 @@ void TopicHandler::save(Record record, TopicMetadata topicMetadata, ProducerMeta
 
     if (topicIndex != -1)
     {
-        if(!push) {
-            topics[topicIndex].publish(producerMetadata, record);
-
-        }
-        else {
+        if(push) {
             for (const auto &pair : topics[topicIndex].getConsumers())
             {
                 const ConsumerMetadata cons = pair.first;
@@ -30,6 +26,10 @@ void TopicHandler::save(Record record, TopicMetadata topicMetadata, ProducerMeta
                 record.to_json(recordJSON);
                 communication->write(recordJSON.dump().c_str(), recordJSON.dump().size() + 1, *cons.getEndpoint());
             }
+        }
+        else {
+            topics[topicIndex].publish(producerMetadata, record);
+
         }
     }
 }
