@@ -1,6 +1,6 @@
 #include "TopicHandler.hpp"
 
-TopicHandler::TopicHandler(const CommunicationType commType, const Logger &l, Communication *comm) : communicationType(commType), logger(l), communication(comm)
+TopicHandler::TopicHandler(const CommunicationType commType, const Logger &l, Communication *comm, const bool p) : communicationType(commType), logger(l), communication(comm), push(p)
 {
     logger.log("Communicatin Type: %d", communicationType);
 }
@@ -18,13 +18,18 @@ void TopicHandler::save(Record record, TopicMetadata topicMetadata, ProducerMeta
 
     if (topicIndex != -1)
     {
-        topics[topicIndex].publish(producerMetadata, record);
-        for (const auto &pair : topics[topicIndex].getConsumers())
-        {
-            const ConsumerMetadata cons = pair.first;
-            json recordJSON;
-            record.to_json(recordJSON);
-            communication->write(recordJSON.dump().c_str(), recordJSON.dump().size() + 1, *cons.getEndpoint());
+        if(!push) {
+            topics[topicIndex].publish(producerMetadata, record);
+
+        }
+        else {
+            for (const auto &pair : topics[topicIndex].getConsumers())
+            {
+                const ConsumerMetadata cons = pair.first;
+                json recordJSON;
+                record.to_json(recordJSON);
+                communication->write(recordJSON.dump().c_str(), recordJSON.dump().size() + 1, *cons.getEndpoint());
+            }
         }
     }
 }

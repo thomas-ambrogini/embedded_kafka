@@ -5,7 +5,7 @@ Broker::Broker(CommunicationType commType, const Endpoint &endpoint, const Logge
                                                                                                                            communicationType(commType),
                                                                                                                            logger(l),
                                                                                                                            communication(CommunicationFactory::createCommunication(commType, endpoint, logger)),
-                                                                                                                           topicHandler(communicationType, logger, communication),
+                                                                                                                           topicHandler(communicationType, logger, communication, p),
                                                                                                                            testing(t),
                                                                                                                            push(p)
 {
@@ -160,4 +160,8 @@ void Broker::createTestingTopic() {
 void Broker::printHandledTopics() 
 {
     topicHandler.printHandledTopics();
+}
+
+bool Broker::getMode() const {
+    return push;
 }

@@ -23,6 +23,8 @@ public:
     void start();
     void printHandledTopics();
 
+    bool getMode() const;
+
 private:
     BrokerMetadata brokerMetadata;
     BrokerMetadata configurerMetadata;

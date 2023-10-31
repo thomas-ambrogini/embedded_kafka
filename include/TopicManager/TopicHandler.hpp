@@ -15,7 +15,7 @@ using json = nlohmann::json;
 class TopicHandler
 {
 public:
-    TopicHandler(const CommunicationType communicationType, const Logger &logger, Communication *communication);
+    TopicHandler(const CommunicationType communicationType, const Logger &logger, Communication *communication, const bool pull);
 
     ~TopicHandler();
 
@@ -32,6 +32,8 @@ private:
     const CommunicationType communicationType;
     const Logger &logger;
     Communication *communication;
+
+    const bool push;
 
     int findTopicIndex(TopicMetadata topicMetadata);
 };
