@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     {
         producer.publish(producerRecord);
         numMessagesSent++;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::microseconds(50));
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
