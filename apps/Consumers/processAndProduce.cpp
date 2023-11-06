@@ -44,12 +44,12 @@ int main(int argc, char *argv[])
     BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
     
     //Consumer
-    Consumer consumer(commType, logger, bootstrapBroker);
+    Consumer consumer(commType, logger, bootstrapBroker, false);
     TopicMetadata topicConsumer(topicNameConsumer);
     consumer.subscribe(topicConsumer);
 
     //Producer
-    Producer producer(commType, logger, bootstrapBroker);
+    Producer producer(commType, logger, bootstrapBroker, false);
     TopicMetadata topicProducer(topicNameProducer);
 
     while (true)

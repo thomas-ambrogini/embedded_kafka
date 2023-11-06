@@ -15,10 +15,10 @@ TopicProxy::~TopicProxy()
 void TopicProxy::publish(ProducerMetadata producerMetadata, Record record)
 {
     json request;
-    request["operation"] = "publish";
-    request["producerMetadata"] = producerMetadata;
-    request["topicMetadata"] = topicMetadata;
-    request["record"] = record.getData();
+    request["op"] = "p";
+    request["pm"] = producerMetadata;
+    request["rm"] = topicMetadata;
+    request["r"] = record.getData();
 
     std::string requestString = request.dump();
     logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
@@ -29,9 +29,9 @@ void TopicProxy::publish(ProducerMetadata producerMetadata, Record record)
 void TopicProxy::subscribe(ConsumerMetadata consumerMetadata)
 {
     json request;
-    request["operation"] = "subscribe";
-    request["consumerMetadata"] = consumerMetadata;
-    request["topicMetadata"] = topicMetadata;
+    request["op"] = "s";
+    request["cm"] = consumerMetadata;
+    request["rm"] = topicMetadata;
 
     std::string requestString = request.dump();
     logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
@@ -42,9 +42,9 @@ void TopicProxy::subscribe(ConsumerMetadata consumerMetadata)
 void TopicProxy::unsubscribe(ConsumerMetadata consumerMetadata)
 {
     json request;
-    request["operation"] = "unsubscribe";
-    request["consumerMetadata"] = consumerMetadata;
-    request["topicMetadata"] = topicMetadata;
+    request["op"] = "u";
+    request["cm"] = consumerMetadata;
+    request["tm"] = topicMetadata;
 
     std::string requestString = request.dump();
     logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());
@@ -55,9 +55,9 @@ void TopicProxy::unsubscribe(ConsumerMetadata consumerMetadata)
 Record TopicProxy::poll(ConsumerMetadata consumerMetadata)
 {
     json request;
-    request["operation"] = "poll";
-    request["consumerMetadata"] = consumerMetadata;
-    request["topicMetadata"] = topicMetadata;
+    request["op"] = "a";
+    request["cm"] = consumerMetadata;
+    request["tm"] = topicMetadata;
 
     std::string requestString = request.dump();
     logger.log("[Topic Proxy] Sending the following message: %s", requestString.c_str());

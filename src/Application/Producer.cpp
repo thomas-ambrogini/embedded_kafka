@@ -5,7 +5,7 @@ Producer::Producer(const CommunicationType c, const Logger &l, BrokerMetadata bo
     if(!testing) {
         askForID();
     } else {
-        int randomInt = rand();
+        int randomInt = rand() % 1000;
         producerMetadata = ProducerMetadata(randomInt);
     }
 }

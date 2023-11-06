@@ -75,7 +75,7 @@ void monitorFile(const std::string &filepath)
     int bootstrapBrokerPort = 12345;
 
     BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
-    Consumer consumer(commType, logger, bootstrapBroker);
+    Consumer consumer(commType, logger, bootstrapBroker, false);
 
     TopicMetadata topic(getTopicName(filepath));
     consumer.subscribe(topic);

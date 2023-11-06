@@ -7,3 +7,6 @@ target_link_libraries(watcher PRIVATE pthread)
 
 add_executable(processAndProduce "${embedded_kafka_SOURCE_DIR}/apps/Consumers/processAndProduce.cpp")
 target_link_libraries(processAndProduce PRIVATE application_library)
+
+add_executable(linuxConsumerBrokerTesting "${embedded_kafka_SOURCE_DIR}/apps/Consumers/linuxConsumerBrokerTesting.cpp")
+target_link_libraries(linuxConsumerBrokerTesting PRIVATE application_library)

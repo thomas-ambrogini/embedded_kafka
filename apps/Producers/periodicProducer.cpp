@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
-    Producer producer(commType, logger, bootstrapBroker);
+    Producer producer(commType, logger, bootstrapBroker, false);
 
     std::string topicName = "Measurement";
     TopicMetadata topic(topicName);

@@ -49,20 +49,20 @@ void Broker::start()
 void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 {
     nlohmann::json deserializedRequest = nlohmann::json::parse(request);
-    std::string operation = deserializedRequest["operation"];
+    std::string operation = deserializedRequest["op"];
 
     logger.log("[Broker] Operation to do: %s", operation.c_str());
 
-    if (operation == "publish")
+    if (operation == "p")
     {
-        json jsonProducerMetadata = deserializedRequest["producerMetadata"];
+        json jsonProducerMetadata = deserializedRequest["pm"];
         ProducerMetadata producerMetadata;
         producerMetadata.from_json(jsonProducerMetadata);
 
-        std::string data = deserializedRequest["record"];
+        std::string data = deserializedRequest["r"];
         Record record(data);
 
-        json jsonTopicMetadata = deserializedRequest["topicMetadata"];
+        json jsonTopicMetadata = deserializedRequest["tm"];
         TopicMetadata topicMetadata;
         topicMetadata.from_json(jsonTopicMetadata);
 
@@ -70,9 +70,9 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 
         topicHandler.save(record, topicMetadata, producerMetadata);
     }
-    else if (operation == "subscribe")
+    else if (operation == "s")
     {
-        json jsonConsumerMetadata = deserializedRequest["consumerMetadata"];
+        json jsonConsumerMetadata = deserializedRequest["cm"];
         ConsumerMetadata consumerMetadata;
         consumerMetadata.from_json(jsonConsumerMetadata);
         if (consumerMetadata.getEndpoint() == nullptr)
@@ -83,7 +83,7 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
             consumerMetadata.setEndpoint(consumerEndpoint);
         }
 
-        json jsonTopicMetadata = deserializedRequest["topicMetadata"];
+        json jsonTopicMetadata = deserializedRequest["tm"];
         TopicMetadata topicMetadata;
         topicMetadata.from_json(jsonTopicMetadata);
 
@@ -91,13 +91,13 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 
         topicHandler.subscribe(consumerMetadata, topicMetadata);
     }
-    else if (operation == "unsubscribe")
+    else if (operation == "u")
     {
-        json jsonConsumerMetadata = deserializedRequest["consumerMetadata"];
+        json jsonConsumerMetadata = deserializedRequest["cm"];
         ConsumerMetadata consumerMetadata;
         consumerMetadata.from_json(jsonConsumerMetadata);
 
-        json jsonTopicMetadata = deserializedRequest["topicMetadata"];
+        json jsonTopicMetadata = deserializedRequest["tm"];
         TopicMetadata topicMetadata;
         topicMetadata.from_json(jsonTopicMetadata);
 
@@ -105,9 +105,9 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 
         topicHandler.unsubscribe(consumerMetadata, topicMetadata);
     }
-    else if (operation == "poll")
+    else if (operation == "a")
     {
-        json jsonConsumerMetadata = deserializedRequest["consumerMetadata"];
+        json jsonConsumerMetadata = deserializedRequest["cm"];
         ConsumerMetadata consumerMetadata;
         consumerMetadata.from_json(jsonConsumerMetadata);
         if (consumerMetadata.getEndpoint() == nullptr)
@@ -118,7 +118,7 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
             consumerMetadata.setEndpoint(consumerEndpoint); 
         }
 
-        json jsonTopicMetadata = deserializedRequest["topicMetadata"];
+        json jsonTopicMetadata = deserializedRequest["tm"];
         TopicMetadata topicMetadata;
         topicMetadata.from_json(jsonTopicMetadata);
 

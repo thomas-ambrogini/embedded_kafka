@@ -5,7 +5,7 @@ Consumer::Consumer(const CommunicationType commType, const Logger &l, BrokerMeta
     if(!testing) {
         askForID();
     }else {
-        int randomInt = rand();
+        int randomInt = rand() % 1000;
         consumerMetadata = ConsumerMetadata(randomInt, nullptr);
     }
 }

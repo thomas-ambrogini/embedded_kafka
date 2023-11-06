@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     }
 
     BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
-    Consumer consumer(commType, logger, bootstrapBroker);
+    Consumer consumer(commType, logger, bootstrapBroker, false);
 
     std::string userInput;
 

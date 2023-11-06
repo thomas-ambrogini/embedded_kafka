@@ -34,8 +34,15 @@ void SystemManager::init()
         clusterMetadata.from_json(j);
     }
     else {
-        //Create the information of the cluster statically. With the broker on the R500
-        Endpoint *  brokerEndpoint = new RPMessageEndpoint(1, 12);
+        int serviceEndpoint = -1;
+
+        if(communicationType == RPMessageLinux) {
+            //Create the information of the cluster statically. With the broker on the R500
+            serviceEndpoint = 2;
+        } else if (communicationType == RPMessage){
+            serviceEndpoint = 1;
+        }
+        Endpoint *  brokerEndpoint = new RPMessageEndpoint(serviceEndpoint, 12);
         BrokerMetadata brokerMetadata(brokerEndpoint);
         
         TopicMetadata topicMetadata("Testing");

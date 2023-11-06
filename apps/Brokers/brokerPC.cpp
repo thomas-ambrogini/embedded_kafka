@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     StandardOutputLogger logger;
     UDPEndpoint endpoint("127.0.0.1", brokerPort);
 
-    Broker broker(CommunicationType::UDP, endpoint, logger, BrokerMetadata(new UDPEndpoint(12345)));
+    Broker broker(CommunicationType::UDP, endpoint, logger, BrokerMetadata(new UDPEndpoint(12345)), true, true);
     broker.start();
 
     return 0;

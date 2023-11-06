@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     std::string filename = monitorPath + topicName + ".txt";
 
     BrokerMetadata bootstrapBroker(new UDPEndpoint(bootstrapBrokerPort));
-    Consumer consumer(commType, logger, bootstrapBroker);
+    Consumer consumer(commType, logger, bootstrapBroker, false);
 
     TopicMetadata topic(topicName);
     consumer.subscribe(topic);
