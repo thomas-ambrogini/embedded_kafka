@@ -94,7 +94,7 @@ int TopicProxy::read(ConsumerMetadata consumerMetadata){
     char response[1024];
     int result = communication->read(response, sizeof(response), *brokerMetadata.getEndpoint());
 
-    logger.log("Message read: %s", response);
+    logger.log("[Topic Proxy read] Message read: %s", response);
 
     return result;
 }

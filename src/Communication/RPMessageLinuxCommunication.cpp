@@ -79,7 +79,8 @@ int RPMessageLinuxCommunication::read(char *buffer, size_t bufferSize, Endpoint 
             if (FD_ISSET(fd, &read_fds))
             {
                 setSourceEndpoint(fd, source);
-                int bytesRead = recv_msg(fd, 256, buffer, &packet_len);
+                int bytesRead = recv_msg(fd, 512, buffer, &packet_len);
+                logger.log("I have read %d bytes", packet_len);
                 if (packet_len > 0)
                 {
                     buffer[packet_len] = '\0';

@@ -7,8 +7,10 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
+#include <fstream>
+#include <unistd.h>
 
-#define NUM_MESSAGES 100000
+#define NUM_MESSAGES 100
 #define MAX_MSG_SIZE 512
 
 void fillBuffer(char * buffer, int bufferSize) 
@@ -19,8 +21,12 @@ void fillBuffer(char * buffer, int bufferSize)
 
 int main(int argc, char *argv[])
 {
+    const char * fifoName = "/tmp/sync_fifo";
+
     StandardOutputLogger logger;
     logger.setDebug(false);
+
+    std::ofstream fifo(fifoName);
 
     CommunicationType commType = CommunicationType::RPMessageLinux;
     int bootstrapBrokerPort = 12345;
@@ -50,6 +56,10 @@ int main(int argc, char *argv[])
     TopicMetadata topic(topicName);
 
     consumer.subscribe(topic);
+
+    fifo << "start" << std::endl;
+
+    std::cout << "starting to read messages" << std::endl;
 
     auto start = std::chrono::high_resolution_clock::now();
 

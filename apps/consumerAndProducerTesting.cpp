@@ -91,6 +91,18 @@ void taskConsumer() {
     std::cout << "Time for Consumer: " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
 }
 
+void launchConsumer() {
+    std::string command = "./linuxConsumerBrokerTesting";
+
+    int result = std::system(command.c_str());
+
+    if (result == 0) {
+        std::cout << "Program Launched successfully" << std::endl;
+    } else {
+        std::cout << "Failed to launch the program" << std::endl;
+    }
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -128,7 +140,7 @@ int main(int argc, char *argv[])
     Record record(msgBuf);
     ProducerRecord producerRecord(topic, record);
     
-    //std::thread t1(taskConsumer);
+    std::thread t1(launchConsumer);
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -141,11 +153,11 @@ int main(int argc, char *argv[])
 
     auto stop = std::chrono::high_resolution_clock::now();
 
-    //t1.join();
-
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Duration of the for loop: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Time for Consumer: " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+    std::cout << "Time for Producer: " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+
+    t1.join();
 
     return 0;
 }

@@ -7,8 +7,10 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
+#include <fstream>
+#include <unistd.h>
 
-#define NUM_MESSAGES 100000
+#define NUM_MESSAGES 100
 #define MAX_MSG_SIZE 512
 
 void fillBuffer(char * buffer, int bufferSize) 
@@ -19,6 +21,12 @@ void fillBuffer(char * buffer, int bufferSize)
 
 int main(int argc, char *argv[])
 {
+    // Define the named pipe for synchronization
+    const char * fifoName = "/tmp/sync_fifo";
+
+    mkfifo(fifoName, 0666);
+    std::ifstream fifo(fifoName);
+
     StandardOutputLogger logger;
     logger.setDebug(false);
 
@@ -49,9 +57,16 @@ int main(int argc, char *argv[])
     std::string topicName = "Testing";
     TopicMetadata topic(topicName);
 
-    fillBuffer(msgBuf, 32); 
+    int msgSize = 450;
+
+    fillBuffer(msgBuf, msgSize); 
     Record record(msgBuf);
     ProducerRecord producerRecord(topic, record);
+
+    std::string startingMessage;
+    fifo >> startingMessage;
+
+    std::cout << startingMessage << std::endl;
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -59,14 +74,14 @@ int main(int argc, char *argv[])
     {
         producer.publish(producerRecord);
         numMessagesSent++;
-        std::this_thread::sleep_for(std::chrono::microseconds(50));
+        std::this_thread::sleep_for(std::chrono::microseconds(200));
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Duration of the for loop: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages): " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages of size: " << msgSize << " ): " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
 
     return 0;
 }
