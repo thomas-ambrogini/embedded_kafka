@@ -9,8 +9,10 @@
 #include "CommunicationType.hpp"
 #include "EndpointFactory.hpp"
 #include "json.hpp"
+#include "Message.hpp"
 
 using json = nlohmann::json;
+
 
 class TopicProxy : public Topic
 {
@@ -30,7 +32,7 @@ private:
     const CommunicationType communicationType;
     BrokerMetadata brokerMetadata;
     Communication *communication;
-
+    
     int findConsumer(int consumerId);
 };
 

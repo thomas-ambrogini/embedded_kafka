@@ -13,6 +13,11 @@ const std::string &Record::getData() const
     return data;
 }
 
+void Record::setData(std::string d) {
+    data = d;
+}
+
+
 void Record::to_json(json &j) const
 {
     j = json{{"data", data}};

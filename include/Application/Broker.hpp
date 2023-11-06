@@ -11,6 +11,7 @@
 #include "ConsumerMetadata.hpp"
 #include "TopicHandler.hpp"
 #include "CommunicationUtils.hpp"
+#include "Message.hpp"
 
 class Broker
 {

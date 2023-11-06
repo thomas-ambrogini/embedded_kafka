@@ -37,7 +37,7 @@ void Broker::start()
             logger.logError("[Broker] Failed to receive message from client");
             break;
         }
-        logger.log("[Broker] Request received from the client: %s", clientRequest);
+        logger.log("[Broker] Request received from the client: %s with size %d", clientRequest, strlen(clientRequest));
         sourceEndpoint->printEndpointInformation(logger);
 
         handleOperation(clientRequest, sourceEndpoint);
@@ -48,33 +48,21 @@ void Broker::start()
 
 void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
 {
-    nlohmann::json deserializedRequest = nlohmann::json::parse(request);
-    std::string operation = deserializedRequest["op"];
+    Message deserializedMessage = DeserializeMessage(request);
 
-    logger.log("[Broker] Operation to do: %s", operation.c_str());
-
-    if (operation == "p")
+    if (deserializedMessage.operation == "p")
     {
-        json jsonProducerMetadata = deserializedRequest["pm"];
-        ProducerMetadata producerMetadata;
-        producerMetadata.from_json(jsonProducerMetadata);
+        logger.log("Handling the publish of a message");
+        logger.log("Operation: %s", deserializedMessage.operation.c_str());
+        logger.log("ID: %d", deserializedMessage.clientMetadata.getId());
+        logger.log("Record: %s", deserializedMessage.record.getData().c_str());
+        logger.log("Topic Name: %s", deserializedMessage.topicMetadata.getName().c_str());
 
-        std::string data = deserializedRequest["r"];
-        Record record(data);
-
-        json jsonTopicMetadata = deserializedRequest["tm"];
-        TopicMetadata topicMetadata;
-        topicMetadata.from_json(jsonTopicMetadata);
-
-        logger.log("[Broker] The producer with ID: %d, sent the following record: %s to be published on the topic: %s", producerMetadata.getId(), record.getData().c_str(), topicMetadata.getName().c_str());
-
-        topicHandler.save(record, topicMetadata, producerMetadata);
+        topicHandler.save(deserializedMessage.record, deserializedMessage.topicMetadata, ProducerMetadata(deserializedMessage.clientMetadata.getId()));
     }
-    else if (operation == "s")
-    {
-        json jsonConsumerMetadata = deserializedRequest["cm"];
-        ConsumerMetadata consumerMetadata;
-        consumerMetadata.from_json(jsonConsumerMetadata);
+    else if(deserializedMessage.operation == "s"){
+        logger.log("Handling subscribe message");
+        ConsumerMetadata consumerMetadata(deserializedMessage.clientMetadata.getId(), nullptr);
         if (consumerMetadata.getEndpoint() == nullptr)
         {
             Endpoint * consumerEndpoint = EndpointFactory::createEndpoint(CommunicationType::RPMessage);
@@ -83,33 +71,19 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
             consumerMetadata.setEndpoint(consumerEndpoint);
         }
 
-        json jsonTopicMetadata = deserializedRequest["tm"];
-        TopicMetadata topicMetadata;
-        topicMetadata.from_json(jsonTopicMetadata);
-
-        logger.log("[Broker] The consumer with ID: %d wants to subscribe on the topic: %s", consumerMetadata.getId(), topicMetadata.getName().c_str());
-
-        topicHandler.subscribe(consumerMetadata, topicMetadata);
+        topicHandler.subscribe(consumerMetadata, deserializedMessage.topicMetadata);
     }
-    else if (operation == "u")
+    else if (deserializedMessage.operation == "u")
     {
-        json jsonConsumerMetadata = deserializedRequest["cm"];
-        ConsumerMetadata consumerMetadata;
-        consumerMetadata.from_json(jsonConsumerMetadata);
+        logger.log("Handling unsubscribe message");
+        ConsumerMetadata consumerMetadata(deserializedMessage.clientMetadata.getId(), nullptr);
 
-        json jsonTopicMetadata = deserializedRequest["tm"];
-        TopicMetadata topicMetadata;
-        topicMetadata.from_json(jsonTopicMetadata);
-
-        logger.log("[Broker] The consumer with ID: %d wants to unsubscribe from the topic: %s", consumerMetadata.getId(), topicMetadata.getName().c_str());
-
-        topicHandler.unsubscribe(consumerMetadata, topicMetadata);
+        topicHandler.unsubscribe(consumerMetadata, deserializedMessage.topicMetadata);
     }
-    else if (operation == "a")
+    else if (deserializedMessage.operation == "a")
     {
-        json jsonConsumerMetadata = deserializedRequest["cm"];
-        ConsumerMetadata consumerMetadata;
-        consumerMetadata.from_json(jsonConsumerMetadata);
+        logger.log("Handling poll message");
+        ConsumerMetadata consumerMetadata(deserializedMessage.clientMetadata.getId(), nullptr);
         if (consumerMetadata.getEndpoint() == nullptr)
         {
             Endpoint * consumerEndpoint = EndpointFactory::createEndpoint(CommunicationType::RPMessage);
@@ -118,13 +92,7 @@ void Broker::handleOperation(const char *request, Endpoint *sourceEndpoint)
             consumerMetadata.setEndpoint(consumerEndpoint); 
         }
 
-        json jsonTopicMetadata = deserializedRequest["tm"];
-        TopicMetadata topicMetadata;
-        topicMetadata.from_json(jsonTopicMetadata);
-
-        logger.log("[Broker] The consumer with ID: %d wants to poll data from the topic: %s", consumerMetadata.getId(), topicMetadata.getName().c_str());
-
-        topicHandler.poll(consumerMetadata, topicMetadata);
+        topicHandler.poll(consumerMetadata, deserializedMessage.topicMetadata);
     }
 }
 

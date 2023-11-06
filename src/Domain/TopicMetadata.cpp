@@ -13,6 +13,11 @@ const std::string &TopicMetadata::getName() const
     return name;
 }
 
+void TopicMetadata::setName(const std::string topicName) {
+    name = topicName;
+}
+
+
 void TopicMetadata::to_json(json &j) const
 {
     j = json{{"name", name}};

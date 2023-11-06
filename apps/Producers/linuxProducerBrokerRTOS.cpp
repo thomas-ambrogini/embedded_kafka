@@ -8,7 +8,7 @@
 #include <ctime>
 #include <cstdlib>
 
-#define NUM_MESSAGES 10
+#define NUM_MESSAGES 100000
 #define MAX_MSG_SIZE 512
 
 void fillBuffer(char * buffer, int bufferSize) 
@@ -20,7 +20,7 @@ void fillBuffer(char * buffer, int bufferSize)
 int main(int argc, char *argv[])
 {
     StandardOutputLogger logger;
-    logger.setDebug(true);
+    logger.setDebug(false);
 
     CommunicationType commType = CommunicationType::RPMessageLinux;
     int bootstrapBrokerPort = 12345;
@@ -59,14 +59,14 @@ int main(int argc, char *argv[])
     {
         producer.publish(producerRecord);
         numMessagesSent++;
-        
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Duration of the for loop: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Time for Producer: " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages): " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
 
     return 0;
 }

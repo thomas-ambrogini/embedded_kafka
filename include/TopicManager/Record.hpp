@@ -13,6 +13,7 @@ public:
     Record(const std::string data);
 
     const std::string &getData() const;
+    void setData(std::string data);
 
     void to_json(json &j) const;
     void from_json(const json &j);

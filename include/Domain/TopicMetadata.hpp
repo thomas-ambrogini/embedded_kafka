@@ -12,6 +12,7 @@ public:
     TopicMetadata(const std::string topicName);
 
     const std::string &getName() const;
+    void setName(const std::string topicName);
 
     void to_json(json &j) const;
     void from_json(const json &j);

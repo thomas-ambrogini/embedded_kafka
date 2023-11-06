@@ -8,7 +8,7 @@
 #include <ctime>
 #include <cstdlib>
 
-#define NUM_MESSAGES 100
+#define NUM_MESSAGES 100000
 #define MAX_MSG_SIZE 512
 
 void fillBuffer(char * buffer, int bufferSize) 
