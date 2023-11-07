@@ -6,8 +6,9 @@
 #include <map>
 #include <cstring>
 #include <chrono>
+#include <thread>
 
-#define MAX_MESSAGES 10
+#define MAX_MESSAGES 100000
 
 void usage(std::map<std::string, std::string> &idToProcessor)
 {
@@ -29,10 +30,10 @@ void fillBuffer(char * buffer, int bufferSize)
 int main(int argc, char *argv[])
 {
     StandardOutputLogger logger;
-    logger.setDebug(true);
+    logger.setDebug(false);
 
-    char packet_buf[50], packet_buf_read[512], packet_buf_read2[512] = {0};
-    int testingSizes[] = {32, 64, 128, 256};
+    char packet_buf[512], packet_buf_read[512], packet_buf_read2[512] = {0};
+    int testingSizes[] = {32, 64, 128, 256, 496};
 
     std::map<std::string, std::string> idToProcessor = {
         {"2", "R5_0_0"},
@@ -48,6 +49,9 @@ int main(int argc, char *argv[])
         usage(idToProcessor);
         return 1;
     }
+
+     // Seed the random number generator
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     int id = std::stoi(argv[1]);
 
@@ -70,12 +74,13 @@ int main(int argc, char *argv[])
         for (int j = 0; j < MAX_MESSAGES; j++) {
             communication->write(packet_buf, strlen(packet_buf), *destinationEndpoint);
             communication->read(packet_buf_read, strlen(packet_buf), *sourceEndpoint);
-            logger.log("Message Received: %s", packet_buf_read);
+            //std::this_thread::sleep_for(std::chrono::microseconds(100));
+
         }
         auto stop = std::chrono::high_resolution_clock::now();
 
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-        std::cout << "Time for RTT with size: " << testingSizes[i] <<  duration.count()/MAX_MESSAGES << " microseconds" << std::endl;
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);    
+        std::cout << "Time for RTT with size: (" << testingSizes[i] << ") " <<  duration.count()/MAX_MESSAGES << " microseconds" << std::endl;
     }
 
 

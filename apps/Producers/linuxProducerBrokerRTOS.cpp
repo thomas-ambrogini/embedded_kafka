@@ -56,8 +56,10 @@ int main(int argc, char *argv[])
 
     std::string topicName = "Testing";
     TopicMetadata topic(topicName);
-
-    int msgSize = 64;
+    
+    int msgSize = std::stoi(argv[1]);
+    int totalNumberOfMessages = std::stoi(argv[2]);
+    int delay = std::stoi(argv[3]);
 
     fillBuffer(msgBuf, msgSize); 
     Record record(msgBuf);
@@ -70,18 +72,18 @@ int main(int argc, char *argv[])
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    while (numMessagesSent < NUM_MESSAGES)
+    while (numMessagesSent < totalNumberOfMessages)
     {
         producer.publish(producerRecord);
         numMessagesSent++;
-        std::this_thread::sleep_for(std::chrono::microseconds(200));
+        std::this_thread::sleep_for(std::chrono::microseconds(delay));
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Duration of the for loop: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages of size: " << msgSize << " ): " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages of size: " << msgSize << " ): " << duration.count()/totalNumberOfMessages << " microseconds" << std::endl;
 
     return 0;
 }

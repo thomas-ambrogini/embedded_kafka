@@ -17,7 +17,7 @@ RPMessageLinuxCommunication::RPMessageLinuxCommunication(const RPMessageEndpoint
 RPMessageLinuxCommunication::~RPMessageLinuxCommunication()
 {
     close_devs();
-    rpmsg_char_exit();
+    //rpmsg_char_exit();
 }
 
 int RPMessageLinuxCommunication::write(const char *message, size_t messageSize, const Endpoint &destination)

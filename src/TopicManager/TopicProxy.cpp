@@ -10,6 +10,7 @@ TopicProxy::TopicProxy(CommunicationType type, BrokerMetadata bm, TopicMetadata 
 
 TopicProxy::~TopicProxy()
 {
+    delete communication;
 }
 
 void TopicProxy::publish(ProducerMetadata producerMetadata, Record record)

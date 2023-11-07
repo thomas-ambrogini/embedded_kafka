@@ -6,6 +6,12 @@ TopicFactory::TopicFactory(CommunicationType commType, const Logger &l, BrokerMe
     createTopics();
 }
 
+TopicFactory::~TopicFactory() {
+    for (size_t i = 0; i < topics.size(); i++)
+    {
+        delete topics[i];
+    }}
+
 void TopicFactory::retrieveClusterInformation()
 {
     clusterMetadata = systemManager.getClusterMetadata();
@@ -32,10 +38,6 @@ void TopicFactory::createTopics()
             topics.push_back(topicProxy);
         }
     }
-}
-
-TopicFactory::~TopicFactory()
-{
 }
 
 Topic *TopicFactory::getTopic(TopicMetadata topicMetadata)

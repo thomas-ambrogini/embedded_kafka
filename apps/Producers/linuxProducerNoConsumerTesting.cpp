@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Duration of the for loop: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages of size: " << msgSize << " ): " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+    std::cout << "Time for Producer (to publish " << numMessagesSent << " messages of size: " << msgSize << " ): " << duration.count()/totalNumberOfMessages << " microseconds" << std::endl;
 
     return 0;
 }

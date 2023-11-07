@@ -56,6 +56,11 @@ int main(int argc, char *argv[])
     TopicMetadata topic(topicName);
 
     consumer.subscribe(topic);
+    Record record;
+
+    int mode = std::stoi(argv[1]);
+    int totalNumberOfMessages = std::stoi(argv[2]);
+    int delay = std::stoi(argv[3]);
 
     fifo << "start" << std::endl;
 
@@ -63,17 +68,23 @@ int main(int argc, char *argv[])
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    while (numMessagesSent < NUM_MESSAGES)
+    while (numMessagesSent < totalNumberOfMessages)
     {
-        consumer.read(topic);
-        numMessagesSent++;
+        if(mode == 1) { // Push
+            consumer.read(topic);
+            numMessagesSent++;
+        }else if (mode == 2) { // Pull
+            record = consumer.poll(topic);
+            numMessagesSent++;
+            std::this_thread::sleep_for(std::chrono::microseconds(delay));
+        }
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Duration of the for loop: " << duration.count() << " microseconds" << std::endl;
-    std::cout << "Time for Consumer: " << duration.count()/NUM_MESSAGES << " microseconds" << std::endl;
+    std::cout << "Time for Consumer: " << duration.count()/totalNumberOfMessages << " microseconds" << std::endl;
 
     return 0;
 }
