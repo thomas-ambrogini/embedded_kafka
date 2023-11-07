@@ -3,3 +3,6 @@ target_link_libraries(periodicProducer PRIVATE application_library)
 
 add_executable(linuxProducerBrokerRTOS "${embedded_kafka_SOURCE_DIR}/apps/Producers/linuxProducerBrokerRTOS.cpp")
 target_link_libraries(linuxProducerBrokerRTOS PRIVATE application_library)
+
+add_executable(linuxProducerNoConsumerTesting "${embedded_kafka_SOURCE_DIR}/apps/Producers/linuxProducerNoConsumerTesting.cpp")
+target_link_libraries(linuxProducerNoConsumerTesting PRIVATE application_library)

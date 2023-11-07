@@ -7,8 +7,6 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
-#include <fstream>
-#include <unistd.h>
 
 #define NUM_MESSAGES 100
 #define MAX_MSG_SIZE 512
@@ -21,12 +19,6 @@ void fillBuffer(char * buffer, int bufferSize)
 
 int main(int argc, char *argv[])
 {
-    // Define the named pipe for synchronization
-    const char * fifoName = "/tmp/sync_fifo";
-
-    mkfifo(fifoName, 0666);
-    std::ifstream fifo(fifoName);
-
     StandardOutputLogger logger;
     logger.setDebug(false);
 
@@ -57,24 +49,21 @@ int main(int argc, char *argv[])
     std::string topicName = "Testing";
     TopicMetadata topic(topicName);
 
-    int msgSize = 64;
+    int msgSize = std::stoi(argv[1]);
+    int totalNumberOfMessages = std::stoi(argv[2]);
+    int delay = std::stoi(argv[3]);
 
     fillBuffer(msgBuf, msgSize); 
     Record record(msgBuf);
     ProducerRecord producerRecord(topic, record);
 
-    std::string startingMessage;
-    fifo >> startingMessage;
-
-    std::cout << startingMessage << std::endl;
-
     auto start = std::chrono::high_resolution_clock::now();
 
-    while (numMessagesSent < NUM_MESSAGES)
+    while (numMessagesSent < totalNumberOfMessages)
     {
         producer.publish(producerRecord);
         numMessagesSent++;
-        std::this_thread::sleep_for(std::chrono::microseconds(200));
+        std::this_thread::sleep_for(std::chrono::microseconds(delay));
     }
 
     auto stop = std::chrono::high_resolution_clock::now();

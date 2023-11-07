@@ -37,7 +37,7 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
     static_cast<RPMessageEndpoint &>(source).setCoreId(remoteCoreId);
     static_cast<RPMessageEndpoint &>(source).setServiceEndpoint(remoteCoreServiceEndpoint);
 
-    return 1;
+    return size;
 }
 
 int RPMessageCommunication::write(const char *message, size_t messageSize, const Endpoint &destination)

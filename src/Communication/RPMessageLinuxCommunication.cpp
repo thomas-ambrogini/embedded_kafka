@@ -101,6 +101,9 @@ int RPMessageLinuxCommunication::send_msg(int fd, const char *msg, int len)
     logger.log("Sending the message %s, with size %d", msg, len);
 
     ret = ::write(fd, msg, len);
+
+    logger.log("Number of bytes actually written: %d", ret);
+    
     if (ret < 0)
     {
         logger.logError("Can't write to rpmsg endpt device");
