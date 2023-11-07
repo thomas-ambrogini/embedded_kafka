@@ -22,8 +22,8 @@ void usage(std::map<std::string, std::string> &idToProcessor)
 
 void fillBuffer(char * buffer, int bufferSize) 
 {
-    memset(buffer, 'c', bufferSize - 1);
-    buffer[bufferSize - 1] = '\0';
+    memset(buffer, 'c', bufferSize);
+    buffer[bufferSize] = '\0';
 }
 
 int main(int argc, char *argv[])

@@ -32,6 +32,7 @@ int RPMessageCommunication::read(char *buffer, size_t bufferSize, Endpoint &sour
                             &remoteCoreServiceEndpoint,
                             SystemP_WAIT_FOREVER);
 
+    buffer[size] = 0; /* add a NULL char at the end of message */
     DebugP_assert(status == SystemP_SUCCESS);
 
     static_cast<RPMessageEndpoint &>(source).setCoreId(remoteCoreId);
