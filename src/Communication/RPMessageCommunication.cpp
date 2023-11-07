@@ -47,7 +47,7 @@ int RPMessageCommunication::write(const char *message, size_t messageSize, const
     uint32_t status;
     uint16_t msgSize;
 
-    msgSize = strlen(message) + 1;
+    msgSize = static_cast<uint16_t>(messageSize);
 
     status = RPMessage_send(
         const_cast<char *>(message), msgSize,
